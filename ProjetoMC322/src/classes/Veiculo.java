@@ -11,7 +11,7 @@ public class Veiculo {
 	public Veiculo(String placa, String marca, String modelo) {
 		this.placa = placa;
 		this.marca = marca;
-		this.modelo = marca;
+		this.modelo = modelo;
 	}
 	
 	// Getters e setters
