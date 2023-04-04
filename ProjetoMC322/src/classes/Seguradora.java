@@ -94,26 +94,26 @@ public class Seguradora {
 	List<Cliente> listarClientes(String tipoCliente){
 		List<Cliente> pesquisa = new ArrayList<Cliente>();
 		for(Cliente item : listaClientes)
-			//if(tipoCliente == "PF" && item.instanceOf(ClientePF))
+			if(tipoCliente == "PF" && item instanceof ClientePF)
 				pesquisa.add(item);
-			//else if (tipoCliente == "PJ" && item.instanceOf(ClientePJ))
-		 		// pesquisa.add(item);
+			else if (tipoCliente == "PJ" && item instanceof ClientePJ)
+		 		pesquisa.add(item);
 		return pesquisa;
 	}
 	
 	// ???????????
-	boolean gerarSinistro() {
+	boolean gerarSinistro() { //parametro de um sinistro?
 		return true;
 	}
 	
 	// boolean???
 	// se existe?
-	boolean visualizarSinistro(String cliente){
+	boolean visualizarSinistro(String cliente){ // é no singular? // pq é boolean??
 		return true;
 	}
 	
 	// ???????????
-	List<Sinistro> listarSinistros(){
+	List<Sinistro> listarSinistros(){ // parametro cliente?
 		return this.listaSinistros;
 	}
 }

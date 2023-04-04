@@ -6,13 +6,13 @@ import java.util.List;
 public class ClientePF extends Cliente {
 	
 	//Propriedades
-	private final String cpf ;
+	private final String cpf;
 	private Date dataNascimento;
 
 	//Construtor
 	public ClientePF (String nome , String endereco , Date dataLicenca ,
 				  String educacao , String genero , String classeEconomica ,
-                  List < Veiculo > listaVeiculos , String cpf , Date dataNascimento ) {
+                  List < Veiculo > listaVeiculos , String cpf , Date dataNascimento) {
 		// chama o construtor da superclasse
 		super (nome , endereco , dataLicenca , educacao , genero , classeEconomica , listaVeiculos);
 		this.cpf = cpf ;
@@ -20,6 +20,10 @@ public class ClientePF extends Cliente {
 	}
 
 	//Getters e Setters
+	public String getCpf() {
+		return cpf;
+	}
+	
 	public Date getDataNascimento() {
 		return dataNascimento;
 	}
@@ -28,21 +32,17 @@ public class ClientePF extends Cliente {
 		this.dataNascimento = dataNascimento;
 	}
 	
-	public String getCpf() {
-		return cpf;
-	}
-	
 	@Override
 	public String toString () {
 		String ret = "";
 		ret += "CPF: " + this.cpf + "\n";
-		ret += "Nome: " + this.getNome() + "\n";
+		ret += "Nome: " + this.nome + "\n";
 		ret += "Data de Nascimento: " + dataNascimento + "\n";
-		ret += "Endereco: " + this.getEndereco() + "\n";
-		ret += "Data da Licença: " + this.getDataLicenca() + "\n";
-		ret += "Educação: " + this.getEducacao() + "\n";
-		ret += "Gênero: " + this.getGenero() + "\n";
-		ret += "Classe Econômica: " + this.getClasseEconomica() + "\n";
+		ret += "Endereço: " + this.endereco + "\n";
+		ret += "Data da Licença: " + this.dataLicenca + "\n";
+		ret += "Educação: " + this.educacao + "\n";
+		ret += "Gênero: " + this.genero + "\n";
+		ret += "Classe Econômica: " + this.classeEconomica + "\n";
 
 		return ret;
 	}

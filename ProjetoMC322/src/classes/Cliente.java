@@ -3,19 +3,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-// faltam heranças
-
 public class Cliente {
 
 	// Propriedades
 	// é mais certo protected?
-	private String nome;
-	private String endereco;
-	private Date dataLicenca;
-	private String educacao;
-	private String genero;
-	private String classeEconomica;
-	private List<Veiculo> listaVeiculos;
+	protected String nome;
+	protected String endereco;
+	protected Date dataLicenca;
+	protected String educacao;
+	protected String genero;
+	protected String classeEconomica;
+	protected List<Veiculo> listaVeiculos;
 	
 	// Construtor
 	public Cliente(String nome, String endereco, Date dataLicenca, String educacao, String genero, String classeEconomica, List<Veiculo> listaVeiculos) {
