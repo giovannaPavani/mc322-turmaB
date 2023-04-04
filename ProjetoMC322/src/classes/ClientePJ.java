@@ -11,11 +11,10 @@ public class ClientePJ extends Cliente {
 	private Date dataFundacao;
 
 	//Construtor
-	public ClientePJ (String nome , String endereco , Date dataFundacao ,
-				  String educacao , String genero , String classeEconomica ,
-                  List < Veiculo > listaVeiculos , String cnpj , Date dataNascimento ) {
+	public ClientePJ (String cnpj, String nome , String endereco, Date dataLicenca, 
+					  Date dataFundacao, List<Veiculo> listaVeiculos) {
 		// chama o construtor da superclasse
-		super (nome , endereco , dataFundacao , educacao , genero , classeEconomica , listaVeiculos);
+		super (nome , endereco , dataLicenca, listaVeiculos);
 		this.cnpj = cnpj;
 		this.dataFundacao = dataFundacao ;
 	}
@@ -41,9 +40,6 @@ public class ClientePJ extends Cliente {
 		ret += "Data de Fundação: " + dataFundacao + "\n";
 		ret += "Endereço: " + endereco + "\n";
 		ret += "Data da Licença: " + this.dataLicenca + "\n";
-		ret += "Educação: " + this.educacao + "\n";
-		ret += "Gênero: " + this.genero + "\n";
-		ret += "Classe Econômica: " + this.classeEconomica + "\n";
 
 		return ret;
 	}

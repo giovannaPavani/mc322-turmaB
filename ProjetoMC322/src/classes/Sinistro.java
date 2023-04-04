@@ -1,18 +1,19 @@
 package classes;
+import java.util.Date;
 import java.util.Random;
 
 public class Sinistro {
 	
 	// Propriedades
 	private final int id;
-	private String data; // string??
+	private Date data; // local date
 	private String endereco;
 	private Seguradora seguradora;
 	private Veiculo veiculo;
 	private Cliente cliente;
 	
 	// Construtor
-	public Sinistro(String data, String endereco, Seguradora seguradora, Veiculo veiculo, Cliente cliente) {
+	public Sinistro(Date data, String endereco, Seguradora seguradora, Veiculo veiculo, Cliente cliente) {
 		this.id = gerarId();
 		this.data = data;
 		this.endereco = endereco;
@@ -35,10 +36,10 @@ public class Sinistro {
 	public int getId() {
 		return id;
 	}
-	public String getData() {
+	public Date getData() {
 		return data;
 	}
-	public void setData(String data) {
+	public void setData(Date data) {
 		this.data = data;
 	}
 	public String getEndereco() {

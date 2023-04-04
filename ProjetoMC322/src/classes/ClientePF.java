@@ -8,13 +8,16 @@ public class ClientePF extends Cliente {
 	//Propriedades
 	private final String cpf;
 	private Date dataNascimento;
+	private String educacao;
+	private String genero;
+	private String classeEconomica;
 
 	//Construtor
-	public ClientePF (String nome , String endereco , Date dataLicenca ,
-				  String educacao , String genero , String classeEconomica ,
-                  List < Veiculo > listaVeiculos , String cpf , Date dataNascimento) {
+	public ClientePF (String cpf ,String nome , String endereco , Date dataLicenca ,
+				      String educacao , String genero , String classeEconomica ,
+                       Date dataNascimento, List<Veiculo> listaVeiculos) {
 		// chama o construtor da superclasse
-		super (nome , endereco , dataLicenca , educacao , genero , classeEconomica , listaVeiculos);
+		super (nome , endereco , dataLicenca, listaVeiculos);
 		this.cpf = cpf ;
 		this.dataNascimento = dataNascimento ;
 	}
@@ -32,12 +35,36 @@ public class ClientePF extends Cliente {
 		this.dataNascimento = dataNascimento;
 	}
 	
+	public String getEducacao() {
+		return educacao;
+	}
+
+	public void setEducacao(String educacao) {
+		this.educacao = educacao;
+	}
+
+	public String getGenero() {
+		return genero;
+	}
+
+	public void setGenero(String genero) {
+		this.genero = genero;
+	}
+
+	public String getClasseEconomica() {
+		return classeEconomica;
+	}
+
+	public void setClasseEconomica(String classeEconomica) {
+		this.classeEconomica = classeEconomica;
+	}
+	
 	@Override
 	public String toString () {
 		String ret = "";
 		ret += "CPF: " + this.cpf + "\n";
 		ret += "Nome: " + this.nome + "\n";
-		ret += "Data de Nascimento: " + dataNascimento + "\n";
+		ret += "Data de Nascimento: " + this.dataNascimento + "\n";
 		ret += "Endereço: " + this.endereco + "\n";
 		ret += "Data da Licença: " + this.dataLicenca + "\n";
 		ret += "Educação: " + this.educacao + "\n";

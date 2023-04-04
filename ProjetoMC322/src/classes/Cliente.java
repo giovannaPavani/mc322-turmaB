@@ -10,19 +10,13 @@ public class Cliente {
 	protected String nome;
 	protected String endereco;
 	protected Date dataLicenca;
-	protected String educacao;
-	protected String genero;
-	protected String classeEconomica;
 	protected List<Veiculo> listaVeiculos;
 	
 	// Construtor
-	public Cliente(String nome, String endereco, Date dataLicenca, String educacao, String genero, String classeEconomica, List<Veiculo> listaVeiculos) {
-		this.setNome(nome);
-		this.setNome(endereco);
-		this.setDataLicenca(dataLicenca);
-		this.setEducacao(educacao);
-		this.setGenero(genero);
-		this.setClasseEconomica(classeEconomica);
+	public Cliente(String nome, String endereco, Date dataLicenca, List<Veiculo> listaVeiculos) {
+		this.nome = nome;
+		this.endereco = endereco;
+		this.dataLicenca = dataLicenca;
 		this.listaVeiculos = listaVeiculos;
 		//this.listaVeiculos = new ArrayList<Veiculo>();
 	}
@@ -33,9 +27,6 @@ public class Cliente {
 		ret += "Nome: " + nome + "\n";
 		ret += "Endereco: " + endereco + "\n";
 		ret += "Data da Licença: " + dataLicenca + "\n";
-		ret += "Educação: " + educacao + "\n";
-		ret += "Gênero: " + genero + "\n";
-		ret += "Classe Econômica: " + classeEconomica + "\n";
 
 		return ret;
 	}
@@ -66,30 +57,6 @@ public class Cliente {
 		this.dataLicenca = dataLicenca;
 	}
 
-	
-	public String getEducacao() {
-		return educacao;
-	}
-
-	public void setEducacao(String educacao) {
-		this.educacao = educacao;
-	}
-
-	public String getGenero() {
-		return genero;
-	}
-
-	public void setGenero(String genero) {
-		this.genero = genero;
-	}
-
-	public String getClasseEconomica() {
-		return classeEconomica;
-	}
-
-	public void setClasseEconomica(String classeEconomica) {
-		this.classeEconomica = classeEconomica;
-	}
 
 	public List<Veiculo> getListaVeiculos() {
 		return listaVeiculos;
