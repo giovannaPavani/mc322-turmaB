@@ -2,7 +2,7 @@ package classes;
 
 import java.util.Date;
 import java.util.List;
-//3
+
 public class ClientePJ extends Cliente {
 	
 	//Propriedades

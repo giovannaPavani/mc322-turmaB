@@ -4,7 +4,7 @@ public class Main {
 
 	public static void main(String [] args){ 
 		
-		// Testes - Cliente
+		// Testes - Clientemm
 		System.out.println("--- Cliente ---");
 		//Cliente c = new Cliente("Giovanna Pavani", "502.289.268-58", "09/08/2004", "18", "Avenida 1, 78 - Campinas-SP");
 	    /*System.out.println(c.toString());

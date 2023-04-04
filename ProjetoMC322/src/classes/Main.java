@@ -4,14 +4,15 @@ public class Main {
 
 	public static void main(String [] args){ 
 		
-		// Testes - Cliente
+		// Testes - Clientemm
 		System.out.println("--- Cliente ---");
-		Cliente c = new Cliente("Giovanna Pavani", "502.289.268-58", "09/08/2004", "18", "Avenida 1, 78 - Campinas-SP");
-	    System.out.println(c.toString());
+		//Cliente c = new Cliente("Giovanna Pavani", "502.289.268-58", "09/08/2004", "18", "Avenida 1, 78 - Campinas-SP");
+	    /*System.out.println(c.toString());
 	    if(Cliente.validarCPF(c.getCpf()))
 	    	System.out.println("CPF válido\n");
 	    else
 	    	System.out.println("CPF inválido\n");
+	    */
 	    
 	    // Testes - Carro
 	    System.out.println("--- Carro ---");
@@ -30,9 +31,9 @@ public class Main {
 	    
 	    // Testes - Sinistro
 	    System.out.println("--- Sinistro ---");
-	    Sinistro sin = new Sinistro("16/02/2002", "Rua Martinho Santos, 441 - Campinas-SP");;
-	    System.out.println("Id: "+sin.getId());
-	    System.out.println("Data: "+sin.getData());
-	    System.out.println("Endereco: "+sin.getEndereco());
+	    //Sinistro sin = new Sinistro("16/02/2002", "Rua Martinho Santos, 441 - Campinas-SP");;
+	    //System.out.println("Id: "+sin.getId());
+	    //System.out.println("Data: "+sin.getData());
+	    //System.out.println("Endereco: "+sin.getEndereco());
 	}
 }

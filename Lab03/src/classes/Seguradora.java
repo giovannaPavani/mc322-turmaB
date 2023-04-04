@@ -2,7 +2,7 @@ package classes;
 
 import java.util.ArrayList;
 import java.util.List;
-
+//3
 // VARIAS DUVIDAS
 public class Seguradora {
 

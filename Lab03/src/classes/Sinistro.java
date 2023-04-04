@@ -1,6 +1,6 @@
 package classes;
 import java.util.Random;
-
+//3
 public class Sinistro {
 	
 	// Propriedades

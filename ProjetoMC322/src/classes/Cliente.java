@@ -1,122 +1,103 @@
 package classes;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+// faltam heranças
 
 public class Cliente {
 
 	// Propriedades
+	// é mais certo protected?
 	private String nome;
-	private String cpf;
-	private String dataNascimento;
-	private String idade;
 	private String endereco;
+	private Date dataLicenca;
+	private String educacao;
+	private String genero;
+	private String classeEconomica;
+	private List<Veiculo> listaVeiculos;
 	
 	// Construtor
-	public Cliente(String nome, String cpf, String dataNascimento, String idade, String endereco) {
+	public Cliente(String nome, String endereco, Date dataLicenca, String educacao, String genero, String classeEconomica, List<Veiculo> listaVeiculos) {
 		this.setNome(nome);
-		this.setCpf(cpf);
-		this.dataNascimento = dataNascimento;
-		this.idade = idade;
-		this.endereco = endereco;
+		this.setNome(endereco);
+		this.setDataLicenca(dataLicenca);
+		this.setEducacao(educacao);
+		this.setGenero(genero);
+		this.setClasseEconomica(classeEconomica);
+		this.listaVeiculos = listaVeiculos;
+		//this.listaVeiculos = new ArrayList<Veiculo>();
 	}
 	
 	// Gera String com todas as informações do cliente
 	public String toString() {
 		String ret = "";
 		ret += "Nome: " + nome + "\n";
-		ret += "CPF: " + cpf + "\n";
-		ret += "Data de Nascimento: " + dataNascimento + "\n";
-		ret += "Idade: " + idade + "\n";
 		ret += "Endereco: " + endereco + "\n";
+		ret += "Data da Licença: " + dataLicenca + "\n";
+		ret += "Educação: " + educacao + "\n";
+		ret += "Gênero: " + genero + "\n";
+		ret += "Classe Econômica: " + classeEconomica + "\n";
+
 		return ret;
 	}
 	
-	// Faz a soma das multplicações dos 8 primeiros dígitos do cpf (a partir do indiceInicio) e determina o digitoVerificador 
-	private static int calcularDigitoVerificador(int indiceInicio, String cpf) {
-		int soma = 0;
-		
-		// Os nove primeiros algarismos são ordenadamente multiplicados pela sequência 10, 9, 8, 7, 6, 5, 4, 3, 2 
-		// OBS: +indiceInicio serve para adequar as contagens considerando o indiceInicio como origem
-		for(int i=indiceInicio; i<9+indiceInicio; i++) {
-			int digito = Character.getNumericValue(cpf.charAt(i));
-			soma += digito * (10-i+indiceInicio);
-		}
-		
-		int resto = soma % 11;
-		int digitoVerificador = 0;
-		
-		// se o resto for 0 ou 1, o digitoVerificador é 0
-		if(resto != 0 && resto != 1)
-			digitoVerificador = 11 - resto;
-		
-		return digitoVerificador;
-	}
-	
-	public static boolean validarCPF(String cpf) {
-		// remove caracteres nao numericos ('.' e '-')
-		String numCpf = cpf.replaceAll("\\.", "").replaceAll("-", "");
-		
-		// verifica se o cpf tem 11 digitos
-		if(numCpf.length() != 11)
-			return false;
-		
-		// verifica se todos os digitos sao iguais
-		boolean diferente = false;
-		for(int i=0; i < numCpf.length()-1; i++)
-			// se achar pelo menos um digito diferente (valido) -> break
-			if(numCpf.charAt(i) != numCpf.charAt(i+1)) {
-				diferente = true;
-				break;
-			}
-		// nao ha digitos diferentes
-		if(!diferente)
-			return false;
-
-		// calculo dos digitos verificadores
-		if(Character.getNumericValue(numCpf.charAt(9)) != calcularDigitoVerificador(0, numCpf)|| 
-			Character.getNumericValue(numCpf.charAt(10)) != calcularDigitoVerificador(1, numCpf))
-			// pelo menos um dos digitos verificadores calculados nao sao iguais aos digitos verificadores fornecidos
-			return false;
-				
-		return true;
-	}
 	
 	// Getters e Setters
-	public String getDataNascimento() {
-		return dataNascimento;
-	}
-
-	public void setDataNascimento(String dataNascimento) {
-		this.dataNascimento = dataNascimento;
-	}
-
-	public String getIdade() {
-		return idade;
-	}
-
-	public void setIdade(String idade) {
-		this.idade = idade;
-	}
-
-	public String getEndereco() {
-		return endereco;
-	}
-
-	public void setEndereco(String endereco) {
-		this.endereco = endereco;
-	}
-
 	public String getNome() {
 		return nome;
 	}
-
+	
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-
-	public String getCpf() {
-		return cpf;
+	
+	public String getEndereco() {
+		return endereco;
+	}
+	
+	public void setEndereco(String endereco) {
+		this.endereco = endereco;
+	}
+	
+	public Date getDataLicenca() {
+		return dataLicenca;
 	}
 
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
+	public void setDataLicenca(Date dataLicenca) {
+		this.dataLicenca = dataLicenca;
+	}
+
+	
+	public String getEducacao() {
+		return educacao;
+	}
+
+	public void setEducacao(String educacao) {
+		this.educacao = educacao;
+	}
+
+	public String getGenero() {
+		return genero;
+	}
+
+	public void setGenero(String genero) {
+		this.genero = genero;
+	}
+
+	public String getClasseEconomica() {
+		return classeEconomica;
+	}
+
+	public void setClasseEconomica(String classeEconomica) {
+		this.classeEconomica = classeEconomica;
+	}
+
+	public List<Veiculo> getListaVeiculos() {
+		return listaVeiculos;
+	}
+
+	public void setListaVeiculos(List<Veiculo> listaVeiculos) {
+		this.listaVeiculos = listaVeiculos;
 	}
 }

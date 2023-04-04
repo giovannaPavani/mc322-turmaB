@@ -2,42 +2,42 @@ package classes;
 
 import java.util.Date;
 import java.util.List;
-//3
-public class ClientePJ extends Cliente {
+
+public class ClientePF extends Cliente {
 	
 	//Propriedades
-	private final String cpnj;
-	private Date dataFundacao;
+	private final String cpf ;
+	private Date dataNascimento;
 
 	//Construtor
-	public ClientePJ (String nome , String endereco , Date dataFundacao ,
+	public ClientePF (String nome , String endereco , Date dataLicenca ,
 				  String educacao , String genero , String classeEconomica ,
-                  List < Veiculo > listaVeiculos , String cpnj , Date dataNascimento ) {
+                  List < Veiculo > listaVeiculos , String cpf , Date dataNascimento ) {
 		// chama o construtor da superclasse
-		super (nome , endereco , dataFundacao , educacao , genero , classeEconomica , listaVeiculos);
-		this.cpnj = cpnj;
-		this.dataFundacao = dataFundacao ;
+		super (nome , endereco , dataLicenca , educacao , genero , classeEconomica , listaVeiculos);
+		this.cpf = cpf ;
+		this.dataNascimento = dataNascimento ;
 	}
 
 	//Getters e Setters
-	public Date getDataFundacao() {
-		return dataFundacao;
+	public Date getDataNascimento() {
+		return dataNascimento;
 	}
 	
-	public void setDataNascimento(Date dataFundacao) {
-		this.dataFundacao = dataFundacao;
+	public void setDataNascimento(Date dataNascimento) {
+		this.dataNascimento = dataNascimento;
 	}
 	
-	public String getCpnj() {
-		return cpnj;
+	public String getCpf() {
+		return cpf;
 	}
 	
 	@Override
 	public String toString () {
 		String ret = "";
-		ret += "CPNJ: " + this.cpnj + "\n";
+		ret += "CPF: " + this.cpf + "\n";
 		ret += "Nome: " + this.getNome() + "\n";
-		ret += "Data de Fundação: " + dataFundacao + "\n";
+		ret += "Data de Nascimento: " + dataNascimento + "\n";
 		ret += "Endereco: " + this.getEndereco() + "\n";
 		ret += "Data da Licença: " + this.getDataLicenca() + "\n";
 		ret += "Educação: " + this.getEducacao() + "\n";
@@ -46,17 +46,14 @@ public class ClientePJ extends Cliente {
 
 		return ret;
 	}
-	
-	// ARRUMAR PARA CPNJ
-	
 
-	//Faz a soma das multplicações dos 14 primeiros dígitos do cpf (a partir do indiceInicio) e determina o digitoVerificador 
+	//Faz a soma das multplicações dos 8 primeiros dígitos do cpf (a partir do indiceInicio) e determina o digitoVerificador 
 	private static int calcularDigitoVerificador(int indiceInicio, String cpf) {
 		int soma = 0;
 		
 		// Os nove primeiros algarismos são ordenadamente multiplicados pela sequência 10, 9, 8, 7, 6, 5, 4, 3, 2 
 		// OBS: +indiceInicio serve para adequar as contagens considerando o indiceInicio como origem
-		for(int i=indiceInicio; i<15+indiceInicio; i++) {
+		for(int i=indiceInicio; i<9+indiceInicio; i++) {
 			int digito = Character.getNumericValue(cpf.charAt(i));
 			soma += digito * (10-i+indiceInicio);
 		}
