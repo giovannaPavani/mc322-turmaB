@@ -1,5 +1,6 @@
 package classes;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -7,15 +8,15 @@ public class ClientePF extends Cliente {
 	
 	//Propriedades
 	private final String cpf;
-	private Date dataNascimento;
+	private LocalDate dataNascimento;
 	private String educacao;
 	private String genero;
 	private String classeEconomica;
 
 	//Construtor
-	public ClientePF (String cpf ,String nome , String endereco , Date dataLicenca ,
-				      String educacao , String genero , String classeEconomica ,
-                       Date dataNascimento, List<Veiculo> listaVeiculos) {
+	public ClientePF (String nome, String endereco, LocalDate dataLicenca, 
+					  List<Veiculo> listaVeiculos, String cpf, LocalDate dataNascimento, 
+					  String educacao , String genero , String classeEconomica) {
 		// chama o construtor da superclasse
 		super (nome , endereco , dataLicenca, listaVeiculos);
 		this.cpf = cpf ;
@@ -27,11 +28,11 @@ public class ClientePF extends Cliente {
 		return cpf;
 	}
 	
-	public Date getDataNascimento() {
+	public LocalDate getDataNascimento() {
 		return dataNascimento;
 	}
 	
-	public void setDataNascimento(Date dataNascimento) {
+	public void setDataNascimento(LocalDate dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
 	

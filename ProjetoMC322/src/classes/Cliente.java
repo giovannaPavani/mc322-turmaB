@@ -1,4 +1,5 @@
 package classes;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -9,11 +10,11 @@ public class Cliente {
 	// é mais certo protected?
 	protected String nome;
 	protected String endereco;
-	protected Date dataLicenca;
+	protected LocalDate dataLicenca;
 	protected List<Veiculo> listaVeiculos;
 	
 	// Construtor
-	public Cliente(String nome, String endereco, Date dataLicenca, List<Veiculo> listaVeiculos) {
+	public Cliente(String nome, String endereco, LocalDate dataLicenca, List<Veiculo> listaVeiculos) {
 		this.nome = nome;
 		this.endereco = endereco;
 		this.dataLicenca = dataLicenca;
@@ -27,6 +28,9 @@ public class Cliente {
 		ret += "Nome: " + nome + "\n";
 		ret += "Endereco: " + endereco + "\n";
 		ret += "Data da Licença: " + dataLicenca + "\n";
+		ret += "Lista de Veículos:\n";
+		for(Veiculo veiculo: listaVeiculos)
+			ret += veiculo.toString() + "\n"; // ou veiculo.getPlaca() p/ ficar menos poluido
 
 		return ret;
 	}
@@ -49,14 +53,13 @@ public class Cliente {
 		this.endereco = endereco;
 	}
 	
-	public Date getDataLicenca() {
+	public LocalDate getDataLicenca() {
 		return dataLicenca;
 	}
 
-	public void setDataLicenca(Date dataLicenca) {
+	public void setDataLicenca(LocalDate dataLicenca) {
 		this.dataLicenca = dataLicenca;
 	}
-
 
 	public List<Veiculo> getListaVeiculos() {
 		return listaVeiculos;
@@ -64,5 +67,23 @@ public class Cliente {
 
 	public void setListaVeiculos(List<Veiculo> listaVeiculos) {
 		this.listaVeiculos = listaVeiculos;
+	}
+	
+	public boolean adicionarVeiculo(Veiculo veiculo) {
+		return this.listaVeiculos.add(veiculo);
+	}
+	
+	public boolean removerVeiculo(Veiculo veiculo) {
+		return this.listaVeiculos.remove(veiculo);
+	}
+	
+	public Veiculo getVeiculoByPlaca(String placa) {
+		Veiculo ret = null;
+		for(Veiculo veiculo: listaVeiculos)
+			if (veiculo.getPlaca().equals(placa)) {
+				ret = veiculo;	
+				break;
+			}
+		return ret;
 	}
 }

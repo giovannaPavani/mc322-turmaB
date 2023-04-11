@@ -1,4 +1,5 @@
 package classes;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Random;
 
@@ -6,14 +7,14 @@ public class Sinistro {
 	
 	// Propriedades
 	private final int id;
-	private Date data; // local date
+	private LocalDate data;
 	private String endereco;
-	private Seguradora seguradora;
+	private Seguradora seguradora; // tirar 
 	private Veiculo veiculo;
 	private Cliente cliente;
 	
 	// Construtor
-	public Sinistro(Date data, String endereco, Seguradora seguradora, Veiculo veiculo, Cliente cliente) {
+	public Sinistro(LocalDate data, String endereco, Seguradora seguradora, Veiculo veiculo, Cliente cliente) {
 		this.id = gerarId();
 		this.data = data;
 		this.endereco = endereco;
@@ -36,10 +37,10 @@ public class Sinistro {
 	public int getId() {
 		return id;
 	}
-	public Date getData() {
+	public LocalDate getData() {
 		return data;
 	}
-	public void setData(Date data) {
+	public void setData(LocalDate data) {
 		this.data = data;
 	}
 	public String getEndereco() {

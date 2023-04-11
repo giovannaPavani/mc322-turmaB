@@ -1,5 +1,6 @@
 package classes;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 // VARIAS DUVIDAS
@@ -87,33 +88,102 @@ public class Seguradora {
 	 * @param cliente a remover
 	 * @return true se o cliente ja estava na lista, ou falso caso contrario
 	 */
-	boolean removerCliente(Cliente cliente) {
+	boolean removerCliente(String keyCliente) {
+		//remove sinistros deste cliente
+		Cliente cliente = getClienteByKey(keyCliente);
+		if(cliente == null)
+			return false;
+		String tipoCliente = getTipoClienteByKey(keyCliente);
+		
+		for(Sinistro sinistro: listaSinistros)
+			if(tipoCliente == "PJ" && sinistro.getCliente() instanceof ClientePJ)
+				if(((ClientePJ) sinistro.getCliente()).getCnpj().equals(keyCliente))
+					listaSinistros.remove(sinistro);
+			else
+				if(tipoCliente == "PF" && sinistro.getCliente() instanceof ClientePF)
+					if(((ClientePF) sinistro.getCliente()).getCpf().equals(keyCliente))
+						listaSinistros.remove(sinistro);
+		
 		return listaClientes.remove(cliente);
 	}
 	
 	List<Cliente> listarClientes(String tipoCliente){
 		List<Cliente> pesquisa = new ArrayList<Cliente>();
-		for(Cliente item : listaClientes)
-			if(tipoCliente == "PF" && item instanceof ClientePF)
-				pesquisa.add(item);
-			else if (tipoCliente == "PJ" && item instanceof ClientePJ)
-		 		pesquisa.add(item);
+		for(Cliente cliente : listaClientes)
+			if(tipoCliente == "PF" && cliente instanceof ClientePF)
+				pesquisa.add(cliente);
+			else if (tipoCliente == "PJ" && cliente instanceof ClientePJ)
+		 		pesquisa.add(cliente);
 		return pesquisa;
 	}
 	
-	// ???????????
-	boolean gerarSinistro() { //parametro de um sinistro?
-		return true;
+	private String getTipoClienteByKey(String key) {
+		if(key.length() == 14)
+			return "PJ";
+		else
+			return "PF";
 	}
 	
-	// boolean???
-	// se existe?
-	boolean visualizarSinistro(String cliente){ // é no singular? // pq é boolean??
-		return true;
+	private String getTipoCliente(Cliente cliente) {
+		if(cliente instanceof ClientePJ)
+			return "PJ";
+		else
+			return "PF";
 	}
 	
-	// ???????????
-	List<Sinistro> listarSinistros(){ // parametro cliente?
-		return this.listaSinistros;
+	Cliente getClienteByKey(String key){
+		String tipoCliente = getTipoClienteByKey(key);
+		if(key.length() == 14)
+			tipoCliente = "PJ";
+		else
+			tipoCliente = "PF";
+		
+		for(Cliente cliente : listaClientes)
+			if(tipoCliente == "PJ" && cliente instanceof ClientePJ) {
+				if(((ClientePJ) cliente).getCnpj().equals(key))
+					return cliente;
+			}
+			else { // tipoCliente == "PF"
+				if(((ClientePF) cliente).getCpf().equals(key))
+					return cliente;
+			}
+		
+		return null;
+	}
+	
+	boolean gerarSinistro(String placa, String keyCliente, LocalDate data, String endereco) { 
+		// acha cliente
+		Cliente cliente = getClienteByKey(keyCliente);
+		if(cliente == null) // cliente nao existe
+			return false;
+		
+		// acha veiculo do cliente
+		Veiculo veiculo = cliente.getVeiculoByPlaca(placa);
+		if(veiculo == null) // o cliente nao tem esse veiculo
+			return false;
+		
+		Sinistro sinistro = new Sinistro(data, endereco, this, veiculo, cliente);
+		
+		return listaSinistros.add(sinistro);
+	}
+	
+	// Existe sinistro deste cliente
+	boolean visualizarSinistro(String keyCliente){
+		
+		String tipoCliente = getTipoClienteByKey(keyCliente);
+		
+		for(Sinistro sinistro: listaSinistros)
+			if(tipoCliente == "PJ" && sinistro.getCliente() instanceof ClientePJ)
+				if(((ClientePJ) sinistro.getCliente()).getCnpj().equals(keyCliente))
+					return true;
+			else
+				if(tipoCliente == "PF" && sinistro.getCliente() instanceof ClientePF)
+					if(((ClientePF) sinistro.getCliente()).getCpf().equals(keyCliente))
+						return true;
+		return false;
+	}
+	
+	List<Sinistro> listarSinistros(){
+		return this.getListaSinistros();
 	}
 }
