@@ -169,7 +169,6 @@ public class Seguradora {
 	
 	// Existe sinistro deste cliente
 	boolean visualizarSinistro(String keyCliente){
-		
 		String tipoCliente = getTipoClienteByKey(keyCliente);
 		
 		for(Sinistro sinistro: listaSinistros)
@@ -185,5 +184,21 @@ public class Seguradora {
 	
 	List<Sinistro> listarSinistros(){
 		return this.getListaSinistros();
+	}
+	
+	List<Sinistro> listarSinistrosByKeyCliente(String keyCliente){
+		List<Sinistro> pesquisa = new ArrayList<Sinistro>();
+		
+		String tipoCliente = getTipoClienteByKey(keyCliente);
+		
+		for(Sinistro sinistro: listaSinistros)
+			if(tipoCliente == "PJ" && sinistro.getCliente() instanceof ClientePJ)
+				if(((ClientePJ) sinistro.getCliente()).getCnpj().equals(keyCliente))
+					pesquisa.add(sinistro);
+			else
+				if(tipoCliente == "PF" && sinistro.getCliente() instanceof ClientePF)
+					if(((ClientePF) sinistro.getCliente()).getCpf().equals(keyCliente))
+						pesquisa.add(sinistro);
+		return pesquisa;
 	}
 }

@@ -73,4 +73,15 @@ public class Sinistro {
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
+	
+	public String toString() {
+		String ret = "";
+		ret += "ID: "+this.id+"\n";
+		ret += "Data: "+this.data+"\n";
+		ret += "Endereço: "+this.endereco+"\n";
+		ret += "Seguradora: "+this.seguradora.getNome()+"\n";
+		ret += "Veículo: "+this.veiculo.toString()+"\n";
+		ret += "Cliente: "+this.cliente.toString()+"\n";
+		return ret;
+	}
 }
