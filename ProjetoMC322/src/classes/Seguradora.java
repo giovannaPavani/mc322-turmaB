@@ -74,6 +74,34 @@ public class Seguradora {
 		this.listaClientes = listaClientes;
 	}
 	
+	public String toString() {
+		String ret = "";
+		
+		ret += "Nome: " + this.nome+"\n";
+		ret += "Telefone: " + this.telefone+"\n";
+		ret += "Email: " + this.email+"\n";
+		ret += "Endereço: " + this.endereco+"\n";
+		ret += "Lista de sinistros:\n";
+		for(Sinistro sinistro: this.listaSinistros)
+			ret += "- "+sinistro.toStringSimples() + "\n";
+		ret += "Lista de clientes:\n";
+		for(Cliente cliente: this.listaClientes)
+			ret += "- "+cliente.toStringSimples() + "\n";
+		
+		return ret;
+	}
+	
+	public String toStringSimples() {
+		String ret = "";
+		
+		ret += "Nome: " + this.nome+"\n";
+		ret += "Telefone: " + this.telefone+"\n";
+		ret += "Email: " + this.email+"\n";
+		ret += "Endereço: " + this.endereco+"\n";
+		
+		return ret;
+	}
+	
 	/**
 	 *  Cadastrar cliente
 	 * @param cliente a adicionar
@@ -90,6 +118,7 @@ public class Seguradora {
 	 */
 	boolean removerCliente(String keyCliente) {
 		//remove sinistros deste cliente
+		keyCliente = keyCliente.replaceAll("\\.", "").replaceAll("-", "");
 		Cliente cliente = getClienteByKey(keyCliente);
 		if(cliente == null)
 			return false;
@@ -132,11 +161,8 @@ public class Seguradora {
 	}
 	
 	Cliente getClienteByKey(String key){
+		key = key.replaceAll("\\.", "").replaceAll("-", "");
 		String tipoCliente = getTipoClienteByKey(key);
-		if(key.length() == 14)
-			tipoCliente = "PJ";
-		else
-			tipoCliente = "PF";
 		
 		for(Cliente cliente : listaClientes)
 			if(tipoCliente == "PJ" && cliente instanceof ClientePJ) {
@@ -153,6 +179,7 @@ public class Seguradora {
 	
 	boolean gerarSinistro(String placa, String keyCliente, LocalDate data, String endereco) { 
 		// acha cliente
+		keyCliente = keyCliente.replaceAll("\\.", "").replaceAll("-", "");
 		Cliente cliente = getClienteByKey(keyCliente);
 		if(cliente == null) // cliente nao existe
 			return false;
@@ -164,11 +191,15 @@ public class Seguradora {
 		
 		Sinistro sinistro = new Sinistro(data, endereco, this, veiculo, cliente);
 		
+		/*TESTE*/
+		System.out.println("\n"+sinistro.toString()+"\n");
+		
 		return listaSinistros.add(sinistro);
 	}
 	
 	// Existe sinistro deste cliente
 	boolean visualizarSinistro(String keyCliente){
+		keyCliente = keyCliente.replaceAll("\\.", "").replaceAll("-", "");
 		String tipoCliente = getTipoClienteByKey(keyCliente);
 		
 		for(Sinistro sinistro: listaSinistros)
@@ -187,6 +218,7 @@ public class Seguradora {
 	}
 	
 	List<Sinistro> listarSinistrosByKeyCliente(String keyCliente){
+		keyCliente = keyCliente.replaceAll("\\.", "").replaceAll("-", "");
 		List<Sinistro> pesquisa = new ArrayList<Sinistro>();
 		
 		String tipoCliente = getTipoClienteByKey(keyCliente);

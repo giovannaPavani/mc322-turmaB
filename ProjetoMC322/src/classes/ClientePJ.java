@@ -1,6 +1,7 @@
 package classes;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,12 +37,23 @@ public class ClientePJ extends Cliente {
 	@Override
 	public String toString () {
 		String ret = "";
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		
 		ret += "CNPJ: " + this.cnpj + "\n";
-		ret += "Nome: " + this.nome + "\n";
-		ret += "Data de Fundação: " + dataFundacao + "\n";
-		ret += "Endereço: " + endereco + "\n";
-		ret += "Data da Licença: " + this.dataLicenca + "\n";
-
+		ret += "Data de Fundação: " + dataFundacao.format(formatter) + "\n";
+		ret += super.toString();
+		return ret;
+	}
+	
+	@Override
+	public String toStringSimples() {
+		String ret = "";
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		
+		ret += "CNPJ: " + this.cnpj + "\n";
+		ret += "Data de fundação: " + this.dataFundacao.format(formatter)+ "\n";
+		ret += super.toStringSimples();
+		
 		return ret;
 	}
 	

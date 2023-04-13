@@ -17,9 +17,10 @@ public class Main {
 		System.out.println("=====================================\n");
 		
 		System.out.println("Inicie suas operações criando uma seguradora.\n");
+		seguradora = new Seguradora("Azul", "1932770378", "azul@g.com", "Av 1, 89");
 		esperarTecla(leitor);
-		seguradora = criarSeguradora(leitor);
-		esperarTecla(leitor);
+		//seguradora = criarSeguradora(leitor);
+		//esperarTecla(leitor);
 		
 		/* ================
 		 *  MENU PRINCIPAL
@@ -35,7 +36,8 @@ public class Main {
 			System.out.println("3 - Remover cliente");
 			System.out.println("4 - Listar clientes");
 			System.out.println("5 - Gerar sinistro de um cliente");
-			System.out.println("6 - Listar sinistros da seguradora\n");
+			System.out.println("6 - Listar sinistros de um cliente\n");
+			System.out.println("7 - Listar sinistros da seguradora\n");
 			
 			System.out.println("0 - Sair do programa\n");
 			
@@ -117,14 +119,14 @@ public class Main {
 		boolean valido = false;
 		String cnpj;
 		do {
+			System.out.print("CNPJ: ");
+			cnpj = leitor.nextLine();
+			valido = ClientePJ.validarCNPJ(cnpj);
 			if(!valido) {
 				System.out.println("--------------------------------------------");
 				System.out.println("| CNPJ inválido. Tente inserí-lo novamente. |");
 				System.out.println("--------------------------------------------\n");
 			}
-			System.out.print("CNPJ: ");
-			cnpj = leitor.nextLine();
-			valido = ClientePJ.validarCNPJ(cnpj);
 		} while(!valido);
 		
 		return cnpj;
@@ -134,13 +136,14 @@ public class Main {
 		String cpf;
 		boolean valido = false;
 		do {
-			if(!valido)
-				System.out.println("-------------------------------------------");
-				System.out.println("| CPF inválido. Tente inserí-lo novamente. |");
-				System.out.println("-------------------------------------------\n");
 			System.out.print("CPF: ");
 			cpf = leitor.nextLine();
 			valido = ClientePF.validarCPF(cpf);
+			if(!valido) {
+				System.out.println("-------------------------------------------");
+				System.out.println("| CPF inválido. Tente inserí-lo novamente. |");
+				System.out.println("-------------------------------------------\n");
+			}
 		} while(!valido);
 		
 		return cpf;
@@ -149,11 +152,13 @@ public class Main {
 	private static String getTipoClienteValido(Scanner leitor) {
 		String tipoCliente = "";
 		do{
-			System.out.println("O cliente é físico(CPF) ou jurídico(CNPJ)?");
-			System.out.println("Digite [CPF] ou [CNPJ].\n");
+			System.out.println("\nO cliente é físico(CPF) ou jurídico(CNPJ)?");
+			System.out.print("Digite [CPF] ou [CNPJ]: ");
 			String tipoLeitor = leitor.nextLine();
-			if(tipoLeitor.equals("CPF") || tipoLeitor.equals("CNPJ"))
+			if(tipoLeitor.equals("CPF") || tipoLeitor.equals("CNPJ")) {
 				tipoCliente = tipoLeitor;
+				System.out.println();				
+			}
 			else {
 				System.out.println("---------------------------------------------------------------------");
 				System.out.println("| Tipo de cliente inválido. Tente inserir [CPF] ou [CNPJ] novamente. |");
@@ -173,7 +178,7 @@ public class Main {
 		System.out.println("----------------------");
 		System.out.println("   Criar seguradora   ");
 		System.out.println("----------------------\n");
-		System.out.println("Digite as informações da nova seguradora.");
+		System.out.println("Digite as informações da nova seguradora.\n");
 		
 		System.out.print("Nome: ");
 		String nome = leitor.nextLine();
@@ -188,6 +193,9 @@ public class Main {
 		
 		System.out.println("\nNova seguradora criada!");
 		
+		/*TESTE*/
+		System.out.println("\n"+seguradora.toString()+"\n");
+		
 		return seguradora;
 	}
 	
@@ -198,7 +206,7 @@ public class Main {
 		System.out.println("-------------------------\n");
 		
 		System.out.println("Digite as informações do novo cliente.");
-		System.out.println("(Obs: Escreva a data no formato dd/mm/aaaa.)\n");
+		System.out.println("(Obs: Escreva datas no formato dd/mm/aaaa)\n");
 		System.out.print("Nome: ");
 		String nome = leitor.nextLine();
 		System.out.print("Endereco: ");
@@ -213,24 +221,16 @@ public class Main {
 				dataLicenca = LocalDate.parse(dataLicencaLeitor, formatter);
 			} catch(Exception e) {
 				System.out.println("---------------------------------------------------------------------------------");
-				System.out.println("| Data da licença inválida. Tente inserí-la novamente, no formato [dd/mm/yyyy]. |");
+				System.out.println("| Data da licença inválida! Tente inserí-la novamente, no formato [dd/mm/yyyy]. |");
 				System.out.println("---------------------------------------------------------------------------------\n");
 			}
 		} while (dataLicenca == null);
 		
 		//System.out.println("Certo! " + dataLicenca.format(formatter));
 		
-		System.out.print("Educação: ");
-		String educacao = leitor.nextLine();
-		System.out.print("Gênero: ");
-		String genero = leitor.nextLine();
-		System.out.print("Classe econômica: ");
-		String classeEconomica = leitor.nextLine();
-		
 		String tipo = getTipoClienteValido(leitor);
 		
 		Cliente cliente = null;
-		
 		
 		if(tipo.equals("CPF")) {
 			String cpf = getCpfValido(leitor);
@@ -243,12 +243,19 @@ public class Main {
 					dataNascimento = LocalDate.parse(dataNascimentoLeitor, formatter);
 				} catch(Exception e) {
 					System.out.println("-----------------------------------------------------------------------------------");
-					System.out.println("| Data de nascimento inválida. Tente inserí-la novamente, no formato [dd/mm/aaaa]. |");
+					System.out.println("| Data de nascimento inválida! Tente inserí-la novamente, no formato [dd/mm/aaaa]. |");
 					System.out.println("-----------------------------------------------------------------------------------\n");
 				}
 			} while (dataNascimento == null);
-				
-				cliente = new ClientePF(nome, endereco, dataLicenca, new ArrayList<Veiculo>(),
+			
+			System.out.print("Educação: ");
+			String educacao = leitor.nextLine();
+			System.out.print("Gênero: ");
+			String genero = leitor.nextLine();
+			System.out.print("Classe econômica: ");
+			String classeEconomica = leitor.nextLine();
+			
+			cliente = new ClientePF(nome, endereco, dataLicenca, new ArrayList<Veiculo>(),
 										cpf, dataNascimento, educacao, genero, classeEconomica);
 		
 		} else if(tipo.equals("CNPJ")){
@@ -262,7 +269,7 @@ public class Main {
 					dataFundacao = LocalDate.parse(dataFundacaoLeitor, formatter);
 				} catch(Exception e) {
 					System.out.println("---------------------------------------------------------------------------------");
-					System.out.println("| Data de fundação inválida. Tente inserí-la novamente, no formato [dd/mm/yyyy]. |");
+					System.out.println("| Data de fundação inválida! Tente inserí-la novamente, no formato [dd/mm/yyyy]. |");
 					System.out.println("---------------------------------------------------------------------------------\n");
 				}
 			} while (dataFundacao == null);
@@ -270,6 +277,9 @@ public class Main {
 			cliente = new ClientePJ(nome, endereco, dataLicenca, 
 					                new ArrayList<Veiculo>(),cnpj, dataFundacao );
 		}
+		
+		/*TESTE*/
+		//System.out.println("\n"+cliente.toString()+"\n");
 		
 		return cliente;			
 	}
@@ -297,7 +307,7 @@ public class Main {
 				anoFabricacao = Integer.parseInt(anoFabricacaoLeitor);			
 			} catch(Exception e) {
 				System.out.println("----------------------------------------------------------------");
-				System.out.println("| Ano de fabricação inválido. Tente inserir o número novamente. |");
+				System.out.println("| Ano de fabricação inválido! Tente inserir o número novamente. |");
 				System.out.println("----------------------------------------------------------------\n");
 			}
 		}while(anoFabricacao ==0);
@@ -326,6 +336,9 @@ public class Main {
 		}*/
 					
 		cliente.adicionarVeiculo(veiculo);
+		
+		/*TESTE*/
+		//System.out.println("\n"+veiculo.toString()+"\n");
 		
 		return veiculo;			
 	}
@@ -444,7 +457,7 @@ public class Main {
 		System.out.println("Segue a lista de sinistros registrados na seguradora "+ seguradora.getNome() +"\n");
 		
 		for(Sinistro sinistro: seguradora.listarSinistros())
-			System.out.println(sinistro.toString());
+			System.out.println(sinistro.toString()+"-\n");
 	}
 	
 }

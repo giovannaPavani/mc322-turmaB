@@ -1,5 +1,6 @@
 package classes;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Random;
 
@@ -76,12 +77,26 @@ public class Sinistro {
 	
 	public String toString() {
 		String ret = "";
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		
 		ret += "ID: "+this.id+"\n";
-		ret += "Data: "+this.data+"\n";
+		ret += "Data: "+this.data.format(formatter)+"\n";
 		ret += "Endereço: "+this.endereco+"\n";
-		ret += "Seguradora: "+this.seguradora.getNome()+"\n";
-		ret += "Veículo: "+this.veiculo.toString()+"\n";
-		ret += "Cliente: "+this.cliente.toString()+"\n";
+		ret += "Dados da Seguradora: "+this.seguradora.toStringSimples()+"\n";
+		ret += "Dados do Veículo:\n"+this.veiculo.toString()+"\n";
+		ret += "Dados do cliente \n"+this.cliente.toString()+"\n";
+		return ret;
+	}
+	
+	public String toStringSimples() {
+		String ret = "";
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		
+		ret += "ID: "+this.id+"\n";
+		ret += "Data: "+this.data.format(formatter)+"\n";
+		ret += "Endereço: "+this.endereco+"\n";
+		ret += "Dados do Veículo:\n"+this.veiculo.toString()+"\n";
+		ret += "Dados do cliente \n"+this.cliente.toStringSimples()+"\n";
 		return ret;
 	}
 }

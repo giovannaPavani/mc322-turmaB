@@ -1,5 +1,6 @@
 package classes;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,12 +26,28 @@ public class Cliente {
 	// Gera String com todas as informações do cliente
 	public String toString() {
 		String ret = "";
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		
 		ret += "Nome: " + nome + "\n";
 		ret += "Endereco: " + endereco + "\n";
-		ret += "Data da Licença: " + dataLicenca + "\n";
-		ret += "Lista de Veículos:\n";
-		for(Veiculo veiculo: listaVeiculos)
-			ret += veiculo.toString() + "\n"; // ou veiculo.getPlaca() p/ ficar menos poluido
+		ret += "Data da Licença: " + dataLicenca.format(formatter) + "\n";
+		if(listaVeiculos != null && !listaVeiculos.isEmpty()) {
+			ret += "Lista de Veículos:\n";
+			ret += "-";
+			for(Veiculo veiculo: listaVeiculos)
+				ret += "\n"+veiculo.toString() + "\n-"; // ou veiculo.getPlaca() p/ ficar menos poluido			
+		}
+		
+		return ret;
+	}
+	
+	public String toStringSimples() {
+		String ret = "";
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		
+		ret += "Nome: " + nome + "\n";
+		ret += "Endereco: " + endereco + "\n";
+		ret += "Data da Licença: " + dataLicenca.format(formatter) + "\n";
 
 		return ret;
 	}

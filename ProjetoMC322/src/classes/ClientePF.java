@@ -1,6 +1,7 @@
 package classes;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -19,8 +20,11 @@ public class ClientePF extends Cliente {
 					  String educacao , String genero , String classeEconomica) {
 		// chama o construtor da superclasse
 		super (nome , endereco , dataLicenca, listaVeiculos);
-		this.cpf = cpf ;
-		this.dataNascimento = dataNascimento ;
+		this.cpf = cpf;
+		this.dataNascimento = dataNascimento;
+		this.educacao = educacao;
+		this.genero = genero;
+		this.classeEconomica = classeEconomica;
 	}
 
 	//Getters e Setters
@@ -63,15 +67,27 @@ public class ClientePF extends Cliente {
 	@Override
 	public String toString () {
 		String ret = "";
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		
 		ret += "CPF: " + this.cpf + "\n";
-		ret += "Nome: " + this.nome + "\n";
-		ret += "Data de Nascimento: " + this.dataNascimento + "\n";
-		ret += "Endereço: " + this.endereco + "\n";
-		ret += "Data da Licença: " + this.dataLicenca + "\n";
+		ret += "Data de Nascimento: " + this.dataNascimento.format(formatter) + "\n";
 		ret += "Educação: " + this.educacao + "\n";
 		ret += "Gênero: " + this.genero + "\n";
 		ret += "Classe Econômica: " + this.classeEconomica + "\n";
-
+		ret += super.toString();
+		
+		return ret;
+	}
+	
+	@Override
+	public String toStringSimples() {
+		String ret = "";
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		
+		ret += "CPF: " + this.cpf + "\n";
+		ret += "Data de Nascimento: " + this.dataNascimento.format(formatter) + "\n";
+		ret += super.toStringSimples();
+		
 		return ret;
 	}
 
