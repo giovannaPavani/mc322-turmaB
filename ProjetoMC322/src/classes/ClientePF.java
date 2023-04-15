@@ -10,21 +10,23 @@ public class ClientePF extends Cliente {
 	
 	//Propriedades
 	private final String cpf;
-	private LocalDate dataNascimento;
-	private String educacao;
 	private String genero;
+	protected LocalDate dataLicenca;
+	private String educacao;
+	private LocalDate dataNascimento;
 	private String classeEconomica;
 
 	//Construtor
-	public ClientePF (String nome, String endereco, LocalDate dataLicenca, 
-					LinkedList<Veiculo> listaVeiculos, String cpf, LocalDate dataNascimento, 
+	public ClientePF (String nome, String endereco, LinkedList<Veiculo> listaVeiculos,
+			          LocalDate dataLicenca, String cpf, LocalDate dataNascimento, 
 					  String educacao , String genero , String classeEconomica) {
 		// chama o construtor da superclasse
-		super (nome , endereco , dataLicenca, listaVeiculos);
+		super (nome , endereco, listaVeiculos);
 		this.cpf = cpf;
-		this.dataNascimento = dataNascimento;
-		this.educacao = educacao;
 		this.genero = genero;
+		this.dataLicenca = dataLicenca;
+		this.educacao = educacao;
+		this.dataNascimento = dataNascimento;
 		this.classeEconomica = classeEconomica;
 	}
 
@@ -44,9 +46,17 @@ public class ClientePF extends Cliente {
 	public String getEducacao() {
 		return educacao;
 	}
-
+	
 	public void setEducacao(String educacao) {
 		this.educacao = educacao;
+	}
+	
+	public LocalDate getDataLicenca() {
+		return dataLicenca;
+	}
+	
+	public void setDataLicenca(LocalDate dataLicenca) {
+		this.dataLicenca = dataLicenca;
 	}
 
 	public String getGenero() {
@@ -71,9 +81,10 @@ public class ClientePF extends Cliente {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		
 		ret += "CPF: " + this.cpf + "\n";
-		ret += "Data de Nascimento: " + this.dataNascimento.format(formatter) + "\n";
-		ret += "Educação: " + this.educacao + "\n";
 		ret += "Gênero: " + this.genero + "\n";
+		ret += "Data da Licença: " + dataLicenca.format(formatter);
+		ret += "Educação: " + this.educacao + "\n";
+		ret += "Data de Nascimento: " + this.dataNascimento.format(formatter) + "\n";
 		ret += "Classe Econômica: " + this.classeEconomica + "\n";
 		ret += super.toString();
 		
@@ -92,26 +103,6 @@ public class ClientePF extends Cliente {
 		return ret;
 	}
 
-	//Faz a soma das multplicações dos 8 primeiros dígitos do cpf (a partir do indiceInicio) e determina o digitoVerificador 
-	private static int calcularDigitoVerificador(int indiceInicio, String cpf) {
-		int soma = 0;
-		
-		// Os nove primeiros algarismos são ordenadamente multiplicados pela sequência 10, 9, 8, 7, 6, 5, 4, 3, 2 
-		// OBS: +indiceInicio serve para adequar as contagens considerando o indiceInicio como origem
-		for(int i=indiceInicio; i<9+indiceInicio; i++) {
-			int digito = Character.getNumericValue(cpf.charAt(i));
-			soma += digito * (10-i+indiceInicio);
-		}
-		
-		int resto = soma % 11;
-		int digitoVerificador = 0;
-		
-		// se o resto for 0 ou 1, o digitoVerificador é 0
-		if(resto != 0 && resto != 1)
-			digitoVerificador = 11 - resto;
-		
-		return digitoVerificador;
-	}
 	
 	public static boolean validarCPF(String cpf) {
 		// remove caracteres nao numericos ('.' e '-')
@@ -141,4 +132,30 @@ public class ClientePF extends Cliente {
 				
 		return true;
 	}
+	
+	/* ====================
+	 *  MÉTODOS AUXILIARES
+	 * ==================== */
+	
+	//Faz a soma das multplicações dos 8 dígitos do cpf (a partir do indiceInicio) e determina o digitoVerificador 
+	private static int calcularDigitoVerificador(int indiceInicio, String cpf) {
+		int soma = 0;
+		
+		// Os nove primeiros algarismos são ordenadamente multiplicados pela sequência 10, 9, 8, 7, 6, 5, 4, 3, 2 
+		// OBS: +indiceInicio serve para adequar as contagens considerando o indiceInicio como origem
+		for(int i=indiceInicio; i<9+indiceInicio; i++) {
+			int digito = Character.getNumericValue(cpf.charAt(i));
+			soma += digito * (10-i+indiceInicio);
+		}
+		
+		int resto = soma % 11;
+		int digitoVerificador = 0;
+		
+		// se o resto for 0 ou 1, o digitoVerificador é 0
+		if(resto != 0 && resto != 1)
+			digitoVerificador = 11 - resto;
+		
+		return digitoVerificador;
+	}
+	
 }

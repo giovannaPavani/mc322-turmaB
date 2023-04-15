@@ -9,7 +9,7 @@ public class Sinistro {
 	private final int id;
 	private LocalDate data;
 	private String endereco;
-	private Seguradora seguradora; // tirar 
+	private Seguradora seguradora;
 	private Veiculo veiculo;
 	private Cliente cliente;
 	

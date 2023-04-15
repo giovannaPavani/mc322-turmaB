@@ -14,10 +14,10 @@ public class ClientePJ extends Cliente {
 	private LocalDate dataFundacao;
 
 	//Construtor
-	public ClientePJ (String nome , String endereco, LocalDate dataLicenca, 
-			LinkedList<Veiculo> listaVeiculos, String cnpj, LocalDate dataFundacao) {
+	public ClientePJ (String nome , String endereco, LinkedList<Veiculo> listaVeiculos, 
+			          String cnpj, LocalDate dataFundacao) {
 		// chama o construtor da superclasse
-		super (nome , endereco , dataLicenca, listaVeiculos);
+		super (nome , endereco , listaVeiculos);
 		this.cnpj = cnpj;
 		this.dataFundacao = dataFundacao ;
 	}
@@ -31,7 +31,7 @@ public class ClientePJ extends Cliente {
 		return dataFundacao;
 	}
 	
-	public void setDataNascimento(LocalDate dataFundacao) {
+	public void setDataFundacao(LocalDate dataFundacao) {
 		this.dataFundacao = dataFundacao;
 	}
 	
@@ -57,6 +57,46 @@ public class ClientePJ extends Cliente {
 		
 		return ret;
 	}
+	
+	
+	/* CNJP:  11.222.333/0001-XX
+	 * -------------------------
+	 * 0 a 7: nº incricao
+	 * 8 a 11: nº filiais
+	 * 12 e 13: verificadores
+	 */
+	public static boolean validarCNPJ(String cnpj) {
+		// remove caracteres nao numericos ('.', '-' e '/')
+		String numCnpj = cnpj.replaceAll("\\.", "").replaceAll("-", "").replaceAll("/", "");
+		
+		// verifica se o cnpj tem 14 digitos
+		if(numCnpj.length() != 14)
+			return false;
+		
+		// verifica se todos os digitos sao iguais
+		boolean diferente = false;
+		for(int i=0; i < numCnpj.length()-1; i++)
+			// se achar pelo menos um digito diferente (valido) -> break
+			if(numCnpj.charAt(i) != numCnpj.charAt(i+1)) {
+				diferente = true;
+				break;
+			}
+		// nao ha digitos diferentes
+		if(!diferente)
+			return false;
+
+		// calculo dos digitos verificadores
+		if(Character.getNumericValue(numCnpj.charAt(12)) != calcularDigitoVerificador(11, numCnpj)|| 
+			Character.getNumericValue(numCnpj.charAt(13)) != calcularDigitoVerificador(12, numCnpj))
+			// pelo menos um dos digitos verificadores calculados nao sao iguais aos digitos verificadores fornecidos
+			return false;
+				
+		return true;
+	}
+	
+	/* ====================
+	 *  MÉTODOS AUXILIARES
+	 * ==================== */
 	
 	// Faz a soma das multplicações dos 12 dígitos do cnpj pelos respectivos vetores de multiplicadores
 	private static int calcularSomaDigitos(int indiceFinal, String cnpj) {
@@ -103,43 +143,5 @@ public class ClientePJ extends Cliente {
 			digitoVerificador = 11 - resto;
 		
 		return digitoVerificador;
-	}
-	
-	
-	/* CNJP:  11.222.333/0001-XX
-	 * 0 a 7: nº incricao
-	 * 8 a 11: nº filiais
-	 * 12 e 13: verificadores
-	 */
-	public static boolean validarCNPJ(String cnpj) {
-		// remove caracteres nao numericos ('.' e '-')
-		String numCnpj = cnpj.replaceAll("\\.", "").replaceAll("-", "").replaceAll("/", "");
-		//System.out.println("numCnpj: "+numCnpj);
-		
-		// verifica se o cnpj tem 14 digitos
-		if(numCnpj.length() != 14)
-			return false;
-		//System.out.println("tem 14 digitos");
-		
-		// verifica se todos os digitos sao iguais
-		boolean diferente = false;
-		for(int i=0; i < numCnpj.length()-1; i++)
-			// se achar pelo menos um digito diferente (valido) -> break
-			if(numCnpj.charAt(i) != numCnpj.charAt(i+1)) {
-				diferente = true;
-				break;
-			}
-		// nao ha digitos diferentes
-		if(!diferente)
-			return false;
-		//System.out.println("nao tem todos os digitos iguais");
-
-		// calculo dos digitos verificadores
-		if(Character.getNumericValue(numCnpj.charAt(12)) != calcularDigitoVerificador(11, numCnpj)|| 
-			Character.getNumericValue(numCnpj.charAt(13)) != calcularDigitoVerificador(12, numCnpj))
-			// pelo menos um dos digitos verificadores calculados nao sao iguais aos digitos verificadores fornecidos
-			return false;
-				
-		return true;
 	}
 }

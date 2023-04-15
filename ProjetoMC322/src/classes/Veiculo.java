@@ -13,7 +13,7 @@ public class Veiculo {
 		this.placa = placa;
 		this.marca = marca;
 		this.modelo = modelo;
-		this.setAnoFabricacao(anoFabricacao);
+		this.anoFabricacao = anoFabricacao;
 	}
 	
 	// Getters e setters
@@ -21,20 +21,20 @@ public class Veiculo {
 		return placa;
 	}
 	
-	public String getMarca() {
-		return marca;
-	}
-	
-	public String getModelo() {
-		return modelo;
-	}
-	
 	public void setPlaca(String placa) {
 		this.placa = placa;
 	}
 	
+	public String getMarca() {
+		return marca;
+	}
+	
 	public void setMarca(String marca) {
 		this.marca = marca;
+	}
+	
+	public String getModelo() {
+		return modelo;
 	}
 	
 	public void setModelo(String modelo) {

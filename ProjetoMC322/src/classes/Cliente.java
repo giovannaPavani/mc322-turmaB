@@ -9,14 +9,12 @@ public class Cliente {
 	// é mais certo protected?
 	protected String nome;
 	protected String endereco;
-	protected LocalDate dataLicenca;
 	protected LinkedList<Veiculo> listaVeiculos;
 	
 	// Construtor
-	public Cliente(String nome, String endereco, LocalDate dataLicenca, LinkedList<Veiculo> listaVeiculos) {
+	public Cliente(String nome, String endereco, LinkedList<Veiculo> listaVeiculos) {
 		this.nome = nome;
 		this.endereco = endereco;
-		this.dataLicenca = dataLicenca;
 		this.listaVeiculos = listaVeiculos;
 		//this.listaVeiculos = new ArrayList<Veiculo>();
 	}
@@ -28,7 +26,6 @@ public class Cliente {
 		
 		ret += "Nome: " + nome + "\n";
 		ret += "Endereco: " + endereco + "\n";
-		ret += "Data da Licença: " + dataLicenca.format(formatter);
 		if(listaVeiculos != null && !listaVeiculos.isEmpty()) {
 			ret += "\nLista de Veículos:";
 			for(Veiculo veiculo: listaVeiculos)
@@ -44,11 +41,9 @@ public class Cliente {
 		
 		ret += "Nome: " + nome + "\n";
 		ret += "Endereco: " + endereco + "\n";
-		ret += "Data da Licença: " + dataLicenca.format(formatter) + "\n";
 
 		return ret;
 	}
-	
 	
 	// Getters e Setters
 	public String getNome() {
@@ -67,14 +62,6 @@ public class Cliente {
 		this.endereco = endereco;
 	}
 	
-	public LocalDate getDataLicenca() {
-		return dataLicenca;
-	}
-
-	public void setDataLicenca(LocalDate dataLicenca) {
-		this.dataLicenca = dataLicenca;
-	}
-
 	public LinkedList<Veiculo> getListaVeiculos() {
 		return listaVeiculos;
 	}
@@ -83,7 +70,15 @@ public class Cliente {
 		this.listaVeiculos = listaVeiculos;
 	}
 	
+	
+	/* ====================
+	 *  MÉTODOS AUXILIARES
+	 * ==================== */
+	
 	public boolean adicionarVeiculo(Veiculo veiculo) {
+		if(this.listaVeiculos.contains(veiculo)) // veiculo ja cadastrado
+			return false;
+		
 		return this.listaVeiculos.add(veiculo);
 	}
 	
