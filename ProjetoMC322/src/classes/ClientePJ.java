@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ClientePJ extends Cliente {
@@ -13,8 +14,8 @@ public class ClientePJ extends Cliente {
 	private LocalDate dataFundacao;
 
 	//Construtor
-	public ClientePJ ( String nome , String endereco, LocalDate dataLicenca, 
-					   List<Veiculo> listaVeiculos, String cnpj, LocalDate dataFundacao) {
+	public ClientePJ (String nome , String endereco, LocalDate dataLicenca, 
+			LinkedList<Veiculo> listaVeiculos, String cnpj, LocalDate dataFundacao) {
 		// chama o construtor da superclasse
 		super (nome , endereco , dataLicenca, listaVeiculos);
 		this.cnpj = cnpj;
@@ -57,17 +58,17 @@ public class ClientePJ extends Cliente {
 		return ret;
 	}
 	
-	// Faz a soma das multplicações dos 14 primeiros dígitos do cnpj pelos respectivos vetores de multiplicadores
+	// Faz a soma das multplicações dos 12 dígitos do cnpj pelos respectivos vetores de multiplicadores
 	private static int calcularSomaDigitos(int indiceFinal, String cnpj) {
 		int soma =0;
 		if(indiceFinal == 11) {
 			// A soma será o produto escalar dos 11 primeiros algarismos do cnpj
 			// e o vetor (5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2)
-			for(int i=0; i<4; i++) {
+			for(int i=0; i<=3; i++) {
 				int digito = Character.getNumericValue(cnpj.charAt(i));
 				soma += digito * (5-i);
 			}
-			for(int i=4; i<indiceFinal; i++) {
+			for(int i=4; i<=indiceFinal; i++) {
 				int digito = Character.getNumericValue(cnpj.charAt(i));
 				soma += digito * (13-i);
 			}
@@ -75,15 +76,16 @@ public class ClientePJ extends Cliente {
 		else if(indiceFinal == 12) {
 			// A soma será o produto escalar dos 12 primeiros algarismos do cnpj
 			// e o vetor (6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2)
-			for(int i=0; i<5; i++) {
+			for(int i=0; i<=4; i++) {
 				int digito = Character.getNumericValue(cnpj.charAt(i));
 				soma += digito * (6-i);
 			}
-			for(int i=4; i<indiceFinal; i++) {
+			for(int i=5; i<=indiceFinal; i++) {
 				int digito = Character.getNumericValue(cnpj.charAt(i));
 				soma += digito * (14-i);
 			}
 		}
+		//System.out.println("soma: "+soma);
 		return soma;
 	}
 	
@@ -95,7 +97,9 @@ public class ClientePJ extends Cliente {
 		int digitoVerificador = 0;
 		
 		// se o resto for 0 ou 1, o digitoVerificador é 0
-		if(resto >= 2)
+		if(resto < 2)
+			digitoVerificador = 0;
+		else
 			digitoVerificador = 11 - resto;
 		
 		return digitoVerificador;
@@ -110,10 +114,12 @@ public class ClientePJ extends Cliente {
 	public static boolean validarCNPJ(String cnpj) {
 		// remove caracteres nao numericos ('.' e '-')
 		String numCnpj = cnpj.replaceAll("\\.", "").replaceAll("-", "").replaceAll("/", "");
+		//System.out.println("numCnpj: "+numCnpj);
 		
 		// verifica se o cnpj tem 14 digitos
 		if(numCnpj.length() != 14)
 			return false;
+		//System.out.println("tem 14 digitos");
 		
 		// verifica se todos os digitos sao iguais
 		boolean diferente = false;
@@ -126,6 +132,7 @@ public class ClientePJ extends Cliente {
 		// nao ha digitos diferentes
 		if(!diferente)
 			return false;
+		//System.out.println("nao tem todos os digitos iguais");
 
 		// calculo dos digitos verificadores
 		if(Character.getNumericValue(numCnpj.charAt(12)) != calcularDigitoVerificador(11, numCnpj)|| 

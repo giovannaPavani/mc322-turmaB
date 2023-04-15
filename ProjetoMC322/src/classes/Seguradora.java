@@ -11,8 +11,8 @@ public class Seguradora {
 	private String telefone;
 	private String email;
 	private String endereco;
-	private List<Sinistro> listaSinistros;
-	private List<Cliente> listaClientes;
+	private ArrayList<Sinistro> listaSinistros;
+	private ArrayList<Cliente> listaClientes;
 	
 	// Construtor
 	public Seguradora(String nome , String telefone , String email , String endereco) 
@@ -58,19 +58,19 @@ public class Seguradora {
 		this.endereco = endereco ;
 	}
 	
-	public List<Sinistro> getListaSinistros() {
+	public ArrayList<Sinistro> getListaSinistros() {
 		return listaSinistros;
 	}
 
-	public void setListaSinistros(List<Sinistro> listaSinistros) {
+	public void setListaSinistros(ArrayList<Sinistro> listaSinistros) {
 		this.listaSinistros = listaSinistros;
 	}
 
-	public List<Cliente> getListaClientes() {
+	public ArrayList<Cliente> getListaClientes() {
 		return listaClientes;
 	}
 
-	public void setListaClientes(List<Cliente> listaClientes) {
+	public void setListaClientes(ArrayList<Cliente> listaClientes) {
 		this.listaClientes = listaClientes;
 	}
 	
@@ -80,13 +80,17 @@ public class Seguradora {
 		ret += "Nome: " + this.nome+"\n";
 		ret += "Telefone: " + this.telefone+"\n";
 		ret += "Email: " + this.email+"\n";
-		ret += "Endereço: " + this.endereco+"\n";
-		ret += "Lista de sinistros:\n";
-		for(Sinistro sinistro: this.listaSinistros)
-			ret += "- "+sinistro.toStringSimples() + "\n";
-		ret += "Lista de clientes:\n";
-		for(Cliente cliente: this.listaClientes)
-			ret += "- "+cliente.toStringSimples() + "\n";
+		ret += "Endereço: " + this.endereco;
+		if(this.listaSinistros != null && !this.listaSinistros.isEmpty()) {
+			ret += "\nLista de sinistros:";
+			for(Sinistro sinistro: this.listaSinistros)
+				ret += "\n- "+sinistro.toStringSimples();			
+		}
+		if(this.listaClientes != null && !this.listaClientes.isEmpty()) {
+			ret += "Lista de clientes:";
+			for(Cliente cliente: this.listaClientes)
+				ret += "\n- "+cliente.toStringSimples();
+		}
 		
 		return ret;
 	}
@@ -97,7 +101,7 @@ public class Seguradora {
 		ret += "Nome: " + this.nome+"\n";
 		ret += "Telefone: " + this.telefone+"\n";
 		ret += "Email: " + this.email+"\n";
-		ret += "Endereço: " + this.endereco+"\n";
+		ret += "Endereço: " + this.endereco;
 		
 		return ret;
 	}
@@ -114,35 +118,33 @@ public class Seguradora {
 	/**
 	 *  Cadastrar cliente
 	 * @param cliente a remover
-	 * @return true se o cliente ja estava na lista, ou falso caso contrario
+	 * @return true se o cliente ja estava na lista e foi removido, ou falso caso contrario
 	 */
 	boolean removerCliente(String keyCliente) {
-		//remove sinistros deste cliente
-		keyCliente = keyCliente.replaceAll("\\.", "").replaceAll("-", "");
+		keyCliente = keyCliente.replaceAll("\\.", "").replaceAll("-", "").replaceAll("/", "");
+		
 		Cliente cliente = getClienteByKey(keyCliente);
+		
 		if(cliente == null)
 			return false;
-		String tipoCliente = getTipoClienteByKey(keyCliente);
 		
-		for(Sinistro sinistro: listaSinistros)
-			if(tipoCliente == "PJ" && sinistro.getCliente() instanceof ClientePJ)
-				if(((ClientePJ) sinistro.getCliente()).getCnpj().equals(keyCliente))
-					listaSinistros.remove(sinistro);
-			else
-				if(tipoCliente == "PF" && sinistro.getCliente() instanceof ClientePF)
-					if(((ClientePF) sinistro.getCliente()).getCpf().equals(keyCliente))
-						listaSinistros.remove(sinistro);
-		
+		ArrayList<Sinistro> sinistrosCliente = listarSinistrosByKeyCliente(keyCliente);
+
+		for(Sinistro sinistro : sinistrosCliente)
+			this.listaSinistros.remove(sinistro);
+
 		return listaClientes.remove(cliente);
 	}
 	
 	List<Cliente> listarClientes(String tipoCliente){
 		List<Cliente> pesquisa = new ArrayList<Cliente>();
-		for(Cliente cliente : listaClientes)
-			if(tipoCliente == "PF" && cliente instanceof ClientePF)
+		for(Cliente cliente : listaClientes) {
+			if(tipoCliente.equals("PF") && cliente instanceof ClientePF) {
 				pesquisa.add(cliente);
-			else if (tipoCliente == "PJ" && cliente instanceof ClientePJ)
-		 		pesquisa.add(cliente);
+			} else if (tipoCliente.equals("PJ") && cliente instanceof ClientePJ) {
+				pesquisa.add(cliente);				
+			}
+		}
 		return pesquisa;
 	}
 	
@@ -153,19 +155,12 @@ public class Seguradora {
 			return "PF";
 	}
 	
-	private String getTipoCliente(Cliente cliente) {
-		if(cliente instanceof ClientePJ)
-			return "PJ";
-		else
-			return "PF";
-	}
-	
 	Cliente getClienteByKey(String key){
-		key = key.replaceAll("\\.", "").replaceAll("-", "");
+		key = key.replaceAll("\\.", "").replaceAll("-", "").replaceAll("/", "");
 		String tipoCliente = getTipoClienteByKey(key);
 		
 		for(Cliente cliente : listaClientes)
-			if(tipoCliente == "PJ" && cliente instanceof ClientePJ) {
+			if(tipoCliente.equals("PJ") && cliente instanceof ClientePJ) {
 				if(((ClientePJ) cliente).getCnpj().equals(key))
 					return cliente;
 			}
@@ -179,7 +174,7 @@ public class Seguradora {
 	
 	boolean gerarSinistro(String placa, String keyCliente, LocalDate data, String endereco) { 
 		// acha cliente
-		keyCliente = keyCliente.replaceAll("\\.", "").replaceAll("-", "");
+		keyCliente = keyCliente.replaceAll("\\.", "").replaceAll("-", "").replaceAll("/", "");
 		Cliente cliente = getClienteByKey(keyCliente);
 		if(cliente == null) // cliente nao existe
 			return false;
@@ -191,46 +186,49 @@ public class Seguradora {
 		
 		Sinistro sinistro = new Sinistro(data, endereco, this, veiculo, cliente);
 		
-		/*TESTE*/
-		System.out.println("\n"+sinistro.toString()+"\n");
-		
 		return listaSinistros.add(sinistro);
 	}
 	
 	// Existe sinistro deste cliente
 	boolean visualizarSinistro(String keyCliente){
-		keyCliente = keyCliente.replaceAll("\\.", "").replaceAll("-", "");
+		keyCliente = keyCliente.replaceAll("\\.", "").replaceAll("-", "").replaceAll("/", "");
 		String tipoCliente = getTipoClienteByKey(keyCliente);
 		
-		for(Sinistro sinistro: listaSinistros)
-			if(tipoCliente == "PJ" && sinistro.getCliente() instanceof ClientePJ)
+		for(Sinistro sinistro: listaSinistros) {
+			if(tipoCliente.equals("PJ") && sinistro.getCliente() instanceof ClientePJ) {
 				if(((ClientePJ) sinistro.getCliente()).getCnpj().equals(keyCliente))
-					return true;
-			else
-				if(tipoCliente == "PF" && sinistro.getCliente() instanceof ClientePF)
-					if(((ClientePF) sinistro.getCliente()).getCpf().equals(keyCliente))
-						return true;
+					return true;				
+			} else if(tipoCliente.equals("PF") && sinistro.getCliente() instanceof ClientePF) {
+				if(((ClientePF) sinistro.getCliente()).getCpf().equals(keyCliente))
+					return true;				
+			}
+		}
 		return false;
 	}
 	
-	List<Sinistro> listarSinistros(){
+	ArrayList<Sinistro> listarSinistros(){
 		return this.getListaSinistros();
 	}
 	
-	List<Sinistro> listarSinistrosByKeyCliente(String keyCliente){
-		keyCliente = keyCliente.replaceAll("\\.", "").replaceAll("-", "");
-		List<Sinistro> pesquisa = new ArrayList<Sinistro>();
+	ArrayList<Sinistro> listarSinistrosByKeyCliente(String keyCliente){
+		keyCliente = keyCliente.replaceAll("\\.", "").replaceAll("-", "").replaceAll("/", "");
+		ArrayList<Sinistro> pesquisa = new ArrayList<Sinistro>();
 		
 		String tipoCliente = getTipoClienteByKey(keyCliente);
 		
-		for(Sinistro sinistro: listaSinistros)
-			if(tipoCliente == "PJ" && sinistro.getCliente() instanceof ClientePJ)
+		for(Sinistro sinistro: this.listaSinistros) {
+			if(tipoCliente.equals("PJ") && sinistro.getCliente() instanceof ClientePJ) {
 				if(((ClientePJ) sinistro.getCliente()).getCnpj().equals(keyCliente))
-					pesquisa.add(sinistro);
-			else
-				if(tipoCliente == "PF" && sinistro.getCliente() instanceof ClientePF)
+					pesquisa.add(sinistro);				
+			} else {
+				if(tipoCliente.equals("PF") && sinistro.getCliente() instanceof ClientePF) {
 					if(((ClientePF) sinistro.getCliente()).getCpf().equals(keyCliente))
-						pesquisa.add(sinistro);
+						pesquisa.add(sinistro);												
+				}
+			}			
+		}
+		
 		return pesquisa;
 	}
+	
 }

@@ -1,9 +1,7 @@
 package classes;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.LinkedList;
 
 public class Cliente {
 
@@ -12,10 +10,10 @@ public class Cliente {
 	protected String nome;
 	protected String endereco;
 	protected LocalDate dataLicenca;
-	protected List<Veiculo> listaVeiculos;
+	protected LinkedList<Veiculo> listaVeiculos;
 	
 	// Construtor
-	public Cliente(String nome, String endereco, LocalDate dataLicenca, List<Veiculo> listaVeiculos) {
+	public Cliente(String nome, String endereco, LocalDate dataLicenca, LinkedList<Veiculo> listaVeiculos) {
 		this.nome = nome;
 		this.endereco = endereco;
 		this.dataLicenca = dataLicenca;
@@ -30,12 +28,11 @@ public class Cliente {
 		
 		ret += "Nome: " + nome + "\n";
 		ret += "Endereco: " + endereco + "\n";
-		ret += "Data da Licença: " + dataLicenca.format(formatter) + "\n";
+		ret += "Data da Licença: " + dataLicenca.format(formatter);
 		if(listaVeiculos != null && !listaVeiculos.isEmpty()) {
-			ret += "Lista de Veículos:\n";
-			ret += "-";
+			ret += "\nLista de Veículos:";
 			for(Veiculo veiculo: listaVeiculos)
-				ret += "\n"+veiculo.toString() + "\n-"; // ou veiculo.getPlaca() p/ ficar menos poluido			
+				ret += "\n-\n"+ veiculo.toString(); // ou veiculo.getPlaca() p/ ficar menos poluido
 		}
 		
 		return ret;
@@ -78,11 +75,11 @@ public class Cliente {
 		this.dataLicenca = dataLicenca;
 	}
 
-	public List<Veiculo> getListaVeiculos() {
+	public LinkedList<Veiculo> getListaVeiculos() {
 		return listaVeiculos;
 	}
 
-	public void setListaVeiculos(List<Veiculo> listaVeiculos) {
+	public void setListaVeiculos(LinkedList<Veiculo> listaVeiculos) {
 		this.listaVeiculos = listaVeiculos;
 	}
 	

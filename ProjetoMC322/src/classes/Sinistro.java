@@ -1,7 +1,6 @@
 package classes;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.Random;
 
 public class Sinistro {
@@ -82,9 +81,18 @@ public class Sinistro {
 		ret += "ID: "+this.id+"\n";
 		ret += "Data: "+this.data.format(formatter)+"\n";
 		ret += "Endereço: "+this.endereco+"\n";
-		ret += "Dados da Seguradora: "+this.seguradora.toStringSimples()+"\n";
-		ret += "Dados do Veículo:\n"+this.veiculo.toString()+"\n";
-		ret += "Dados do cliente \n"+this.cliente.toString()+"\n";
+		ret += "-------------------\n";
+		ret += "Dados da Seguradora:\n";
+		ret += "-------------------\n";
+		ret += this.seguradora.toStringSimples();
+		ret += "----------------\n";
+		ret += "Dados do Veículo:\n";
+		ret += "----------------\n";
+		ret += this.veiculo.toString()+"\n";
+		ret += "----------------\n";
+		ret += "Dados do cliente:\n";
+		ret += "----------------\n";
+		ret += this.cliente.toString()+"\n";
 		return ret;
 	}
 	
@@ -95,8 +103,15 @@ public class Sinistro {
 		ret += "ID: "+this.id+"\n";
 		ret += "Data: "+this.data.format(formatter)+"\n";
 		ret += "Endereço: "+this.endereco+"\n";
-		ret += "Dados do Veículo:\n"+this.veiculo.toString()+"\n";
-		ret += "Dados do cliente \n"+this.cliente.toStringSimples()+"\n";
+		ret += "Seguradora: "+this.seguradora.getNome()+"\n";
+		ret += "----------------\n";
+		ret += "Dados do Veículo:\n";
+		ret += "----------------\n";
+		ret += this.veiculo.toString()+"\n";
+		ret += "----------------\n";
+		ret += "Dados do cliente:\n";
+		ret += "----------------\n";
+		ret += this.cliente.toStringSimples()+"\n";
 		return ret;
 	}
 }

@@ -1,8 +1,7 @@
 package classes;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 public class Main {
@@ -12,43 +11,93 @@ public class Main {
 		Scanner leitor = new Scanner(System.in);
 	    Seguradora seguradora;
 	    
-	    System.out.println("=====================================");
-		System.out.println("  Sistema de Seguradora de Veıculos");
-		System.out.println("=====================================\n");
+	    System.out.println("=================================================");
+		System.out.println("        Sistema de Seguradora de Veıculos");
+		System.out.println("=================================================\n");
 		
 		System.out.println("Inicie suas operações criando uma seguradora.\n");
+		
+		/* ====================
+		 *    DADOS DE TESTE
+		 * ==================== */
+		/*
 		seguradora = new Seguradora("Azul", "1932770378", "azul@g.com", "Av 1, 89");
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		LocalDate dataL1 = LocalDate.parse("01/03/2023", formatter);
+		LocalDate dataL2 = LocalDate.parse("15/10/2020", formatter);
+		LocalDate dataN = LocalDate.parse("09/08/2004", formatter);
+		LocalDate dataF = LocalDate.parse("21/07/2010", formatter);
+		LocalDate dataS = LocalDate.parse("14/04/2023", formatter);
+				
+		ClientePF clientePF = new ClientePF("MARIA", "AV 2, 89", dataL1, new LinkedList<Veiculo>(),
+				"90197003087", dataN, "GRADUANDA", "F", "MÉDIA");
+		ClientePJ clientePJ = new ClientePJ("PADARIA SM", "AV 3, 140", dataL2, new LinkedList<Veiculo>(),
+				"79896457000186", dataF);
+		
+		Veiculo veiculo1 = new Veiculo("NCX-3134", "NISSAN", "KICKS", 2020);
+		Veiculo veiculo2 = new Veiculo("MSM-8271", "HONDA", "FIT", 2019);
+		Veiculo veiculo3 = new Veiculo("HZM-7159", "HONDA", "H-RV", 2022);
+		
+		clientePF.adicionarVeiculo(veiculo1);
+		clientePJ.adicionarVeiculo(veiculo2);
+		clientePJ.adicionarVeiculo(veiculo3);
+		
+		seguradora.cadastrarCliente(clientePF);
+		seguradora.cadastrarCliente(clientePJ);
+		
+		seguradora.gerarSinistro("NCX-3134", "90197003087", dataS, "RUA CAOS");
+		
+		seguradora.gerarSinistro("MSM-8271", "79.896.457/0001-86", dataS, "RUA ACIDENTE");
+		*/
+		/* ====================
+		 *  FIM DADOS DE TESTE
+		 * ==================== */
+		
 		esperarTecla(leitor);
-		//seguradora = criarSeguradora(leitor);
-		//esperarTecla(leitor);
+		
+		/* Caso queira rodar o programa adicionando sua propria seguradora, conforme foi planejado este programa,
+		 * deixe as proximas duas linhas descomentadas e comente o bloco de dados de teste.
+		 * 
+		 * Caso contário, comente essas linhas e descomente o bloco de dados de teste */
+		seguradora = criarSeguradora(leitor);
+		esperarTecla(leitor);
 		
 		/* ================
 		 *  MENU PRINCIPAL
-		 * ================*/
+		 * ================ */
+		
 		String operacao = "0";
 		do {
 			limparTela();
-			System.out.println("=====================================");
-			System.out.println("  Sistema de Seguradora de Veıculos");
-			System.out.println("=====================================\n");
-			System.out.println("1 - Cadastrar cliente");
-			System.out.println("2 - Cadastrar veículo de um cliente");
-			System.out.println("3 - Remover cliente");
-			System.out.println("4 - Listar clientes");
-			System.out.println("5 - Gerar sinistro de um cliente");
-			System.out.println("6 - Listar sinistros de um cliente\n");
-			System.out.println("7 - Listar sinistros da seguradora\n");
+			System.out.println("=================================================");
+			System.out.println("        Sistema de Seguradora de Veıculos");
+			System.out.println("=================================================\n");
+			System.out.println(" 1 - Cadastrar cliente");
+			System.out.println(" 2 - Cadastrar veículo de um cliente");
+			System.out.println(" 3 - Remover cliente");
+			System.out.println(" 4 - Listar clientes");
+			System.out.println(" 5 - Gerar sinistro de um cliente");
+			System.out.println(" 6 - Listar sinistros da seguradora");
+			System.out.println(" 7 - Listar sinistros de um cliente\n");
 			
-			System.out.println("0 - Sair do programa\n");
+			System.out.println(" 0 - Sair do programa\n");
 			
 			System.out.print("Digite o número da operação que deseja realizar: ");
 			
 			operacao = leitor.nextLine();
-			Cliente cliente;
+			
+			if(("01234567").indexOf(operacao) < 0) {
+				System.out.println(" ---------------------------------------------------------------------------------");
+				System.out.println("| A operação inserida não é válida! Reveja os índices do menu e insira um válido. |");
+				System.out.println(" ---------------------------------------------------------------------------------\n");
+				esperarTecla(leitor);
+				continue;
+			}	
 			
 			switch(operacao) {
 				case "1": 
-					cliente = cadastrarCliente(leitor);
+					Cliente cliente = cadastrarCliente(leitor);
 					if(cliente != null) {
 						System.out.println("\nNovo cliente cadastrado na seguradora!");
 						seguradora.cadastrarCliente(cliente);
@@ -80,11 +129,11 @@ public class Main {
 					break;
 					
 				case "6": 
-					listarSinistrosCliente(leitor, seguradora);
+					listarSinistros(seguradora);
 					break;
 					
 				case "7": 
-					listarSinistros(seguradora);
+					listarSinistrosCliente(leitor, seguradora);
 					break;
 			}
 			
@@ -112,7 +161,7 @@ public class Main {
 	}
 	
 	/* ============================================================
-	 *  FUNÇÕES PARA LIDAR COM A LEITURA DE INFORMAÇÕES DO USUÁRIO
+	 *  FUNÇÕES PARA LIDAR COM A LEITURA DE INFORMAÇÕES DO CONSOLE
 	 * ============================================================*/
 	
 	private static String getCnpjValido(Scanner leitor) {
@@ -129,7 +178,7 @@ public class Main {
 			}
 		} while(!valido);
 		
-		return cnpj;
+		return cnpj.replaceAll("\\.", "").replaceAll("-", "").replaceAll("/", "");
 	}
 	
 	private static String getCpfValido(Scanner leitor) {
@@ -146,7 +195,7 @@ public class Main {
 			}
 		} while(!valido);
 		
-		return cpf;
+		return cpf.replaceAll("\\.", "").replaceAll("-", "");
 	}
 	
 	private static String getTipoClienteValido(Scanner leitor) {
@@ -191,19 +240,20 @@ public class Main {
 		
 		Seguradora seguradora = new Seguradora(nome, telefone, email, endereco);
 		
-		System.out.println("\nNova seguradora criada!");
+		System.out.println("\nNova seguradora criada!\nVeja as informações cadastradas:");
 		
-		/*TESTE*/
-		System.out.println("\n"+seguradora.toString()+"\n");
+		System.out.println("-------------------------");
+		System.out.println(seguradora.toString());
+		System.out.println("-------------------------\n");
 		
 		return seguradora;
 	}
 	
 	public static Cliente cadastrarCliente(Scanner leitor) {
 		limparTela();
-		System.out.println("-------------------------");
-		System.out.println(" 1 - Cadastrar cliente");
-		System.out.println("-------------------------\n");
+		System.out.println("-------------------------------------------");
+		System.out.println("           1 - Cadastrar cliente");
+		System.out.println("-------------------------------------------\n");
 		
 		System.out.println("Digite as informações do novo cliente.");
 		System.out.println("(Obs: Escreva datas no formato dd/mm/aaaa)\n");
@@ -220,13 +270,11 @@ public class Main {
 			try {
 				dataLicenca = LocalDate.parse(dataLicencaLeitor, formatter);
 			} catch(Exception e) {
-				System.out.println("---------------------------------------------------------------------------------");
+				System.out.println(" --------------------------------------------------------------------------------");
 				System.out.println("| Data da licença inválida! Tente inserí-la novamente, no formato [dd/mm/yyyy]. |");
-				System.out.println("---------------------------------------------------------------------------------\n");
+				System.out.println(" --------------------------------------------------------------------------------\n");
 			}
 		} while (dataLicenca == null);
-		
-		//System.out.println("Certo! " + dataLicenca.format(formatter));
 		
 		String tipo = getTipoClienteValido(leitor);
 		
@@ -242,20 +290,33 @@ public class Main {
 				try {
 					dataNascimento = LocalDate.parse(dataNascimentoLeitor, formatter);
 				} catch(Exception e) {
-					System.out.println("-----------------------------------------------------------------------------------");
+					System.out.println(" ----------------------------------------------------------------------------------");
 					System.out.println("| Data de nascimento inválida! Tente inserí-la novamente, no formato [dd/mm/aaaa]. |");
-					System.out.println("-----------------------------------------------------------------------------------\n");
+					System.out.println(" ----------------------------------------------------------------------------------\n");
 				}
 			} while (dataNascimento == null);
 			
 			System.out.print("Educação: ");
 			String educacao = leitor.nextLine();
-			System.out.print("Gênero: ");
-			String genero = leitor.nextLine();
+			
+			String genero;
+			boolean valido = false;
+			do {
+				System.out.print("Gênero (F/M/NB): ");
+				genero = leitor.nextLine();
+				if(genero.equals("F") || genero.equals("M") || genero.equals("NB"))
+					valido = true;
+				if(!valido) {
+					System.out.println(" ---------------------------------------------------------------------------------------------------");
+					System.out.println("| Gênero inválido. Tente inserí-lo novamente, sendo [F] Feminino, [M] Masculino e [NB] Não binário. |");
+					System.out.println(" ---------------------------------------------------------------------------------------------------\n");
+				}
+			} while(!valido);
+			
 			System.out.print("Classe econômica: ");
 			String classeEconomica = leitor.nextLine();
 			
-			cliente = new ClientePF(nome, endereco, dataLicenca, new ArrayList<Veiculo>(),
+			cliente = new ClientePF(nome, endereco, dataLicenca, new LinkedList<Veiculo>(),
 										cpf, dataNascimento, educacao, genero, classeEconomica);
 		
 		} else if(tipo.equals("CNPJ")){
@@ -263,32 +324,29 @@ public class Main {
 			
 			LocalDate dataFundacao = null;
 			do {
-				System.out.print("Data de funndação: ");
+				System.out.print("Data de fundação: ");
 				String dataFundacaoLeitor = leitor.nextLine();
 				try {
 					dataFundacao = LocalDate.parse(dataFundacaoLeitor, formatter);
 				} catch(Exception e) {
-					System.out.println("---------------------------------------------------------------------------------");
+					System.out.println(" --------------------------------------------------------------------------------");
 					System.out.println("| Data de fundação inválida! Tente inserí-la novamente, no formato [dd/mm/yyyy]. |");
-					System.out.println("---------------------------------------------------------------------------------\n");
+					System.out.println(" --------------------------------------------------------------------------------\n");
 				}
 			} while (dataFundacao == null);
 			
 			cliente = new ClientePJ(nome, endereco, dataLicenca, 
-					                new ArrayList<Veiculo>(),cnpj, dataFundacao );
+					                new LinkedList<Veiculo>(),cnpj, dataFundacao );
 		}
-		
-		/*TESTE*/
-		//System.out.println("\n"+cliente.toString()+"\n");
 		
 		return cliente;			
 	}
 	
 	public static Veiculo cadastrarVeiculo(Scanner leitor, Seguradora seguradora) {
 		limparTela();
-		System.out.println("-------------------------");
-		System.out.println(" 2 - Cadastrar veículo");
-		System.out.println("-------------------------\n");
+		System.out.println("---------------------------------------");
+		System.out.println("        2 - Cadastrar veículo");
+		System.out.println("---------------------------------------\n");
 		
 		System.out.println("Digite as informações do novo veículo.");
 		
@@ -306,9 +364,9 @@ public class Main {
 				String anoFabricacaoLeitor = leitor.nextLine();
 				anoFabricacao = Integer.parseInt(anoFabricacaoLeitor);			
 			} catch(Exception e) {
-				System.out.println("----------------------------------------------------------------");
+				System.out.println(" ---------------------------------------------------------------");
 				System.out.println("| Ano de fabricação inválido! Tente inserir o número novamente. |");
-				System.out.println("----------------------------------------------------------------\n");
+				System.out.println(" ---------------------------------------------------------------\n");
 			}
 		}while(anoFabricacao ==0);
 		
@@ -337,17 +395,14 @@ public class Main {
 					
 		cliente.adicionarVeiculo(veiculo);
 		
-		/*TESTE*/
-		//System.out.println("\n"+veiculo.toString()+"\n");
-		
 		return veiculo;			
 	}
 	
 	public static boolean removerCliente(Scanner leitor, Seguradora seguradora) {
 		limparTela();
-		System.out.println("------------------------");
-		System.out.println(" 3 - Remover cliente");
-		System.out.println("------------------------\n");
+		System.out.println("--------------------------------------------");
+		System.out.println("           3 - Remover cliente");
+		System.out.println("--------------------------------------------");
 		
 		String tipoCliente = getTipoClienteValido(leitor);
 		
@@ -362,26 +417,30 @@ public class Main {
 	
 	public static void listarClientes(Seguradora seguradora) {
 		limparTela();
-		System.out.println("-------------------------------------");
-		System.out.println(" 4 - Listar clientes da seguradora");
-		System.out.println("-------------------------------------\n");
+		System.out.println("---------------------------------------------");
+		System.out.println("     4 - Listar clientes da seguradora");
+		System.out.println("---------------------------------------------\n");
 		
-		if (seguradora.getListaClientes() == null) {
+		if (seguradora.getListaClientes() == null || seguradora.getListaClientes().isEmpty()) {
 			System.out.println("Nenhum cliente cadastrado na seguradora "+ seguradora.getNome() +". Para cadastrar novos cliente, digite a opção 1 no menu.\n");
 			return;
 		}
 		
-		System.out.println("Segue a lista de clientes da seguradora "+ seguradora.getNome() +"\n");
+		System.out.println("Segue a lista de clientes da seguradora:\n");
 		
-		for(Cliente cliente: seguradora.getListaClientes())
-			System.out.println(cliente.toString());
+		System.out.println("-------------------------------\n");
+		for(Cliente cliente: seguradora.getListaClientes()) {
+			System.out.println(cliente.toString()+"\n");
+			System.out.println("-------------------------------\n");
+		}
+		System.out.println();
 	}
 	
 	public static boolean gerarSinistro(Scanner leitor, Seguradora seguradora) {
 		limparTela();
-		System.out.println("-------------------------------------");
+		System.out.println("--------------------------------------------");
 		System.out.println(" 5 -  Gerar sinistro de um cliente ");
-		System.out.println("-------------------------------------\n");
+		System.out.println("--------------------------------------------\n");
 		
 		System.out.println("Digite as informações que envolvem o sinistro.");
 		
@@ -394,9 +453,9 @@ public class Main {
 			try {
 				data = LocalDate.parse(dataLicencaLeitor, formatter);
 			} catch(Exception e) {
-				System.out.println("---------------------------------------------------------------------------------");
+				System.out.println(" --------------------------------------------------------------------------------");
 				System.out.println("| Data do sinistro inválido. Tente inserí-la novamente, no formato [dd/mm/yyyy]. |");
-				System.out.println("---------------------------------------------------------------------------------\n");
+				System.out.println(" --------------------------------------------------------------------------------\n");
 			}
 		} while (data == null);
 		
@@ -418,11 +477,31 @@ public class Main {
 		return seguradora.gerarSinistro(placa, keyCliente, data, endereco);
 	}
 	
+	public static void listarSinistros(Seguradora seguradora) {
+		limparTela();
+		System.out.println("-----------------------------------------------------------");
+		System.out.println("            6 - Listar sinistros da seguradora");
+		System.out.println("-----------------------------------------------------------\n");
+		
+		if (seguradora.listarSinistros() == null || seguradora.listarSinistros().isEmpty()) {
+			System.out.println("Nenhum sinistro gerado na seguradora "+ seguradora.getNome() +". Para gerar novos sinistros, digite a opção 5 no menu.\n");
+			return;
+		}
+		
+		System.out.println("Segue a lista de sinistros registrados na seguradora:\n");
+		
+		System.out.println("----------------------------------\n");
+		for(Sinistro sinistro: seguradora.listarSinistros()) {
+			System.out.println(sinistro.toString()+"-\n");
+			System.out.println("----------------------------------\n");
+		}
+	}
+	
 	public static void listarSinistrosCliente(Scanner leitor, Seguradora seguradora) {
 		limparTela();
-		System.out.println("-------------------------------------");
-		System.out.println(" 5 - Listar sinistros de um cliente");
-		System.out.println("-------------------------------------\n");
+		System.out.println("-------------------------------------------");
+		System.out.println("    7 - Listar sinistros de um cliente");
+		System.out.println("-------------------------------------------");
 		
 		String tipoCliente = getTipoClienteValido(leitor);
 		
@@ -437,27 +516,13 @@ public class Main {
 			return;
 		}
 		
-		System.out.println("Segue a lista de sinistros do cliente informado registrados na seguradora "+ seguradora.getNome() +"\n");
+		System.out.println("Segue a lista de sinistros do cliente informado registrados na seguradora: \n");
 		
-		for(Sinistro sinistro: seguradora.listarSinistrosByKeyCliente(keyCliente))
-			System.out.println(sinistro.toString());
-	}
-	
-	public static void listarSinistros(Seguradora seguradora) {
-		limparTela();
-		System.out.println("-------------------------------------");
-		System.out.println(" 6 - Listar sinistros da seguradora");
-		System.out.println("-------------------------------------\n");
-		
-		if (seguradora.listarSinistros() == null) {
-			System.out.println("Nenhum sinistro gerado na seguradora "+ seguradora.getNome() +". Para gerar novos sinistros, digite a opção 5 no menu.\n");
-			return;
-		}
-		
-		System.out.println("Segue a lista de sinistros registrados na seguradora "+ seguradora.getNome() +"\n");
-		
-		for(Sinistro sinistro: seguradora.listarSinistros())
+		System.out.println("----------------------------------\n");
+		for(Sinistro sinistro: seguradora.listarSinistrosByKeyCliente(keyCliente)) {
 			System.out.println(sinistro.toString()+"-\n");
+			System.out.println("----------------------------------\n");
+		}
 	}
 	
 }

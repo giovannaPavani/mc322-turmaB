@@ -3,6 +3,7 @@ package classes;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ClientePF extends Cliente {
@@ -16,7 +17,7 @@ public class ClientePF extends Cliente {
 
 	//Construtor
 	public ClientePF (String nome, String endereco, LocalDate dataLicenca, 
-					  List<Veiculo> listaVeiculos, String cpf, LocalDate dataNascimento, 
+					LinkedList<Veiculo> listaVeiculos, String cpf, LocalDate dataNascimento, 
 					  String educacao , String genero , String classeEconomica) {
 		// chama o construtor da superclasse
 		super (nome , endereco , dataLicenca, listaVeiculos);
@@ -114,7 +115,7 @@ public class ClientePF extends Cliente {
 	
 	public static boolean validarCPF(String cpf) {
 		// remove caracteres nao numericos ('.' e '-')
-		String numCpf = cpf.replaceAll("\\.", "").replaceAll("-", "");
+		String numCpf = cpf.replaceAll("\\D+","");
 		
 		// verifica se o cpf tem 11 digitos
 		if(numCpf.length() != 11)

@@ -55,7 +55,7 @@ public class Veiculo {
 		ret += "Placa: "+this.placa+"\n";
 		ret += "Marca: "+this.marca+"\n";
 		ret += "Modelo: "+this.modelo+"\n";
-		ret += "Ano de Fabricação: "+this.anoFabricacao+"\n";
+		ret += "Ano de Fabricação: "+this.anoFabricacao;
 		
 		return ret;
 	}
