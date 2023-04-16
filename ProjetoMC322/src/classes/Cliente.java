@@ -1,12 +1,9 @@
 package classes;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 
 public class Cliente {
 
 	// Propriedades
-	// é mais certo protected?
 	protected String nome;
 	protected String endereco;
 	protected LinkedList<Veiculo> listaVeiculos;
@@ -22,22 +19,23 @@ public class Cliente {
 	// Gera String com todas as informações do cliente
 	public String toString() {
 		String ret = "";
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		
 		ret += "Nome: " + nome + "\n";
 		ret += "Endereco: " + endereco + "\n";
 		if(listaVeiculos != null && !listaVeiculos.isEmpty()) {
-			ret += "\nLista de Veículos:";
+			ret += "-----------------\n";
+			ret += "Lista de Veículos\n";
+			ret += "-----------------";
 			for(Veiculo veiculo: listaVeiculos)
-				ret += "\n-\n"+ veiculo.toString(); // ou veiculo.getPlaca() p/ ficar menos poluido
+				ret += "\n-\n" + veiculo.toString(); // ou veiculo.getPlaca() p/ ficar menos poluido
 		}
-		
+		ret += "\n-";
 		return ret;
 	}
 	
+	// Gera String mais simples com algumas informações do cliente
 	public String toStringSimples() {
 		String ret = "";
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		
 		ret += "Nome: " + nome + "\n";
 		ret += "Endereco: " + endereco + "\n";
@@ -76,13 +74,15 @@ public class Cliente {
 	 * ==================== */
 	
 	public boolean adicionarVeiculo(Veiculo veiculo) {
-		if(this.listaVeiculos.contains(veiculo)) // veiculo ja cadastrado
+		if(this.listaVeiculos.contains(veiculo) || veiculo == null) // veiculo ja cadastrado ou nulo
 			return false;
 		
 		return this.listaVeiculos.add(veiculo);
 	}
 	
 	public boolean removerVeiculo(Veiculo veiculo) {
+		if(veiculo == null) // veiculo nulo
+			return false;
 		return this.listaVeiculos.remove(veiculo);
 	}
 	

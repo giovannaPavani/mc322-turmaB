@@ -76,26 +76,28 @@ public class Sinistro {
 	
 	public String toString() {
 		String ret = "";
+		// formatador para converter o objeto LocalDate em String do formato "dd/MM/yyyy"
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		
 		ret += "ID: "+this.id+"\n";
 		ret += "Data: "+this.data.format(formatter)+"\n";
 		ret += "Endereço: "+this.endereco+"\n";
 		ret += "-------------------\n";
-		ret += "Dados da Seguradora:\n";
+		ret += "Dados da Seguradora\n";
 		ret += "-------------------\n";
-		ret += this.seguradora.toStringSimples();
+		ret += this.seguradora.toStringSimples()+"\n";
 		ret += "----------------\n";
-		ret += "Dados do Veículo:\n";
+		ret += "Dados do Veículo\n";
 		ret += "----------------\n";
 		ret += this.veiculo.toString()+"\n";
 		ret += "----------------\n";
-		ret += "Dados do cliente:\n";
+		ret += "Dados do cliente\n";
 		ret += "----------------\n";
 		ret += this.cliente.toString()+"\n";
 		return ret;
 	}
 	
+	// toString mais simples, com menos informacoes do que o oficial
 	public String toStringSimples() {
 		String ret = "";
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -105,13 +107,13 @@ public class Sinistro {
 		ret += "Endereço: "+this.endereco+"\n";
 		ret += "Seguradora: "+this.seguradora.getNome()+"\n";
 		ret += "----------------\n";
-		ret += "Dados do Veículo:\n";
+		ret += "Dados do Veículo\n";
 		ret += "----------------\n";
 		ret += this.veiculo.toString()+"\n";
 		ret += "----------------\n";
 		ret += "Dados do cliente:\n";
 		ret += "----------------\n";
-		ret += this.cliente.toStringSimples()+"\n";
+		ret += this.cliente.toStringSimples();
 		return ret;
 	}
 }

@@ -32,31 +32,31 @@ public class Seguradora {
 	}
 	
 	public void setNome(String nome) {
-		this . nome = nome ;
+		this.nome = nome;
 	}
 	
 	public String getTelefone() {
-		return telefone ;
+		return telefone;
 	}
 	
-	public void setTelefone( String telefone ) {
-		this.telefone = telefone ;
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
 	}
 	
 	public String getEmail() {
-		return email ;
+		return email;
 	}
 	
 	public void setEmail(String email) {
-		this.email = email ;
+		this.email = email;
 	}
 	
 	public String getEndereco() {
-		return endereco ;
+		return endereco;
 	}
 	
-	public void setEndereco( String endereco ) {
-		this.endereco = endereco ;
+	public void setEndereco(String endereco) {
+		this.endereco = endereco;
 	}
 	
 	public ArrayList<Sinistro> getListaSinistros() {
@@ -82,11 +82,13 @@ public class Seguradora {
 		ret += "Telefone: " + this.telefone+"\n";
 		ret += "Email: " + this.email+"\n";
 		ret += "Endereço: " + this.endereco;
+		// lista todos os sinistros da seguradora
 		if(this.listaSinistros != null && !this.listaSinistros.isEmpty()) {
 			ret += "\nLista de sinistros:";
 			for(Sinistro sinistro: this.listaSinistros)
 				ret += "\n- "+sinistro.toStringSimples();			
 		}
+		// lista todos os clientes da seguradora
 		if(this.listaClientes != null && !this.listaClientes.isEmpty()) {
 			ret += "Lista de clientes:";
 			for(Cliente cliente: this.listaClientes)
@@ -100,46 +102,47 @@ public class Seguradora {
 	 *  FUNÇÕES PEDIDAS
 	 * ================= */
 	
-	/**
-	 *  Cadastrar cliente
-	 * @param cliente a adicionar
-	 * @return true se o cliente ja estava na lista, ou falso caso contrario
-	 */
 	boolean cadastrarCliente(Cliente cliente) {
-		if(this.listaClientes.contains(cliente)) // cliente já cadastrado
+		if(this.listaClientes.contains(cliente) || cliente == null) // cliente já cadastrado ou nulo
 			return false;
 		
-		return listaClientes.add(cliente);
+		return listaClientes.add(cliente); // retorna se cliente foi adicionado na listaClientes
 	}
 	
-	/**
-	 *  Cadastrar cliente
-	 * @param cliente a remover
-	 * @return true se o cliente ja estava na lista e foi removido, ou falso caso contrario
-	 */
+	// remove cliente da seguradora pelo seu CPF/CNPJ
 	boolean removerCliente(String cliente) {
+		
+		// remove caracteres nao numericos ('.', '-' e '/') do CPF/CNPJ
 		cliente = cliente.replaceAll("\\.", "").replaceAll("-", "").replaceAll("/", "");
 		
+		// resgata cliente com o CPF/CNPJ dado cadastrado na seguradora
 		Cliente clienteObj = getClienteByKey(cliente);
 		
+		// cliente nao cadastrado
 		if(clienteObj == null)
 			return false;
 		
+		// resgata sinistros envolvendo este cliente na seguradora
 		ArrayList<Sinistro> sinistrosCliente = listarSinistrosByKeyCliente(cliente);
 
+		// remove todos eles da seguradora
 		for(Sinistro sinistro : sinistrosCliente)
 			this.listaSinistros.remove(sinistro);
 
+		// retorna se cliente foi removido da listaClientes
 		return listaClientes.remove(clienteObj);
 	}
 	
 	
 	// lista os clientes da seguradora conforme o seu tipo (físico [CPF] ou jurídico [CNPJ])
-	List<Cliente> listarClientes(String tipoCliente){
-		List<Cliente> pesquisa = new ArrayList<Cliente>();
+	ArrayList<Cliente> listarClientes(String tipoCliente){
+		ArrayList<Cliente> pesquisa = new ArrayList<Cliente>();
+		
 		for(Cliente cliente : listaClientes) {
-			if(tipoCliente.equals("CPF") && cliente instanceof ClientePF) {
+			// foi pedido lista de clientes físicos e o item da vez é um ClientePF
+			if(tipoCliente.equals("CPF") && cliente instanceof ClientePF) { 
 				pesquisa.add(cliente);
+				   // foi pedido lista de clientes juridicos e o item da vez é um ClientePJ
 			} else if (tipoCliente.equals("CNPJ") && cliente instanceof ClientePJ) {
 				pesquisa.add(cliente);				
 			}
@@ -148,39 +151,48 @@ public class Seguradora {
 	}
 
 	boolean gerarSinistro(String placa, String keyCliente, LocalDate data, String endereco) { 
-		// acha cliente
+		// resgata cliente com a keyCliente (CPF/CNPJ) fornecida cadastrado na seguradora
 		keyCliente = keyCliente.replaceAll("\\.", "").replaceAll("-", "").replaceAll("/", "");
 		Cliente cliente = getClienteByKey(keyCliente);
-		if(cliente == null) // cliente nao existe
+		if(cliente == null) // cliente nao cadastrado
 			return false;
 		
-		// acha veiculo do cliente
+		// resgata veiculo do cliente com a placa fornecida
 		Veiculo veiculo = cliente.getVeiculoByPlaca(placa);
 		if(veiculo == null) // o cliente nao tem esse veiculo
 			return false;
 		
 		Sinistro sinistro = new Sinistro(data, endereco, this, veiculo, cliente);
 		
-		return listaSinistros.add(sinistro);
+		return listaSinistros.add(sinistro); // retorna se o sinistro criado foi adicionado na listaSinistros
 	}
 	
-	// Existe sinistro deste cliente
+	// Existe algum sinistro envolvendo este cliente
 	boolean visualizarSinistro(String cliente){
+		// pega o tipo de cliente de acordo com o CPF/CNPJ fornecido
 		cliente = cliente.replaceAll("\\.", "").replaceAll("-", "").replaceAll("/", "");
 		String tipoCliente = getTipoClienteByKey(cliente);
 		
+		// pesquisa na lista de sinistros se ha algum que envolve CPF/CNPJ fornecido
 		for(Sinistro sinistro: listaSinistros) {
+			// foi pedido sinistros de um cliente juridico e o item da vez envolve um ClientePJ
 			if(tipoCliente.equals("PJ") && sinistro.getCliente() instanceof ClientePJ) {
+				// CNPJ do cliente deste sinistro é igual ao fornecido
 				if(((ClientePJ) sinistro.getCliente()).getCnpj().equals(cliente))
-					return true;				
+					return true;			
+			// foi pedido sinistros de um cliente físico e o item da vez envolve um ClientePF
 			} else if(tipoCliente.equals("PF") && sinistro.getCliente() instanceof ClientePF) {
+				// CPF do cliente deste sinistro é igual ao fornecido
 				if(((ClientePF) sinistro.getCliente()).getCpf().equals(cliente))
 					return true;				
 			}
 		}
+		
+		// nao ha nenhum sinistro envolvendo o cliente com o CPF/CNPJ fornecido
 		return false;
 	}
 	
+	// retorna todos os sinistros cadastrados na seguradora
 	ArrayList<Sinistro> listarSinistros(){
 		return this.getListaSinistros();
 	}
@@ -190,7 +202,7 @@ public class Seguradora {
 	 *  MÉTODOS AUXILIARES 
 	 * ===================*/
 	
-	// retorna o tipo de cliente de acordo com sua key, isto é, se tem CPF ou CNPJ
+	// retorna o tipo de cliente de acordo com CPF/CNPJ fornecido
 	private String getTipoClienteByKey(String key) {
 		if(key.length() == 14)
 			return "PJ";
@@ -198,40 +210,50 @@ public class Seguradora {
 			return "PF";
 	}
 	
-	// retorna o cliente cadastrado na seguradora cuja key (CPF OU CNPJ) é passada por parâmetro
+	// retorna o cliente cadastrado na seguradora cuja key (CPF/CNPJ) é passada por parâmetro
 	public Cliente getClienteByKey(String key){
+		// pega o tipo de cliente de acordo com o CPF/CNPJ
 		key = key.replaceAll("\\.", "").replaceAll("-", "").replaceAll("/", "");
 		String tipoCliente = getTipoClienteByKey(key);
 		
+		// pesquisa na lista de clientes se ha algum cujo CPF/CNPJ é igual ao fornecido
 		for(Cliente cliente : listaClientes)
+			// foi pedido um cliente juridico e o item da vez é um ClientePJ
 			if(tipoCliente.equals("PJ") && cliente instanceof ClientePJ) {
+				// CNPJ do cliente é igual ao fornecido
 				if(((ClientePJ) cliente).getCnpj().equals(key))
 					return cliente;
-			}
-			else { // tipoCliente == "PF"
+			}    // foi pedido um cliente fisico e o item da vez é um ClientePF
+			else if(tipoCliente.equals("PF") && cliente instanceof ClientePF) {
+				// CPF do cliente é igual ao fornecido
 				if(((ClientePF) cliente).getCpf().equals(key))
 					return cliente;
 			}
 		
-		// caso o cliente com a chave informada não for encontrado
+		// o cliente com a key informada não cadastrado
 		return null;
 	}
 	
+	// retorna lista com todos os sinistros de um cliente de acordo com CPF/CNPJ fornecido
 	public ArrayList<Sinistro> listarSinistrosByKeyCliente(String keyCliente){
-		keyCliente = keyCliente.replaceAll("\\.", "").replaceAll("-", "").replaceAll("/", "");
-		ArrayList<Sinistro> pesquisa = new ArrayList<Sinistro>();
-		
+		// pega o tipo de cliente de acordo com o CPF/CNPJ
+		keyCliente = keyCliente.replaceAll("\\.", "").replaceAll("-", "").replaceAll("/", "");		
 		String tipoCliente = getTipoClienteByKey(keyCliente);
 		
+		ArrayList<Sinistro> pesquisa = new ArrayList<Sinistro>();
+		
+		// pesquisa na lista de sinistros todos cujo CPF/CNPJ do cliente envolvido é igual ao fornecido
 		for(Sinistro sinistro: this.listaSinistros) {
+			// foi pedido um cliente juridico e o item da vez envolve um ClientePJ
 			if(tipoCliente.equals("PJ") && sinistro.getCliente() instanceof ClientePJ) {
+				// CNPJ do cliente envolvido é igual ao fornecido
 				if(((ClientePJ) sinistro.getCliente()).getCnpj().equals(keyCliente))
-					pesquisa.add(sinistro);				
-			} else {
-				if(tipoCliente.equals("PF") && sinistro.getCliente() instanceof ClientePF) {
-					if(((ClientePF) sinistro.getCliente()).getCpf().equals(keyCliente))
-						pesquisa.add(sinistro);												
-				}
+					pesquisa.add(sinistro);
+				   // foi pedido um cliente juridico e o item da vez envolve um ClientePJ
+			} else if(tipoCliente.equals("PF") && sinistro.getCliente() instanceof ClientePF) {
+				// CPF do cliente envolvido é igual ao fornecido
+				if(((ClientePF) sinistro.getCliente()).getCpf().equals(keyCliente))
+					pesquisa.add(sinistro);
 			}			
 		}
 		

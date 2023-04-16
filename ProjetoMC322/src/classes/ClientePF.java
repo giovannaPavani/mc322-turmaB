@@ -20,8 +20,9 @@ public class ClientePF extends Cliente {
 	public ClientePF (String nome, String endereco, LinkedList<Veiculo> listaVeiculos,
 			          LocalDate dataLicenca, String cpf, LocalDate dataNascimento, 
 					  String educacao , String genero , String classeEconomica) {
-		// chama o construtor da superclasse
+		// chama o construtor da superclasse Cliente
 		super (nome , endereco, listaVeiculos);
+		
 		this.cpf = cpf;
 		this.genero = genero;
 		this.dataLicenca = dataLicenca;
@@ -78,11 +79,12 @@ public class ClientePF extends Cliente {
 	@Override
 	public String toString () {
 		String ret = "";
+		// formatador para converter o objeto LocalDate em String do formato "dd/MM/yyyy"
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		
 		ret += "CPF: " + this.cpf + "\n";
 		ret += "Gênero: " + this.genero + "\n";
-		ret += "Data da Licença: " + dataLicenca.format(formatter);
+		ret += "Data da Licença: " + dataLicenca.format(formatter)+"\n";
 		ret += "Educação: " + this.educacao + "\n";
 		ret += "Data de Nascimento: " + this.dataNascimento.format(formatter) + "\n";
 		ret += "Classe Econômica: " + this.classeEconomica + "\n";
@@ -94,6 +96,7 @@ public class ClientePF extends Cliente {
 	@Override
 	public String toStringSimples() {
 		String ret = "";
+		// formatador para converter o objeto LocalDate em String do formato "dd/MM/yyyy"
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		
 		ret += "CPF: " + this.cpf + "\n";
@@ -103,8 +106,12 @@ public class ClientePF extends Cliente {
 		return ret;
 	}
 
+	/* =================
+	 *  FUNÇÕES PEDIDAS
+	 * ================= */
 	
 	public static boolean validarCPF(String cpf) {
+		
 		// remove caracteres nao numericos ('.' e '-')
 		String numCpf = cpf.replaceAll("\\D+","");
 		
@@ -120,14 +127,14 @@ public class ClientePF extends Cliente {
 				diferente = true;
 				break;
 			}
-		// nao ha digitos diferentes
+		// nao ha digitos diferentes (todos iguais)
 		if(!diferente)
 			return false;
 
-		// calculo dos digitos verificadores
+		// calculo dos digitos verificadores (os dois ultimos nas posicoes [9] e [10])
 		if(Character.getNumericValue(numCpf.charAt(9)) != calcularDigitoVerificador(0, numCpf)|| 
 			Character.getNumericValue(numCpf.charAt(10)) != calcularDigitoVerificador(1, numCpf))
-			// pelo menos um dos digitos verificadores calculados nao sao iguais aos digitos verificadores fornecidos
+			// pelo menos um dos digitos verificadores calculados nao é igual ao digito verificadore fornecido
 			return false;
 				
 		return true;
@@ -149,13 +156,13 @@ public class ClientePF extends Cliente {
 		}
 		
 		int resto = soma % 11;
-		int digitoVerificador = 0;
 		
 		// se o resto for 0 ou 1, o digitoVerificador é 0
-		if(resto != 0 && resto != 1)
-			digitoVerificador = 11 - resto;
+		if(resto < 2)
+			return 0;
 		
-		return digitoVerificador;
+		// se nao, o digitoVerificador é 11 - resto
+		return 11 - resto;
 	}
 	
 }
