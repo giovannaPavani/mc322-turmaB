@@ -23,7 +23,7 @@ public class Main {
 		/* ====================
 		 *    DADOS DE TESTE
 		 * ==================== */
-		///*
+		/*
 		seguradora = new Seguradora("Azul", "1932770378", "azul@g.com", "Av 1, 89", 
 				                    new ArrayList<Sinistro>(), new ArrayList<Cliente>());
 		
@@ -52,7 +52,7 @@ public class Main {
 		seguradora.gerarSinistro("NCX-3134", "90197003087", dataS, "RUA CAOS");
 		
 		//seguradora.gerarSinistro("MSM-8271", "79.896.457/0001-86", dataS, "RUA ACIDENTE");
-		//*/
+		*/
 		/* ====================
 		 *  FIM DADOS DE TESTE
 		 * ==================== */
@@ -63,10 +63,10 @@ public class Main {
 		 * deixe as proximas duas linhas descomentadas e comente o bloco de dados de teste.
 		 * 
 		 * Caso contário, comente essas linhas e descomente o bloco de dados de teste */
-		/*
+		
 		seguradora = criarSeguradora(leitor);
 		esperarEnter(leitor);
-		*/
+		
 		
 		/* ================
 		 *  MENU PRINCIPAL
