@@ -2,8 +2,7 @@ package classes;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
-// VARIAS DUVIDAS
+
 public class Seguradora {
 
 	// Propriedades
@@ -167,7 +166,7 @@ public class Seguradora {
 		return listaSinistros.add(sinistro); // retorna se o sinistro criado foi adicionado na listaSinistros
 	}
 	
-	// Existe algum sinistro envolvendo este cliente
+	// retorna se existe algum sinistro envolvendo este cliente
 	boolean visualizarSinistro(String cliente){
 		// pega o tipo de cliente de acordo com o CPF/CNPJ fornecido
 		cliente = cliente.replaceAll("\\.", "").replaceAll("-", "").replaceAll("/", "");

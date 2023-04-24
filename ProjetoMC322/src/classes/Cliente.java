@@ -16,33 +16,6 @@ public class Cliente {
 		//this.listaVeiculos = new ArrayList<Veiculo>();
 	}
 	
-	// Gera String com todas as informações do cliente
-	public String toString() {
-		String ret = "";
-		
-		ret += "Nome: " + nome + "\n";
-		ret += "Endereco: " + endereco + "\n";
-		if(listaVeiculos != null && !listaVeiculos.isEmpty()) {
-			ret += "-----------------\n";
-			ret += "Lista de Veículos\n";
-			ret += "-----------------";
-			for(Veiculo veiculo: listaVeiculos)
-				ret += "\n-\n" + veiculo.toString(); // ou veiculo.getPlaca() p/ ficar menos poluido
-		}
-		ret += "\n-";
-		return ret;
-	}
-	
-	// Gera String mais simples com algumas informações do cliente
-	public String toStringSimples() {
-		String ret = "";
-		
-		ret += "Nome: " + nome + "\n";
-		ret += "Endereco: " + endereco + "\n";
-
-		return ret;
-	}
-	
 	// Getters e Setters
 	public String getNome() {
 		return nome;
@@ -68,11 +41,28 @@ public class Cliente {
 		this.listaVeiculos = listaVeiculos;
 	}
 	
+	// Gera String com todas as informações do cliente
+	public String toString() {
+		String ret = "";
+		
+		ret += "Nome: " + nome + "\n";
+		ret += "Endereco: " + endereco + "\n";
+		if(listaVeiculos != null && !listaVeiculos.isEmpty()) {
+			ret += "-----------------\n";
+			ret += "Lista de Veículos\n";
+			ret += "-----------------";
+			for(Veiculo veiculo: listaVeiculos)
+				ret += "\n-\n" + veiculo.toString(); // ou veiculo.getPlaca() p/ ficar menos poluido
+			ret += "\n-";
+		}
+		return ret;
+	}
 	
 	/* ====================
 	 *  MÉTODOS AUXILIARES
 	 * ==================== */
 	
+	// cadastra (se já nao o estiver) o veiculo passado por parametro no cliente
 	public boolean adicionarVeiculo(Veiculo veiculo) {
 		if(this.listaVeiculos.contains(veiculo) || veiculo == null) // veiculo ja cadastrado ou nulo
 			return false;
@@ -80,6 +70,7 @@ public class Cliente {
 		return this.listaVeiculos.add(veiculo);
 	}
 	
+	// remove (caso exista) o veiculo passado por parametro do cliente
 	public boolean removerVeiculo(Veiculo veiculo) {
 		if(veiculo == null) // veiculo nulo
 			return false;
@@ -93,6 +84,16 @@ public class Cliente {
 				ret = veiculo;	
 				break;
 			}
+		return ret;
+	}
+	
+	// Gera String mais simples com algumas informações do cliente
+	public String toStringSimples() {
+		String ret = "";
+		
+		ret += "Nome: " + nome + "\n";
+		ret += "Endereco: " + endereco + "\n";
+
 		return ret;
 	}
 }

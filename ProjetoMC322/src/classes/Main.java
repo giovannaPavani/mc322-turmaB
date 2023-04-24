@@ -155,6 +155,8 @@ public class Main {
 					continue;  // cancela a saída e volta para o início do loop do menu principal
 				}
 			}
+			else
+				esperarEnter(leitor);
 
 		}while(!operacao.equals("0"));
 		
