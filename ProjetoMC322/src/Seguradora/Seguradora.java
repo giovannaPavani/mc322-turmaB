@@ -1,7 +1,14 @@
-package classes;
+package Seguradora;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.LinkedList;
+
+import Cliente.Cliente;
+import Cliente.ClientePF;
+import Cliente.ClientePJ;
+import Sinistro.Sinistro;
+import Veiculo.Veiculo;
 
 public class Seguradora {
 
@@ -101,15 +108,17 @@ public class Seguradora {
 	 *  FUNÇÕES PEDIDAS
 	 * ================= */
 	
-	boolean cadastrarCliente(Cliente cliente) {
+	public boolean cadastrarCliente(Cliente cliente) {
 		if(this.listaClientes.contains(cliente) || cliente == null) // cliente já cadastrado ou nulo
 			return false;
+		
+		this.calcularPrecoSeguroCliente(this.getKeyCliente(cliente));
 		
 		return listaClientes.add(cliente); // retorna se cliente foi adicionado na listaClientes
 	}
 	
 	// remove cliente da seguradora pelo seu CPF/CNPJ
-	boolean removerCliente(String cliente) {
+	public boolean removerCliente(String cliente) {
 		
 		// remove caracteres nao numericos ('.', '-' e '/') do CPF/CNPJ
 		cliente = cliente.replaceAll("\\.", "").replaceAll("-", "").replaceAll("/", "");
@@ -132,9 +141,8 @@ public class Seguradora {
 		return listaClientes.remove(clienteObj);
 	}
 	
-	
 	// lista os clientes da seguradora conforme o seu tipo (físico [CPF] ou jurídico [CNPJ])
-	ArrayList<Cliente> listarClientes(String tipoCliente){
+	public ArrayList<Cliente> listarClientes(String tipoCliente){
 		ArrayList<Cliente> pesquisa = new ArrayList<Cliente>();
 		
 		for(Cliente cliente : listaClientes) {
@@ -149,7 +157,7 @@ public class Seguradora {
 		return pesquisa;
 	}
 
-	boolean gerarSinistro(String placa, String keyCliente, LocalDate data, String endereco) { 
+	public boolean gerarSinistro(String placa, String keyCliente, LocalDate data, String endereco) { 
 		// resgata cliente com a keyCliente (CPF/CNPJ) fornecida cadastrado na seguradora
 		keyCliente = keyCliente.replaceAll("\\.", "").replaceAll("-", "").replaceAll("/", "");
 		Cliente cliente = getClienteByKey(keyCliente);
@@ -161,13 +169,15 @@ public class Seguradora {
 		if(veiculo == null) // o cliente nao tem esse veiculo
 			return false;
 		
+		this.calcularPrecoSeguroCliente(keyCliente); // atualiza valor do seguro do cliente
+		
 		Sinistro sinistro = new Sinistro(data, endereco, this, veiculo, cliente);
 		
 		return listaSinistros.add(sinistro); // retorna se o sinistro criado foi adicionado na listaSinistros
 	}
 	
 	// retorna se existe algum sinistro envolvendo este cliente
-	boolean visualizarSinistro(String cliente){
+	public boolean visualizarSinistro(String cliente){
 		// pega o tipo de cliente de acordo com o CPF/CNPJ fornecido
 		cliente = cliente.replaceAll("\\.", "").replaceAll("-", "").replaceAll("/", "");
 		String tipoCliente = getTipoClienteByKey(cliente);
@@ -192,10 +202,57 @@ public class Seguradora {
 	}
 	
 	// retorna todos os sinistros cadastrados na seguradora
-	ArrayList<Sinistro> listarSinistros(){
+	public ArrayList<Sinistro> listarSinistros(){
 		return this.getListaSinistros();
 	}
 	
+	
+	//TOTEST
+	// Calcula o valor e atualiza no cliente
+	private void calcularPrecoSeguroCliente(String keyCliente) {
+		// encontra cliente na lista da seguradora
+		Cliente cliente = this.getClienteByKey(keyCliente);
+		// calcula score cliente
+		double score  = cliente.calculaScore();
+		// pega a lista de sinistros do cliente e resgata o tamanho desta
+		int qtdSinistros = this.listarSinistrosByKeyCliente(keyCliente).size();
+		
+		// atualiza o valor do seguro no objeto do cliente
+		cliente.setValorSeguro(score * (1 + qtdSinistros));
+	}
+	
+	//TOTEST
+	public double calcularReceita() {
+		double soma = 0.0;
+		for(Cliente cliente : listaClientes) {
+			soma += cliente.getValorSeguro();
+		}
+		return soma;
+	}
+	
+	//TOTEST
+	// ver se retorna bool ou cliente
+	public boolean transferirSeguro(String keyClienteFonte, String keyClienteDestino) {
+		Cliente clienteFonte, clienteDestino;
+		
+		clienteFonte = getClienteByKey(keyClienteFonte);
+		if(clienteFonte == null)
+			return false;
+		
+		clienteDestino = getClienteByKey(keyClienteDestino);
+		if(clienteDestino == null)
+			return false;
+		
+		LinkedList<Veiculo> veiculos = clienteFonte.getListaVeiculos();
+		
+		clienteFonte.getListaVeiculos().clear(); // ve se isso funciona
+		clienteDestino.setListaVeiculos(veiculos);
+		
+		this.calcularPrecoSeguroCliente(keyClienteFonte);
+		this.calcularPrecoSeguroCliente(keyClienteDestino);
+		
+		return true;
+	}
 	
 	/* ====================
 	 *  MÉTODOS AUXILIARES 
@@ -207,6 +264,13 @@ public class Seguradora {
 			return "PJ";
 		else
 			return "PF";
+	}
+	
+	private String getKeyCliente(Cliente cliente) {
+		if(cliente instanceof ClientePF) 
+			return ((ClientePF) cliente).getCpf();
+		
+		return ((ClientePJ) cliente).getCnpj();	
 	}
 	
 	// retorna o cliente cadastrado na seguradora cuja key (CPF/CNPJ) é passada por parâmetro

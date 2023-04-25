@@ -1,4 +1,4 @@
-package classes;
+package Cliente;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -7,20 +7,24 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import Veiculo.Veiculo;
+
 public class ClientePJ extends Cliente {
 	
 	//Propriedades
 	private final String cnpj;
 	private LocalDate dataFundacao;
+	private int qtdeFuncionarios;
 
 	//Construtor
 	public ClientePJ (String nome , String endereco, LinkedList<Veiculo> listaVeiculos, 
-			          String cnpj, LocalDate dataFundacao) {
+					  String cnpj, LocalDate dataFundacao, int qtdeFuncionarios) {
 		// chama o construtor da superclasse Cliente
 		super (nome , endereco , listaVeiculos);
 		
 		this.cnpj = cnpj;
-		this.dataFundacao = dataFundacao ;
+		this.dataFundacao = dataFundacao;
+		this.qtdeFuncionarios = qtdeFuncionarios;
 	}
 
 	//Getters e Setters
@@ -34,6 +38,14 @@ public class ClientePJ extends Cliente {
 	
 	public void setDataFundacao(LocalDate dataFundacao) {
 		this.dataFundacao = dataFundacao;
+	}
+	
+	public int getQtdeFuncionarios() {
+		return qtdeFuncionarios;
+	}
+	
+	public void setQtdeFuncionarios(int qtdeFuncionarios) {
+		this.qtdeFuncionarios = qtdeFuncionarios;
 	}
 	
 	@Override
@@ -93,6 +105,13 @@ public class ClientePJ extends Cliente {
 			return false;
 				
 		return true;
+	}
+	
+	//TODO
+	public double calculaScore() {
+		double score = 0.0;
+		//score = VALOR_BASE * (1 + qtdeFuncionarios/100) * this.listaVeiculos.size();
+		return score;
 	}
 	
 	/* ====================

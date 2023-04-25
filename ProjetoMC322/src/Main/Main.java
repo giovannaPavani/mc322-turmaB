@@ -1,9 +1,16 @@
-package classes;
+package Main;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Scanner;
+
+import Cliente.Cliente;
+import Cliente.ClientePF;
+import Cliente.ClientePJ;
+import Seguradora.Seguradora;
+import Sinistro.Sinistro;
+import Veiculo.Veiculo;
 
 public class Main {
 	
@@ -23,7 +30,7 @@ public class Main {
 		/* ====================
 		 *    DADOS DE TESTE
 		 * ==================== */
-		/*
+		///*
 		seguradora = new Seguradora("Azul", "1932770378", "azul@g.com", "Av 1, 89", 
 				                    new ArrayList<Sinistro>(), new ArrayList<Cliente>());
 		
@@ -36,7 +43,7 @@ public class Main {
 		ClientePF clientePF = new ClientePF("MARIA", "AV 2, 89", new LinkedList<Veiculo>(), dataL,
 				                            "90197003087", dataN, "GRADUANDA", "F", "MÉDIA");
 		ClientePJ clientePJ = new ClientePJ("PADARIA SM", "AV 3, 140", new LinkedList<Veiculo>(),
-				"79896457000186", dataF);
+				                            "79896457000186", dataF, 4);
 		
 		Veiculo veiculo1 = new Veiculo("NCX-3134", "NISSAN", "KICKS", 2020);
 		Veiculo veiculo2 = new Veiculo("MSM-8271", "HONDA", "FIT", 2019);
@@ -52,7 +59,7 @@ public class Main {
 		seguradora.gerarSinistro("NCX-3134", "90197003087", dataS, "RUA CAOS");
 		
 		//seguradora.gerarSinistro("MSM-8271", "79.896.457/0001-86", dataS, "RUA ACIDENTE");
-		*/
+		//*/
 		/* ====================
 		 *  FIM DADOS DE TESTE
 		 * ==================== */
@@ -63,10 +70,10 @@ public class Main {
 		 * deixe as proximas duas linhas descomentadas e comente o bloco de dados de teste.
 		 * 
 		 * Caso contário, comente essas linhas e descomente o bloco de dados de teste */
-		
+		/*
 		seguradora = criarSeguradora(leitor);
 		esperarEnter(leitor);
-		
+		*/
 		
 		/* ================
 		 *  MENU PRINCIPAL
@@ -374,9 +381,24 @@ public class Main {
 				}
 			} while (dataFundacao == null);
 			
+			int qtdeFuncionarios = -1;
+			do {
+				System.out.print("Quantidade de funcionários: ");
+				String qtdeFuncionariosLeitor = leitor.nextLine();
+				try {
+					qtdeFuncionarios = Integer.parseInt(qtdeFuncionariosLeitor);
+					if(qtdeFuncionarios < 0) // número natural
+						throw new Exception();
+				} catch(Exception e) {
+					System.out.println(" --------------------------------------------------------------------------------");
+					System.out.println("| Data de fundação inválida! Tente inserí-la novamente, no formato [dd/mm/yyyy]. |");
+					System.out.println(" --------------------------------------------------------------------------------\n");
+				}
+			} while (qtdeFuncionarios == -1);
+			
 			// cria cliente com lista de veiculos instanciada e vazia
 			cliente = new ClientePJ(nome, endereco, new LinkedList<Veiculo>(),
-					                cnpj, dataFundacao);
+					                cnpj, dataFundacao, qtdeFuncionarios);
 		}
 		
 		// adiciona o cliente criado acima na seguradora

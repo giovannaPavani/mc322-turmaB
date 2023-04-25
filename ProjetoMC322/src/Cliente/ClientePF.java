@@ -1,10 +1,12 @@
-package classes;
+package Cliente;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+
+import Veiculo.Veiculo;
 
 public class ClientePF extends Cliente {
 	
@@ -138,6 +140,13 @@ public class ClientePF extends Cliente {
 			return false;
 				
 		return true;
+	}
+	
+	//TODO
+	public double calculaScore() {
+		double score = 0.0;
+		//score = VALOR_BASE * FATOR_IDADE * this.listaVeiculos.size();
+		return score;
 	}
 	
 	/* ====================

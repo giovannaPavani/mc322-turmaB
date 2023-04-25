@@ -1,7 +1,11 @@
-package classes;
+package Sinistro;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
+
+import Cliente.Cliente;
+import Seguradora.Seguradora;
+import Veiculo.Veiculo;
 
 public class Sinistro {
 	

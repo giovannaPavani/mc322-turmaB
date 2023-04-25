@@ -1,5 +1,7 @@
-package classes;
+package Cliente;
 import java.util.LinkedList;
+
+import Veiculo.Veiculo;
 
 public class Cliente {
 
@@ -7,13 +9,15 @@ public class Cliente {
 	protected String nome;
 	protected String endereco;
 	protected LinkedList<Veiculo> listaVeiculos;
+	protected double valorSeguro;
 	
 	// Construtor
-	public Cliente(String nome, String endereco, LinkedList<Veiculo> listaVeiculos) {
+	public Cliente(String nome, String endereco, 
+			       LinkedList<Veiculo> listaVeiculos) {
 		this.nome = nome;
 		this.endereco = endereco;
 		this.listaVeiculos = listaVeiculos;
-		//this.listaVeiculos = new ArrayList<Veiculo>();
+		this.valorSeguro = 0.0;
 	}
 	
 	// Getters e Setters
@@ -41,12 +45,22 @@ public class Cliente {
 		this.listaVeiculos = listaVeiculos;
 	}
 	
+	public double getValorSeguro() {
+		return valorSeguro;
+	}
+
+	public void setValorSeguro(double valorSeguro) {
+		this.valorSeguro = valorSeguro;
+	}
+
+	
 	// Gera String com todas as informações do cliente
 	public String toString() {
 		String ret = "";
 		
-		ret += "Nome: " + nome + "\n";
-		ret += "Endereco: " + endereco + "\n";
+		ret += "Nome: " + this.nome + "\n";
+		ret += "Endereco: " + this.endereco + "\n";
+		ret += "Valor do seguro: "+ this.valorSeguro +"\n";
 		if(listaVeiculos != null && !listaVeiculos.isEmpty()) {
 			ret += "-----------------\n";
 			ret += "Lista de Veículos\n";
@@ -56,6 +70,12 @@ public class Cliente {
 			ret += "\n-";
 		}
 		return ret;
+	}
+	
+	// TODO
+	// define score como 0
+	public double calculaScore() {
+		return 0.0;
 	}
 	
 	/* ====================
