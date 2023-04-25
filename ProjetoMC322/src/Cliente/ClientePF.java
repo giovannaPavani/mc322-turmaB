@@ -1,6 +1,7 @@
 package Cliente;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.LinkedList;
@@ -142,11 +143,22 @@ public class ClientePF extends Cliente {
 		return true;
 	}
 	
-	//TODO
+	//TOTEST
 	public double calculaScore() {
-		double score = 0.0;
-		//score = VALOR_BASE * FATOR_IDADE * this.listaVeiculos.size();
-		return score;
+		// calcular idade
+		LocalDate dataAtual = LocalDate.now();
+		Period periodo = Period.between(dataNascimento, dataAtual);
+		int idade = periodo.getYears();
+		CalcSeguro FATOR_IDADE;
+		if(idade <= 30)
+			FATOR_IDADE = CalcSeguro.FATOR_18_30;
+		else if(idade <=60)
+			FATOR_IDADE = CalcSeguro.FATOR_30_60;
+		else {
+			FATOR_IDADE = CalcSeguro.FATOR_60_90;
+		}
+
+		return CalcSeguro.VALOR_BASE.getFator() * FATOR_IDADE.getFator() * this.listaVeiculos.size();
 	}
 	
 	/* ====================

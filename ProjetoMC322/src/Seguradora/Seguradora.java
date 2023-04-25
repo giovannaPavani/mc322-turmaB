@@ -244,9 +244,10 @@ public class Seguradora {
 			return false;
 		
 		LinkedList<Veiculo> veiculos = clienteFonte.getListaVeiculos();
-		
-		clienteFonte.getListaVeiculos().clear(); // ve se isso funciona
-		clienteDestino.setListaVeiculos(veiculos);
+		for(Veiculo veiculo: veiculos) {
+			clienteFonte.removerVeiculo(veiculo);
+			clienteDestino.adicionarVeiculo(veiculo);
+		}
 		
 		this.calcularPrecoSeguroCliente(keyClienteFonte);
 		this.calcularPrecoSeguroCliente(keyClienteDestino);

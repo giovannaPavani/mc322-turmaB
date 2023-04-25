@@ -109,9 +109,7 @@ public class ClientePJ extends Cliente {
 	
 	//TODO
 	public double calculaScore() {
-		double score = 0.0;
-		//score = VALOR_BASE * (1 + qtdeFuncionarios/100) * this.listaVeiculos.size();
-		return score;
+		return CalcSeguro.VALOR_BASE.getFator() * (1 + qtdeFuncionarios/100) * this.listaVeiculos.size();
 	}
 	
 	/* ====================
