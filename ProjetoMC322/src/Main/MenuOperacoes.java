@@ -1,17 +1,28 @@
 package Main;
 
+// essa classe só serve para acessar as constantes
 public enum MenuOperacoes {
-	CADASTRAR (1) ,
-	EXCLUIR (2) ,
-	SAIR (0) ;
+	/*CADASTRAR("Cadastrar", new SubMenu[] {
+			SubMenu.CADASTRAR_CLIENTE,
+			CADASTRAR_VEICULO("Cadastrar veículo")
+	}), - IDEIA*/ 
+	LISTAR("Listar"),
+	EXCLUIR("Excluir"), 
+	GERAR_SINISTRO ("Gerar Sinistro"),
+	TRANSFERIR_SEGURO ("Transferir Seguro"),
+	CALCULAR_RECEITA ("Calcular Receita da Seguradora"),
+	SAIR ("Sair");
 	
-	public final int operacao ;
+	private final String descricao;
+	private final SubMenu[] submenu;
+	// nessa enum submenu teriamos todos os cadastrar
+	// e o VOLTAR; (vazio)
 	
-	MenuOperacoes (int operacao) {
-		this.operacao = operacao;
+	MenuOperacoes (String descricao) {
+		this.descricao = descricao;
 	}
 	
-	public int getOperacao () {
-		return this.operacao;
+	public String getDescricao () {
+		return this.descricao;
 	}
 }

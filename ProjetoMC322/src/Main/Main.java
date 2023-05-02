@@ -4,7 +4,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Scanner;
-
 import Cliente.Cliente;
 import Cliente.ClientePF;
 import Cliente.ClientePJ;
@@ -82,6 +81,81 @@ public class Main {
 		String operacao = "0";
 		do {
 			limparTela();
+			// implementar menu
+			// Exibir menu
+			//System.out.print(MenuOperacoes.CADASTRAR.ordinal()+1 + " - " +
+			//				MenuOperacoes.CADASTRAR.getDescricao());
+			// pode ser getname tbm, mas dai seria o nome da constante (ex: CADASTRAR)
+			int opUsuario;
+			MenuOperacoes opUsuarioConst;
+			do {
+				do {
+					for(MenuOperacoes opcao: MenuOperacoes.values()) {
+						System.out.print(opcao.ordinal() + " - " + opcao.getDescricao());
+					}
+					
+					System.out.print("Digite o número da operação que deseja realizar: ");
+					opUsuario = leitor.nextInt();
+					
+				} while(opUsuario > 0 && opUsuario < MenuOperacoes.values().length);
+				
+				System.out.print("Executa opcao "+ opUsuario);
+				
+				opUsuarioConst = MenuOperacoes.values()[opUsuario]; // pega a constante da enum
+				
+			} while(opUsuarioConst != MenuOperacoes.SAIR);
+			
+			// metodo pra exibir menu, metodo pra ler opcao, metodo para exec menu externo
+			// e metodos para executar operacoes
+			
+			/*
+			private static void executaOpcaoMenuExterno(MenuOperacoes op) {
+			
+				switch (op) {
+					case CADASTRAR:
+						// chama submenu
+						System.out.println("Executa cadastrar");
+						break;
+						
+					case LISTAR:
+						// chama submenu
+						System.out.println("Executa listar");
+						break;
+						
+					case EXCLUIR:
+						// chama submenu
+						System.out.println("Executa excluir");
+						break;
+						
+					case GERAR_SINISTRO:
+						// chama aq o metodo
+						System.out.println("Executa GERAR_SINISTRO");
+						break;
+					
+					case TRANSFERIR_SEGURO:
+						// chama aq o metodo
+						System.out.println("Executa TRANSFERIR_SEGURO");
+						break;
+				}
+			}
+			*/
+			
+			// MAIN
+			/*
+			MenuOPeracoes opUsuarioConst;
+			do {
+				exibirMenuExterno();
+				opUsuarioConst = lerOpMenuExterno();
+				// executar operacao usuario escolheu
+				executaOpcaoMenuExterno(opUsuarioConst);
+				//System.out.println("Executa opcao "+opUsuarioConst.getDescricao());
+			} while(opUsuarioConst != MenuOperacoes.SAIR);
+			*/
+			
+			// fim enum
+			
+			
+			
 			System.out.println("=================================================");
 			System.out.println("        Sistema de Seguradora de Veículos");
 			System.out.println("=================================================\n");
