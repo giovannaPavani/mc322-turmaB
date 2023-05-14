@@ -113,36 +113,6 @@ public class ClientePF extends Cliente {
 	 *  FUNÇÕES PEDIDAS
 	 * ================= */
 	
-	public static boolean validarCPF(String cpf) {
-		
-		// remove caracteres nao numericos ('.' e '-')
-		String numCpf = cpf.replaceAll("\\D+","");
-		
-		// verifica se o cpf tem 11 digitos
-		if(numCpf.length() != 11)
-			return false;
-		
-		// verifica se todos os digitos sao iguais
-		boolean diferente = false;
-		for(int i=0; i < numCpf.length()-1; i++)
-			// se achar pelo menos um digito diferente (valido) -> break
-			if(numCpf.charAt(i) != numCpf.charAt(i+1)) {
-				diferente = true;
-				break;
-			}
-		// nao ha digitos diferentes (todos iguais)
-		if(!diferente)
-			return false;
-
-		// calculo dos digitos verificadores (os dois ultimos nas posicoes [9] e [10])
-		if(Character.getNumericValue(numCpf.charAt(9)) != calcularDigitoVerificador(0, numCpf)|| 
-			Character.getNumericValue(numCpf.charAt(10)) != calcularDigitoVerificador(1, numCpf))
-			// pelo menos um dos digitos verificadores calculados nao é igual ao digito verificadore fornecido
-			return false;
-				
-		return true;
-	}
-	
 	//TOTEST
 	public double calculaScore() {
 		// calcular idade
@@ -159,31 +129,6 @@ public class ClientePF extends Cliente {
 		}
 
 		return CalcSeguro.VALOR_BASE.getFator() * FATOR_IDADE.getFator() * this.listaVeiculos.size();
-	}
-	
-	/* ====================
-	 *  MÉTODOS AUXILIARES
-	 * ==================== */
-	
-	//Faz a soma das multplicações dos 8 dígitos do cpf (a partir do indiceInicio) e determina o digitoVerificador 
-	private static int calcularDigitoVerificador(int indiceInicio, String cpf) {
-		int soma = 0;
-		
-		// Os nove primeiros algarismos são ordenadamente multiplicados pela sequência 10, 9, 8, 7, 6, 5, 4, 3, 2 
-		// OBS: +indiceInicio serve para adequar as contagens considerando o indiceInicio como origem
-		for(int i=indiceInicio; i<9+indiceInicio; i++) {
-			int digito = Character.getNumericValue(cpf.charAt(i));
-			soma += digito * (10-i+indiceInicio);
-		}
-		
-		int resto = soma % 11;
-		
-		// se o resto for 0 ou 1, o digitoVerificador é 0
-		if(resto < 2)
-			return 0;
-		
-		// se nao, o digitoVerificador é 11 - resto
-		return 11 - resto;
 	}
 	
 }

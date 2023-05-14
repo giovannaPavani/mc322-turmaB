@@ -13,235 +13,153 @@ import Veiculo.Veiculo;
 
 public class Main {
 	
-	public static void main(String [] args){ 
-		
-		// Objeto responsavel por fazer a leitura do console 
-		Scanner leitor = new Scanner(System.in);
-		// Apenas uma seguradora é criada e será nela que todas as operações serão feitas
-	    Seguradora seguradora;
-	    
-	    System.out.println("=================================================");
-		System.out.println("        Sistema de Seguradora de Veıculos");
-		System.out.println("=================================================\n");
-		
-		System.out.println("Inicie suas operações criando uma seguradora.\n");
-		
-		/* ====================
-		 *    DADOS DE TESTE
-		 * ==================== */
-		///*
-		seguradora = new Seguradora("Azul", "1932770378", "azul@g.com", "Av 1, 89", 
-				                    new ArrayList<Sinistro>(), new ArrayList<Cliente>());
-		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		LocalDate dataL = LocalDate.parse("01/03/2023", formatter);
-		LocalDate dataN = LocalDate.parse("09/08/2004", formatter);
-		LocalDate dataF = LocalDate.parse("21/07/2010", formatter);
-		LocalDate dataS = LocalDate.parse("14/04/2023", formatter);
-				
-		ClientePF clientePF = new ClientePF("MARIA", "AV 2, 89", new LinkedList<Veiculo>(), dataL,
-				                            "90197003087", dataN, "GRADUANDA", "F", "MÉDIA");
-		ClientePJ clientePJ = new ClientePJ("PADARIA SM", "AV 3, 140", new LinkedList<Veiculo>(),
-				                            "79896457000186", dataF, 4);
-		
-		Veiculo veiculo1 = new Veiculo("NCX-3134", "NISSAN", "KICKS", 2020);
-		Veiculo veiculo2 = new Veiculo("MSM-8271", "HONDA", "FIT", 2019);
-		Veiculo veiculo3 = new Veiculo("HZM-7159", "HONDA", "H-RV", 2022);
-		
-		clientePF.adicionarVeiculo(veiculo1);
-		clientePJ.adicionarVeiculo(veiculo2);
-		clientePJ.adicionarVeiculo(veiculo3);
-		
-		seguradora.cadastrarCliente(clientePF);
-		seguradora.cadastrarCliente(clientePJ);
-		
-		seguradora.gerarSinistro("NCX-3134", "90197003087", dataS, "RUA CAOS");
-		
-		//seguradora.gerarSinistro("MSM-8271", "79.896.457/0001-86", dataS, "RUA ACIDENTE");
-		//*/
-		/* ====================
-		 *  FIM DADOS DE TESTE
-		 * ==================== */
-		
-		esperarEnter(leitor);
-		
-		/* Caso queira rodar o programa adicionando sua propria seguradora, conforme foi planejado este programa,
-		 * deixe as proximas duas linhas descomentadas e comente o bloco de dados de teste.
-		 * 
-		 * Caso contário, comente essas linhas e descomente o bloco de dados de teste */
-		/*
-		seguradora = criarSeguradora(leitor);
-		esperarEnter(leitor);
-		*/
-		
-		/* ================
-		 *  MENU PRINCIPAL
-		 * ================ */
-		
-		String operacao = "0";
+	private static void exibirMenuPrincipal() {
+		MenuOperacoes menuOperacoes[] = MenuOperacoes.values();
+		System.out.println("=================================================");
+		System.out.println("        Sistema de Seguradora de Veículos");
+		System.out.println("=================================================");
+		System.out.println("		 Menu principal\n");
+		for(MenuOperacoes op: menuOperacoes) {
+			System.out.println(" "+(op.ordinal()+1) + " - " + op.getDescricao());
+		}
+	}
+	
+	/* exibir submenus
+	 * se a lista de constantes do submenu for percorrida da mesma forma que o meu externo, a opção Voltar
+	 * é printada com a posição que está na lista do enum (9 - Voltar). Por isso, a lista é percorrida 
+	 * de forma diferente, tendo i como o inteiro correspondente. Assim, para listar o submenu de cadastros,
+	 * por exemplo, vai ser printado "4 - Voltar".
+	 */
+	private static void exibirSubMenu(MenuOperacoes op) {
+		limparTela();
+		SubMenuOperacoes[] subMenu = op.getSubmenu();
+		System.out.println(" " +(op.ordinal()+1) +") Menu "+ op.getDescricao()+"\n");
+		for(int i=0; i<subMenu.length; i++) {
+			System.out.println(" "+(i+1) +" - " + subMenu[i].getDescricao());
+		}
+	}
+	
+	//ler opções do menu externo
+	private static MenuOperacoes lerOpcaoMenuPrincipal() {
+		Scanner scanner = new Scanner(System.in);
+		int opUsuario;
+		MenuOperacoes opUsuarioConst;
 		do {
-			limparTela();
-			// implementar menu
-			// Exibir menu
-			//System.out.print(MenuOperacoes.CADASTRAR.ordinal()+1 + " - " +
-			//				MenuOperacoes.CADASTRAR.getDescricao());
-			// pode ser getname tbm, mas dai seria o nome da constante (ex: CADASTRAR)
-			int opUsuario;
-			MenuOperacoes opUsuarioConst;
-			do {
-				do {
-					for(MenuOperacoes opcao: MenuOperacoes.values()) {
-						System.out.print(opcao.ordinal() + " - " + opcao.getDescricao());
-					}
-					
-					System.out.print("Digite o número da operação que deseja realizar: ");
-					opUsuario = leitor.nextInt();
-					
-				} while(opUsuario > 0 && opUsuario < MenuOperacoes.values().length);
-				
-				System.out.print("Executa opcao "+ opUsuario);
-				
-				opUsuarioConst = MenuOperacoes.values()[opUsuario]; // pega a constante da enum
-				
-			} while(opUsuarioConst != MenuOperacoes.SAIR);
-			
-			// metodo pra exibir menu, metodo pra ler opcao, metodo para exec menu externo
-			// e metodos para executar operacoes
-			
-			/*
-			private static void executaOpcaoMenuExterno(MenuOperacoes op) {
-			
-				switch (op) {
-					case CADASTRAR:
-						// chama submenu
-						System.out.println("Executa cadastrar");
-						break;
-						
-					case LISTAR:
-						// chama submenu
-						System.out.println("Executa listar");
-						break;
-						
-					case EXCLUIR:
-						// chama submenu
-						System.out.println("Executa excluir");
-						break;
-						
-					case GERAR_SINISTRO:
-						// chama aq o metodo
-						System.out.println("Executa GERAR_SINISTRO");
-						break;
-					
-					case TRANSFERIR_SEGURO:
-						// chama aq o metodo
-						System.out.println("Executa TRANSFERIR_SEGURO");
-						break;
-				}
-			}
-			*/
-			
-			// MAIN
-			/*
-			MenuOPeracoes opUsuarioConst;
-			do {
-				exibirMenuExterno();
-				opUsuarioConst = lerOpMenuExterno();
-				// executar operacao usuario escolheu
-				executaOpcaoMenuExterno(opUsuarioConst);
-				//System.out.println("Executa opcao "+opUsuarioConst.getDescricao());
-			} while(opUsuarioConst != MenuOperacoes.SAIR);
-			*/
-			
-			// fim enum
-			
-			
-			
-			System.out.println("=================================================");
-			System.out.println("        Sistema de Seguradora de Veículos");
-			System.out.println("=================================================\n");
-			System.out.println(" 1 - Cadastrar cliente");
-			System.out.println(" 2 - Cadastrar veículo de um cliente");
-			System.out.println(" 3 - Remover cliente");
-			System.out.println(" 4 - Listar clientes");
-			System.out.println(" 5 - Gerar sinistro de um cliente");
-			System.out.println(" 6 - Listar sinistros da seguradora");
-			System.out.println(" 7 - Listar sinistros de um cliente\n");
-			
-			System.out.println(" 0 - Sair do programa\n");
-			
-			System.out.print("Digite o número da operação que deseja realizar: ");
-			operacao = leitor.nextLine();
-			
-			// se o numero inserido não for válido (isto é, entre 0 e 7)
-			if(("01234567").indexOf(operacao) < 0) {
+			System.out.print("\nDigite o número da operação que deseja realizar: ");
+			opUsuario = scanner.nextInt() - 1;
+			// se o numero inserido não for válido
+			if(opUsuario < 0 || opUsuario > MenuOperacoes.values().length-1) {
 				System.out.println(" ---------------------------------------------------------------------------------");
 				System.out.println("| A operação inserida não é válida! Reveja os índices do menu e insira um válido. |");
 				System.out.println(" ---------------------------------------------------------------------------------\n");
-				esperarEnter(leitor);
-				continue; // volta para o início do loop do menu principal
 			}	
-			
-			switch(operacao) {
-				case "1": 
-					if(cadastrarCliente(leitor, seguradora))
-						System.out.println("\nNovo cliente cadastrado na seguradora!");
-					else
-						System.out.println("\nERRO: Não foi possível realizar o cadastro do cliente. Revise os dados e tente novamente.");
-					break;
-					
-				case "2": 
-					if(cadastrarVeiculo(leitor, seguradora))
-						System.out.println("\nNovo veículo cadastrado na seguradora!");
-					else
-						System.out.println("\nERRO: Não foi possível realizar o cadastro do veículo. Revise os dados e tente novamente.");
-					break;
-				
-				case "3": 
-					if(removerCliente(leitor, seguradora))
-						System.out.println("\nCliente removido da seguradora com sucesso!");
-					else
-						System.out.println("\nERRO: O cliente informado não estava cadastrado na seguradora. Revise os dados.");
-					break;
-				
-				case "4": 
-					listarClientes(leitor, seguradora);
-					break;
-				
-				case "5": 
-					if(gerarSinistro(leitor, seguradora))
-						System.out.println("\nSinistro cadastrado com sucesso!");
-					else
-						System.out.println("\nERRO: Algo deu errado no cadastro do sinistro. Revise os dados e certifique-se que o cliente e o veículo envolvidos estão cadastrados na seguradora.");
-					break;
-					
-				case "6": 
-					listarSinistros(seguradora);
-					break;
-					
-				case "7": 
-					listarSinistrosCliente(leitor, seguradora);
-					break;
+		}while(opUsuario < 0 || opUsuario > MenuOperacoes.values().length - 1);
+		opUsuarioConst = MenuOperacoes.values()[opUsuario];
+		return opUsuarioConst;
+	}
+	
+	//ler opção dos submenus
+	private static SubMenuOperacoes lerOpcaoSubMenu(MenuOperacoes op) {
+		Scanner scanner = new Scanner(System.in);
+		int opUsuario;
+		SubMenuOperacoes opUsuarioConst;
+		do {
+			System.out.print("\nDigite o número da operação que deseja realizar: ");
+			opUsuario = scanner.nextInt() - 1;
+			// se o numero inserido não for válido
+			if(opUsuario < 0 || opUsuario > op.getSubmenu().length - 1) {
+				System.out.println(" ---------------------------------------------------------------------------------");
+				System.out.println("| A operação inserida não é válida! Reveja os índices do menu e insira um válido. |");
+				System.out.println(" ---------------------------------------------------------------------------------\n");
 			}
-			
-			// confirma ou cancela saída do programa
-			if(operacao.equals("0")) {
-				limparTela();
-				System.out.println("----------------");
-				System.out.println("Sair do Programa");
-				System.out.println("----------------");
-				System.out.println("Aperte [Enter] para confirmar.\nPara cancelar, aperte [C].\n");
-				String confirma = leitor.nextLine();
-				if(confirma.equals("c") || confirma.equals("C")) {
-					operacao = "8"; // colocar operacao != 0 para não sair do do-while
-					continue;  // cancela a saída e volta para o início do loop do menu principal
-				}
-			}
-			else
-				esperarEnter(leitor);
-
-		}while(!operacao.equals("0"));
-		
-		System.out.println("Programa encerado!");
+		}while(opUsuario < 0 || opUsuario > op.getSubmenu().length - 1);
+		opUsuarioConst = op.getSubmenu()[opUsuario];
+		return opUsuarioConst;
+	}
+	
+	//executar opções do menu externo
+	private static void executarOpcaoMenuExterno(MenuOperacoes op, Seguradora seguradora) {
+		Scanner leitor = new Scanner(System.in);
+		switch(op) {
+			case CADASTRAR:
+			case LISTAR:
+			case EXCLUIR:
+				executarSubMenu(op, seguradora); // executa em cadastrar, listar e/ou no excluir
+				break;
+			case GERAR_SINISTRO:
+				if(gerarSinistro(leitor, seguradora))
+					System.out.println("\nSinistro cadastrado com sucesso!");
+				else
+					System.out.println("\nERRO: Algo deu errado no cadastro do sinistro. Revise os dados e certifique-se que o cliente e o veículo envolvidos estão cadastrados na seguradora.");
+				break;
+			case TRANSFERIR_SEGURO:
+				System.out.println("Executar metodo tranferir seguro");
+				break;
+			case CALCULAR_RECEITA:
+				System.out.println("Executar metodo calcular receita");
+				break;
+			case SAIR:
+				break;
+		}
+	}
+	
+	//executa os submenus: exibição do menu, leitura da opção e execução dos métodos
+	private static void executarSubMenu(MenuOperacoes op, Seguradora seguradora) {
+		SubMenuOperacoes opSubMenu;
+		do {
+			exibirSubMenu(op);
+			opSubMenu = lerOpcaoSubMenu(op);
+			executarOpcaoSubMenu(opSubMenu, seguradora);
+		}while(opSubMenu != SubMenuOperacoes.VOLTAR);
+	}
+	
+	private static void executarOpcaoSubMenu(SubMenuOperacoes opSubmenu, Seguradora seguradora) {
+		Scanner leitor = new Scanner(System.in);
+		switch(opSubmenu) {
+			case CADASTRAR_CLIENTE:
+				if(cadastrarCliente(leitor, seguradora))
+					System.out.println("\nNovo cliente cadastrado na seguradora!");
+				else
+					System.out.println("\nERRO: Não foi possível realizar o cadastro do cliente. Revise os dados e tente novamente.");
+				break;
+				
+			case CADASTRAR_VEICULO:
+				if(cadastrarVeiculo(leitor, seguradora))
+					System.out.println("\nNovo veículo cadastrado na seguradora!");
+				else
+					System.out.println("\nERRO: Não foi possível realizar o cadastro do veículo. Revise os dados e tente novamente.");
+				break;
+				
+			case LISTAR_CLIENTES:
+				listarClientes(leitor, seguradora);
+				break;
+				
+			case LISTAR_SINISTROS:
+				listarSinistros(seguradora);
+				break;
+				
+			case LISTAR_VEICULOS: // FAZER!!!
+				System.out.println("Chamar metodo listar veiculos");
+				break;
+				
+			case EXCLUIR_CLIENTE:
+				if(excluirCliente(leitor, seguradora))
+					System.out.println("\nCliente removido da seguradora com sucesso!");
+				else
+					System.out.println("\nERRO: O cliente informado não estava cadastrado na seguradora. Revise os dados.");
+				break;
+				
+			case EXCLUIR_VEICULO: // FAZER!!!
+				System.out.println("Chamar metodo excluir veiculo");
+				break;
+				
+			case EXCLUIR_SINISTRO: // FAZER!!!
+				System.out.println("Chamar metodo excluir sinistro");
+				break;
+				
+			case VOLTAR:
+				break;
+		}
 	}
 	
 	/* =============================
@@ -249,87 +167,25 @@ public class Main {
 	 * =============================*/
 	
 	// cria 50 linhas nulas e cria a ilusão de que a tela do console foi limpa
-	public static void limparTela() {
+	private static void limparTela() {
 		for (int i = 0; i < 50; ++i) 
 			System.out.println();
 	}
 	
 	// programa não prossegue enquanto o usuário não apertar [Enter]
-	public static void esperarEnter(Scanner leitor) {  
+	private static void esperarEnter(Scanner leitor) {  
 		
 		System.out.println("Aperte [Enter] para prosseguir.");
 		leitor.nextLine();
 	}
 	
-	/* ============================================================
-	 *  FUNÇÕES PARA LIDAR COM A LEITURA DE INFORMAÇÕES DO CONSOLE
-	 * ============================================================*/
-	
-	// programa fica em loop até que o usuário insira um CNPJ válido
-	private static String getCnpjValido(Scanner leitor) {
-		boolean valido = false;
-		String cnpj;
-		do { // continuamente é feito esse bloco de comandos até o usuário inserir um CNPJ válido
-			System.out.print("CNPJ: ");
-			cnpj = leitor.nextLine();
-			valido = ClientePJ.validarCNPJ(cnpj);
-			if(!valido) {
-				System.out.println(" -------------------------------------------");
-				System.out.println("| CNPJ inválido. Tente inserí-lo novamente. |");
-				System.out.println(" -------------------------------------------\n");
-			}
-		} while(!valido);
-		
-		// retira caracteres não numéricos do CNPJ inserido
-		return cnpj.replaceAll("\\.", "").replaceAll("-", "").replaceAll("/", "");
-	}
-	
-	// programa fica em loop até que o usuário insira um CPF válido
-	private static String getCpfValido(Scanner leitor) {
-		String cpf;
-		boolean valido = false;
-		do { // continuamente é feito esse bloco de comandos até o usuário inserir um CPF válido
-			System.out.print("CPF: ");
-			cpf = leitor.nextLine();
-			valido = ClientePF.validarCPF(cpf);
-			if(!valido) {
-				System.out.println(" ------------------------------------------");
-				System.out.println("| CPF inválido. Tente inserí-lo novamente. |");
-				System.out.println(" ------------------------------------------\n");
-			}
-		} while(!valido);
-		
-		// retira caracteres não numéricos do CPF inserido
-		return cpf.replaceAll("\\.", "").replaceAll("-", "");
-	}
-	
-	// programa fica em loop até que o usuário insira um tipo de cliente válido, isto é, [CPF] ou [CNPJ]
-	private static String getTipoClienteValido(Scanner leitor) {
-		String tipoCliente = "";
-		do{ // continuamente é feito esse bloco de comandos até o usuário inserir um tipo de cliente válido
-			System.out.println("\nO cliente é físico(CPF) ou jurídico(CNPJ)?");
-			System.out.print("Digite [CPF] ou [CNPJ]: ");
-			String tipoLeitor = leitor.nextLine().toUpperCase(); // coloca todo o texto digitado em caixa alta para facilitar inserção do usuário
-			if(tipoLeitor.equals("CPF") || tipoLeitor.equals("CNPJ")) {
-				tipoCliente = tipoLeitor;
-				System.out.println(); // pula linha	
-			}
-			else {
-				System.out.println(" --------------------------------------------------------------------");
-				System.out.println("| Tipo de cliente inválido. Tente inserir [CPF] ou [CNPJ] novamente. |");
-				System.out.println(" --------------------------------------------------------------------\n");
-			}
-		} while(tipoCliente.equals(""));
-		
-		return tipoCliente;
-	}
 	
 	/* =======================================
 	 *  MÉTODOS/FUNÇÕES DE CADA OPÇÃO DO MENU
 	 * =======================================*/
 	
 	// cria uma seguradora conforme os dados que o usuário inserir e a retorna
-	public static Seguradora criarSeguradora(Scanner leitor) {
+	private static Seguradora criarSeguradora(Scanner leitor) {
 		limparTela();
 		System.out.println("----------------------");
 		System.out.println("   Criar seguradora   ");
@@ -361,10 +217,10 @@ public class Main {
 
 	// cria um cliente conforme os dados que o usuário inserir, adiciona na seguradora
 	// e retorna true caso tenha dado certo, e false caso contrário
-	public static boolean cadastrarCliente(Scanner leitor, Seguradora seguradora) {
+	private static boolean cadastrarCliente(Scanner leitor, Seguradora seguradora) {
 		limparTela();
 		System.out.println("-------------------------------------------");
-		System.out.println("           1 - Cadastrar cliente");
+		System.out.println("           1.1 - Cadastrar cliente");
 		System.out.println("-------------------------------------------\n");
 		
 		System.out.println("Digite as informações do novo cliente.");
@@ -374,7 +230,7 @@ public class Main {
 		System.out.print("Endereco: ");
 		String endereco = leitor.nextLine();
 		
-		String tipo = getTipoClienteValido(leitor);
+		String tipo = Validacao.getTipoClienteValido(leitor);
 		
 		// formatador de String do formato "dd/MM/yyyy" para objeto LocalDate
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -382,7 +238,7 @@ public class Main {
 		
 		// criando cliente físico
 		if(tipo.equals("CPF")) {
-			String cpf = getCpfValido(leitor);
+			String cpf = Validacao.getCpfValido(leitor);
 			
 			// programa fica em loop ate que o usuário insira uma data no formato correto
 			LocalDate dataLicenca = null;
@@ -439,7 +295,7 @@ public class Main {
 		
 		} else if(tipo.equals("CNPJ")){ 
 			// criando cliente jurídico
-			String cnpj = getCnpjValido(leitor);
+			String cnpj = Validacao.getCnpjValido(leitor);
 			
 			// mesma lógica da dataLicenca
 			LocalDate dataFundacao = null;
@@ -482,10 +338,10 @@ public class Main {
 	
 	// cria um veiculo conforme os dados que o usuário inserir, adiciona em um cliente da seguradora
 	// e retorna true caso tenha dado certo, e false caso contrário (cliente inexistente ou erro na criacao do veiculo)
-	public static boolean cadastrarVeiculo(Scanner leitor, Seguradora seguradora) {
+	private static boolean cadastrarVeiculo(Scanner leitor, Seguradora seguradora) {
 		limparTela();
 		System.out.println("---------------------------------------");
-		System.out.println("        2 - Cadastrar veículo");
+		System.out.println("        1.2 - Cadastrar veículo");
 		System.out.println("---------------------------------------\n");
 		
 		System.out.println("Digite as informações do novo veículo.");
@@ -516,12 +372,12 @@ public class Main {
 		}while(anoFabricacao ==0);
 		
 		// pergunta ao usuário o tipo de cliente e seu CPF/CNPJ
-		String tipoCliente = getTipoClienteValido(leitor);
+		String tipoCliente = Validacao.getTipoClienteValido(leitor);
 		String keyCliente = "";
 		if(tipoCliente.equals("CNPJ"))
-			keyCliente = getCnpjValido(leitor); 
+			keyCliente = Validacao.getCnpjValido(leitor); 
 		else if(tipoCliente.equals("CPF"))
-			keyCliente = getCpfValido(leitor);
+			keyCliente = Validacao.getCpfValido(leitor);
 		
 		// resgata cliente dentro da seguradora
 		Cliente cliente = seguradora.getClienteByKey(keyCliente);
@@ -541,29 +397,29 @@ public class Main {
 	// remove cliente e seus sinistros (caso exista) da seguradora
 	// retorna true se o cliente for removido e false caso o CPF/CNPJ informado
 	// não pertenca a nenhum cliente cadastro na seguradora
-	public static boolean removerCliente(Scanner leitor, Seguradora seguradora) {
+	private static boolean excluirCliente(Scanner leitor, Seguradora seguradora) {
 		limparTela();
 		System.out.println("--------------------------------------------");
-		System.out.println("           3 - Remover cliente");
+		System.out.println("           3.1 - Remover cliente");
 		System.out.println("--------------------------------------------");
 		
 		// pergunta ao usuário o tipo de cliente e seu CPF/CNPJ
-		String tipoCliente = getTipoClienteValido(leitor);
+		String tipoCliente = Validacao.getTipoClienteValido(leitor);
 		String keyCliente = "";
 		if(tipoCliente.equals("CNPJ"))
-			keyCliente = getCnpjValido(leitor);
+			keyCliente = Validacao.getCnpjValido(leitor);
 		else if(tipoCliente.equals("CPF"))
-			keyCliente = getCpfValido(leitor);
+			keyCliente = Validacao.getCpfValido(leitor);
 		
 		// tenta remover cliente pelo CPF/CNPJ e retorna se deu certo
 		return seguradora.removerCliente(keyCliente);
 	}
 	
 	// lista clientes físicos(CPF) ou juridicos (CNPJ) conforme o usuario inserir
-	public static void listarClientes(Scanner leitor, Seguradora seguradora) {
+	private static void listarClientes(Scanner leitor, Seguradora seguradora) {
 		limparTela();
 		System.out.println("-----------------------------------------------------------");
-		System.out.println("            4 - Listar clientes da seguradora");
+		System.out.println("            2.1 - Listar clientes da seguradora");
 		System.out.println("-----------------------------------------------------------\n");
 		
 		// nao ha nenhum cliente (fisico ou juridico) cadastrado na seguradora
@@ -616,10 +472,10 @@ public class Main {
 	// gera um sinistro na seguradora envolvendo um cliente cadastrado na seguradora e algum 
 	// veiculo nele cadastrado. retorna true se o cadastro der certo ou falso caso contrario
 	// (cliente nao cadastrado na seguradora ou veiculo nao cadastrado no cliente)
-	public static boolean gerarSinistro(Scanner leitor, Seguradora seguradora) {
+	private static boolean gerarSinistro(Scanner leitor, Seguradora seguradora) {
 		limparTela();
 		System.out.println("--------------------------------------------");
-		System.out.println(" 5 -  Gerar sinistro de um cliente ");
+		System.out.println("           4 -  Gerar sinistro ");
 		System.out.println("--------------------------------------------\n");
 		
 		System.out.println("Digite as informações que envolvem o sinistro.");
@@ -643,12 +499,12 @@ public class Main {
 		String endereco = leitor.nextLine();
 		
 		// pergunta ao usuário o tipo de cliente e seu CPF/CNPJ
-		String tipoCliente = getTipoClienteValido(leitor);
+		String tipoCliente = Validacao.getTipoClienteValido(leitor);
 		String keyCliente = "";
 		if(tipoCliente.equals("CNPJ"))
-			keyCliente = getCnpjValido(leitor);
+			keyCliente = Validacao.getCnpjValido(leitor);
 		else if(tipoCliente.equals("CPF"))
-			keyCliente = getCpfValido(leitor);
+			keyCliente = Validacao.getCpfValido(leitor);
 		
 		System.out.print("Placa do veículo: ");
 		String placa = leitor.nextLine();
@@ -658,10 +514,10 @@ public class Main {
 	}
 
 	// lista todos os sinistros gerados na seguradora
-	public static void listarSinistros(Seguradora seguradora) {
+	private static void listarSinistros(Seguradora seguradora) {
 		limparTela();
 		System.out.println("-----------------------------------------------------------");
-		System.out.println("            6 - Listar sinistros da seguradora");
+		System.out.println("            2.2 - Listar sinistros da seguradora");
 		System.out.println("-----------------------------------------------------------\n");
 		
 		// resgata lista de todos os sinistros da seguradora
@@ -684,19 +540,19 @@ public class Main {
 	}
 	
 	// lista todos os sinistros na seguradora envolvendo o cliente inserido
-	public static void listarSinistrosCliente(Scanner leitor, Seguradora seguradora) {
+	private static void listarSinistrosCliente(Scanner leitor, Seguradora seguradora) {
 		limparTela();
 		System.out.println("-------------------------------------------");
-		System.out.println("    7 - Listar sinistros de um cliente");
+		System.out.println("    2.3 - Listar sinistros de um cliente");
 		System.out.println("-------------------------------------------");
 		
 		// pergunta ao usuário o tipo de cliente e seu CPF/CNPJ
-		String tipoCliente = getTipoClienteValido(leitor);
+		String tipoCliente = Validacao.getTipoClienteValido(leitor);
 		String keyCliente = "";
 		if(tipoCliente.equals("CNPJ"))
-			keyCliente = getCnpjValido(leitor);
+			keyCliente = Validacao.getCnpjValido(leitor);
 		else if(tipoCliente.equals("CPF"))
-			keyCliente = getCpfValido(leitor);
+			keyCliente = Validacao.getCpfValido(leitor);
 		
 		// nao ha nenhum sinistro gerado envolvendo o cliente informado ou o cliente nao esta cadastrado na seguradora
 		if (!seguradora.visualizarSinistro(keyCliente)) {
@@ -713,6 +569,232 @@ public class Main {
 			System.out.print(sinistro.toString());
 			System.out.println("-------------------------------\n");
 		}
+	}
+
+	private static void listarVeiculosCliente(Scanner leitor, Seguradora seguradora) {
+		limparTela();
+		System.out.println("-------------------------------------------");
+		System.out.println("    2.4 - Listar veículos de um cliente");
+		System.out.println("-------------------------------------------");
+		
+		// pergunta ao usuário o tipo de cliente e seu CPF/CNPJ
+		String tipoCliente = Validacao.getTipoClienteValido(leitor);
+		String keyCliente = "";
+		if(tipoCliente.equals("CNPJ"))
+			keyCliente = Validacao.getCnpjValido(leitor);
+		else if(tipoCliente.equals("CPF"))
+			keyCliente = Validacao.getCpfValido(leitor);
+		
+		LinkedList<Veiculo> veiculosCliente = seguradora.getClienteByKey(keyCliente).getListaVeiculos();
+		if (veiculosCliente == null || veiculosCliente.isEmpty()) {
+			System.out.println("Este cliente não tem nenhum veículo cadastrado, ou não está cadastrado na seguradora."
+					+ "\nVocê pode verificar se o cliente informado está cadastrado na seguradora digitando a opção 2.1 - Listar clientes.\n");
+			return;
+		}
+		
+		System.out.println("Segue a lista de veículos do cliente informado registrados na seguradora:\n");
+		
+		// printa lista de veiculos, separando cada veiculos com esses hifens
+		System.out.println("-------------------------------");
+		for(Veiculo veiculo: veiculosCliente) {
+			System.out.print(veiculo.toString());
+			System.out.println("-------------------------------\n");
+		}
+	}
+	
+	private static void listarVeiculosSeguradora(Scanner leitor, Seguradora seguradora) {
+		limparTela();
+		System.out.println("-------------------------------------------");
+		System.out.println("    2.5 - Listar veículos de um cliente");
+		System.out.println("-------------------------------------------");
+		
+		ArrayList<Veiculo> veiculosSeguradora = seguradora.getVeiculos();
+		if (veiculosSeguradora == null || veiculosSeguradora.isEmpty()) {
+			System.out.println("A seguradora  não tem nenhum veículo cadastrado.\n"
+								+ "Para cadastrar novos veiculos e clientes, entre seleciona a opção 1 no menu.\n");
+			return;
+		}
+		
+		System.out.println("Segue a lista de veículos registrados na seguradora:\n");
+		
+		// printa lista de veiculos, separando cada veiculos com esses hifens
+		System.out.println("-------------------------------");
+		for(Veiculo veiculo: veiculosSeguradora) {
+			System.out.print(veiculo.toString());
+			System.out.println("-------------------------------\n");
+		}
+	}
+	
+	private static boolean transferirSeguro(Scanner leitor, Seguradora seguradora) {
+		limparTela();
+		System.out.println("--------------------------------------------");
+		System.out.println("           5 -  Tranferir seguro ");
+		System.out.println("--------------------------------------------\n");
+		
+		System.out.println("Digite o CPF/CNPJ do cliente cujo seguro será transferido:");
+		
+		// pergunta ao usuário o tipo de cliente e seu CPF/CNPJ
+		String tipoCliente = Validacao.getTipoClienteValido(leitor);
+		String clienteFonte = "";
+		if(tipoCliente.equals("CNPJ"))
+			clienteFonte = Validacao.getCnpjValido(leitor);
+		else if(tipoCliente.equals("CPF"))
+			clienteFonte = Validacao.getCpfValido(leitor);
+		
+		System.out.println("Digite o CPF/CNPJ do cliente que receberá o seguro:");
+		
+		tipoCliente = Validacao.getTipoClienteValido(leitor);
+		String clienteDestino = "";
+		if(tipoCliente.equals("CNPJ"))
+			clienteDestino = Validacao.getCnpjValido(leitor);
+		else if(tipoCliente.equals("CPF"))
+			clienteDestino = Validacao.getCpfValido(leitor);
+		
+		// transfere o seguro do clienteFonte para o clienteDestino e retorna se deu certo
+		return seguradora.transferirSeguro(clienteFonte, clienteDestino);
+	}
+	
+	private static void calcularReceita(Seguradora seguradora) {
+		limparTela();
+		System.out.println("--------------------------------------------");
+		System.out.println("      6 -  Cacular receita da seguradora ");
+		System.out.println("--------------------------------------------\n");
+		
+		System.out.print("A atual receita da seguradora é: ");
+		System.out.println(seguradora.calcularReceita());
+	}
+	
+	private static boolean excluirVeiculo(Scanner leitor, Seguradora seguradora) {
+		limparTela();
+		System.out.println("--------------------------------------------");
+		System.out.println("           3.2 - Excluir veiculo");
+		System.out.println("--------------------------------------------");
+		
+		System.out.println("Digite as informações do veículo a ser excluído.");
+		// pergunta ao usuário o tipo de cliente e seu CPF/CNPJ
+		String tipoCliente = Validacao.getTipoClienteValido(leitor);
+		String keyCliente = "";
+		if(tipoCliente.equals("CNPJ"))
+			keyCliente = Validacao.getCnpjValido(leitor);
+		else if(tipoCliente.equals("CPF"))
+			keyCliente = Validacao.getCpfValido(leitor);
+		
+		Cliente cliente = seguradora.getClienteByKey(keyCliente);
+		if(cliente == null) {
+			System.out.print("\nERRO: O cliente inserido não está cadastrado na seguradora.");
+			return false;
+		}
+		System.out.print("Placa do veículo: ");
+		String placa = leitor.nextLine();
+		
+		// tenta remover cliente pelo CPF/CNPJ e retorna se deu certo
+		return cliente.removerVeiculo(placa);
+	}
+	
+	private static boolean excluirSinistro(Scanner leitor, Seguradora seguradora) {
+		limparTela();
+		System.out.println("--------------------------------------------");
+		System.out.println("           3.2 - Excluir veiculo");
+		System.out.println("--------------------------------------------");
+		
+		System.out.println("Digite as informações do veículo a ser excluído.");
+		// pergunta ao usuário o tipo de cliente e seu CPF/CNPJ
+		String tipoCliente = Validacao.getTipoClienteValido(leitor);
+		String keyCliente = "";
+		if(tipoCliente.equals("CNPJ"))
+			keyCliente = Validacao.getCnpjValido(leitor);
+		else if(tipoCliente.equals("CPF"))
+			keyCliente = Validacao.getCpfValido(leitor);
+		
+		Cliente cliente = seguradora.getClienteByKey(keyCliente);
+		if(cliente == null) {
+			System.out.print("\nERRO: O cliente inserido não está cadastrado na seguradora.");
+			return false;
+		}
+		System.out.print("Placa do veículo: ");
+		String placa = leitor.nextLine();
+		
+		// tenta remover cliente pelo CPF/CNPJ e retorna se deu certo
+		return cliente.removerVeiculo(placa);
+	}
+	
+	public static void main(String [] args){ 
+		
+		// Objeto responsavel por fazer a leitura do console 
+		Scanner leitor = new Scanner(System.in);
+		// Apenas uma seguradora é criada e será nela que todas as operações serão feitas
+	    Seguradora seguradora;
+	    
+	    System.out.println("=================================================");
+		System.out.println("        Sistema de Seguradora de Veıculos");
+		System.out.println("=================================================\n");
+		
+		System.out.println("Inicie suas operações criando uma seguradora.\n");
+		
+		/* ====================
+		 *    DADOS DE TESTE
+		 * ==================== */
+		///*
+		seguradora = new Seguradora("Azul", "1932770378", "azul@g.com", "Av 1, 89", 
+				                    new ArrayList<Sinistro>(), new ArrayList<Cliente>());
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		LocalDate dataL = LocalDate.parse("01/03/2023", formatter);
+		LocalDate dataN = LocalDate.parse("09/08/2004", formatter);
+		LocalDate dataF = LocalDate.parse("21/07/2010", formatter);
+		LocalDate dataS = LocalDate.parse("14/04/2023", formatter);
+				
+		ClientePF clientePF = new ClientePF("MARIA", "AV 2, 89", new LinkedList<Veiculo>(), dataL,
+				                            "90197003087", dataN, "GRADUANDA", "F", "MÉDIA");
+		
+		ClientePJ clientePJ = new ClientePJ("PADARIA SM", "AV 3, 140", new LinkedList<Veiculo>(),
+				                            "79896457000186", dataF, 4);
+		
+		Veiculo veiculo1 = new Veiculo("NCX-3134", "NISSAN", "KICKS", 2020);
+		Veiculo veiculo2 = new Veiculo("MSM-8271", "HONDA", "FIT", 2019);
+		Veiculo veiculo3 = new Veiculo("HZM-7159", "HONDA", "H-RV", 2022);
+		
+		clientePF.adicionarVeiculo(veiculo1);
+		clientePJ.adicionarVeiculo(veiculo2);
+		clientePJ.adicionarVeiculo(veiculo3);
+		
+		seguradora.cadastrarCliente(clientePF);
+		seguradora.cadastrarCliente(clientePJ);
+		
+		seguradora.gerarSinistro("NCX-3134", "90197003087", dataS, "RUA CAOS");
+		
+		seguradora.gerarSinistro("MSM-8271", "79.896.457/0001-86", dataS, "RUA ACIDENTE");
+		
+		//*/
+		/* ====================
+		 *  FIM DADOS DE TESTE
+		 * ==================== */
+		
+		esperarEnter(leitor);
+		
+		/* Caso queira rodar o programa adicionando sua propria seguradora, conforme foi planejado este programa,
+		 * deixe as proximas duas linhas descomentadas e comente o bloco de dados de teste.
+		 * 
+		 * Caso contário, comente essas linhas e descomente o bloco de dados de teste */
+		
+		/*
+		seguradora = criarSeguradora(leitor);
+		esperarEnter(leitor);
+		*/
+		
+		/* ================
+		 *  MENU PRINCIPAL
+		 * ================ */
+		
+		MenuOperacoes op;
+		do {
+			limparTela();
+			exibirMenuPrincipal();
+			op = lerOpcaoMenuPrincipal();
+			executarOpcaoMenuExterno(op, seguradora);
+		}while(op != MenuOperacoes.SAIR);
+		
+		System.out.println("Programa encerado!");
 	}
 	
 }

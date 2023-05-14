@@ -112,9 +112,10 @@ public class Seguradora {
 		if(this.listaClientes.contains(cliente) || cliente == null) // cliente já cadastrado ou nulo
 			return false;
 		
-		this.calcularPrecoSeguroCliente(this.getKeyCliente(cliente));
+		if(listaClientes.add(cliente)) // calcula preco seguro se cliente foi adicionado na listaClientes
+				this.calcularPrecoSeguroCliente(this.getKeyCliente(cliente));
 		
-		return listaClientes.add(cliente); // retorna se cliente foi adicionado na listaClientes
+		return false; 
 	}
 	
 	// remove cliente da seguradora pelo seu CPF/CNPJ
@@ -335,4 +336,15 @@ public class Seguradora {
 		return ret;
     }
 	
+	public ArrayList<Veiculo> getVeiculos(){
+		ArrayList<Veiculo> ret = new ArrayList<Veiculo>();
+		
+		for(Cliente cliente: listaClientes) {
+			for(Veiculo veiculo: cliente.getListaVeiculos()) {
+				ret.add(veiculo);
+			}
+		}
+		
+		return ret;
+	}
 }

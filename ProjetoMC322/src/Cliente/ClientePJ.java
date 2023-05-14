@@ -77,91 +77,11 @@ public class ClientePJ extends Cliente {
 	 *  FUNÇÕES PEDIDAS
 	 * ================= */
 	
-	public static boolean validarCNPJ(String cnpj) {
-		
-		// remove caracteres nao numericos ('.', '-' e '/')
-		String numCnpj = cnpj.replaceAll("\\.", "").replaceAll("-", "").replaceAll("/", "");
-		
-		// verifica se o cnpj tem 14 digitos
-		if(numCnpj.length() != 14)
-			return false;
-		
-		// verifica se todos os digitos sao iguais
-		boolean diferente = false;
-		for(int i=0; i < numCnpj.length()-1; i++)
-			// se achar pelo menos um digito diferente (valido) -> break
-			if(numCnpj.charAt(i) != numCnpj.charAt(i+1)) {
-				diferente = true;
-				break;
-			}
-		// nao ha digitos diferentes (todos iguais)
-		if(!diferente)
-			return false;
-
-		// calculo dos digitos verificadores (os dois ultimos nas posicoes [12] e [13])
-		if(Character.getNumericValue(numCnpj.charAt(12)) != calcularDigitoVerificador(11, numCnpj)|| 
-			Character.getNumericValue(numCnpj.charAt(13)) != calcularDigitoVerificador(12, numCnpj))
-			// pelo menos um dos digitos verificadores calculados nao é igual ao digito verificadore fornecido
-			return false;
-				
-		return true;
-	}
-	
 	//TODO
 	public double calculaScore() {
 		return CalcSeguro.VALOR_BASE.getFator() * (1 + qtdeFuncionarios/100) * this.listaVeiculos.size();
 	}
+
 	
-	/* ====================
-	 *  MÉTODOS AUXILIARES
-	 * ==================== */
-	
-	// Determina o 1º ou 2º digitoVerificador 
-		private static int calcularDigitoVerificador(int indiceFinal, String cnpj) {
-			int soma = calcularSomaDigitos(indiceFinal, cnpj);
-			
-			int resto = soma % 11;
-			
-			// se o resto for 0 ou 1, o digitoVerificador é 0
-			if(resto < 2)
-				return 0;
-			
-			// se nao, o digitoVerificador é 11 - resto
-			return 11 - resto;
-		}
-	
-	// Faz a soma das multplicações dos 12 dígitos do cnpj pelos respectivos vetores de multiplicadores
-	private static int calcularSomaDigitos(int indiceFinal, String cnpj) {
-		int soma =0;
-		
-		if(indiceFinal == 11) {
-			// A soma será o produto escalar dos 11 primeiros algarismos do cnpj
-			// e o vetor (5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2)
-			for(int i=0; i<=3; i++) {
-				int digito = Character.getNumericValue(cnpj.charAt(i));
-				soma += digito * (5-i);
-			}
-			
-			for(int i=4; i<=indiceFinal; i++) {
-				int digito = Character.getNumericValue(cnpj.charAt(i));
-				soma += digito * (13-i);
-			}
-		}
-		else if(indiceFinal == 12) {
-			// A soma será o produto escalar dos 12 primeiros algarismos do cnpj
-			// e o vetor (6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2)
-			for(int i=0; i<=4; i++) {
-				int digito = Character.getNumericValue(cnpj.charAt(i));
-				soma += digito * (6-i);
-			}
-			
-			for(int i=5; i<=indiceFinal; i++) {
-				int digito = Character.getNumericValue(cnpj.charAt(i));
-				soma += digito * (14-i);
-			}
-		}
-		
-		return soma;
-	}
 	
 }
