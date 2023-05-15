@@ -114,20 +114,25 @@ public class ClientePF extends Cliente {
 	 * ================= */
 	
 	//TOTEST
+	@Override
 	public double calculaScore() {
 		// calcular idade
 		LocalDate dataAtual = LocalDate.now();
 		Period periodo = Period.between(dataNascimento, dataAtual);
 		int idade = periodo.getYears();
+		
 		CalcSeguro FATOR_IDADE;
 		if(idade <= 30)
 			FATOR_IDADE = CalcSeguro.FATOR_18_30;
-		else if(idade <=60)
+		else if(idade <= 60)
 			FATOR_IDADE = CalcSeguro.FATOR_30_60;
-		else {
+		else 
 			FATOR_IDADE = CalcSeguro.FATOR_60_90;
-		}
 
+		//System.out.println(idade);
+		//System.out.println(CalcSeguro.VALOR_BASE.getFator() + " * " + FATOR_IDADE.getFator() + " * " + this.listaVeiculos.size());
+		//System.out.println(CalcSeguro.VALOR_BASE.getFator() * FATOR_IDADE.getFator() * this.listaVeiculos.size());
+				
 		return CalcSeguro.VALOR_BASE.getFator() * FATOR_IDADE.getFator() * this.listaVeiculos.size();
 	}
 	

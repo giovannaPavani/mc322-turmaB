@@ -41,15 +41,19 @@ public class Sinistro {
 	public int getId() {
 		return id;
 	}
+	
 	public LocalDate getData() {
 		return data;
 	}
+	
 	public void setData(LocalDate data) {
 		this.data = data;
 	}
+	
 	public String getEndereco() {
 		return endereco;
 	}
+	
 	public void setEndereco(String endereco) {
 		this.endereco = endereco;
 	}
@@ -97,7 +101,7 @@ public class Sinistro {
 		ret += "----------------\n";
 		ret += "Dados do cliente\n";
 		ret += "----------------\n";
-		ret += this.cliente.toString()+"\n";
+		ret += this.cliente.toStringSimples()+"\n";
 		return ret;
 	}
 	

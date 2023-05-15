@@ -12,8 +12,7 @@ public class Cliente {
 	protected double valorSeguro;
 	
 	// Construtor
-	public Cliente(String nome, String endereco, 
-			       LinkedList<Veiculo> listaVeiculos) {
+	public Cliente(String nome, String endereco, LinkedList<Veiculo> listaVeiculos) {
 		this.nome = nome;
 		this.endereco = endereco;
 		this.listaVeiculos = listaVeiculos;
@@ -72,7 +71,6 @@ public class Cliente {
 		return ret;
 	}
 	
-	// TODO
 	// define score como 0
 	public double calculaScore() {
 		return 0.0;
@@ -98,21 +96,21 @@ public class Cliente {
 	}
 	
 	// remove (caso exista) o veiculo passado por parametro do cliente
-		public boolean removerVeiculo(String placa) {
-			if(placa == null) // veiculo nulo
-				return false;
-			
-			Veiculo veiculo = null;
-			for(Veiculo v: listaVeiculos) {
-				if(v.getPlaca().equals(placa))
-					veiculo = v;
-			}
-			
-			if(veiculo == null)
-				return false;
-			
-			return this.listaVeiculos.remove(veiculo);
+	public boolean removerVeiculo(String placa) {
+		if(placa == null) // veiculo nulo
+			return false;
+		
+		Veiculo veiculo = null;
+		for(Veiculo v: listaVeiculos) {
+			if(v.getPlaca().equals(placa))
+				veiculo = v;
 		}
+		
+		if(veiculo == null)
+			return false;
+		
+		return this.listaVeiculos.remove(veiculo);
+	}
 	
 	public Veiculo getVeiculoByPlaca(String placa) {
 		Veiculo ret = null;

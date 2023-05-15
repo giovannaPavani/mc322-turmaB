@@ -56,6 +56,7 @@ public class ClientePJ extends Cliente {
 		
 		ret += "CNPJ: " + this.cnpj + "\n";
 		ret += "Data de Fundação: " + dataFundacao.format(formatter) + "\n";
+		ret += "Qtde Funcionários: " + this.qtdeFuncionarios + "\n";
 		ret += super.toString();
 		return ret;
 	}
@@ -77,9 +78,13 @@ public class ClientePJ extends Cliente {
 	 *  FUNÇÕES PEDIDAS
 	 * ================= */
 	
-	//TODO
+	//TOTEST
 	public double calculaScore() {
-		return CalcSeguro.VALOR_BASE.getFator() * (1 + qtdeFuncionarios/100) * this.listaVeiculos.size();
+		//System.out.println(qtdeFuncionarios);
+		//System.out.println(CalcSeguro.VALOR_BASE.getFator() + " * " + (1 + qtdeFuncionarios/100.0) + " * " +  this.listaVeiculos.size());
+		//System.out.println(CalcSeguro.VALOR_BASE.getFator() * (1 + qtdeFuncionarios/100.0) * this.listaVeiculos.size());
+		
+		return CalcSeguro.VALOR_BASE.getFator() * (1.0 + qtdeFuncionarios/100.0) * this.listaVeiculos.size();
 	}
 
 	

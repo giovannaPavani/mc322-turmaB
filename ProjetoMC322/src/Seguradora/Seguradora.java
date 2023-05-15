@@ -170,11 +170,14 @@ public class Seguradora {
 		if(veiculo == null) // o cliente nao tem esse veiculo
 			return false;
 		
-		this.calcularPrecoSeguroCliente(keyCliente); // atualiza valor do seguro do cliente
-		
 		Sinistro sinistro = new Sinistro(data, endereco, this, veiculo, cliente);
 		
-		return listaSinistros.add(sinistro); // retorna se o sinistro criado foi adicionado na listaSinistros
+		boolean add = listaSinistros.add(sinistro); // retorna se o sinistro criado foi adicionado na listaSinistros
+		
+		if(add)
+			this.calcularPrecoSeguroCliente(keyCliente); // atualiza valor do seguro do cliente
+		
+		return add;
 	}
 	
 	// retorna se existe algum sinistro envolvendo este cliente
@@ -218,6 +221,9 @@ public class Seguradora {
 		// pega a lista de sinistros do cliente e resgata o tamanho desta
 		int qtdSinistros = this.listarSinistrosByKeyCliente(keyCliente).size();
 		
+		//System.out.println("cliente: "+keyCliente+ " score: "+score + " qtdSinistro: " + qtdSinistros);
+		//System.out.println("Seguro: "+score * (1 + qtdSinistros));
+		
 		// atualiza o valor do seguro no objeto do cliente
 		cliente.setValorSeguro(score * (1 + qtdSinistros));
 	}
@@ -225,9 +231,11 @@ public class Seguradora {
 	//TOTEST
 	public double calcularReceita() {
 		double soma = 0.0;
+		
 		for(Cliente cliente : listaClientes) {
 			soma += cliente.getValorSeguro();
 		}
+		
 		return soma;
 	}
 	
@@ -346,5 +354,19 @@ public class Seguradora {
 		}
 		
 		return ret;
+	}
+	
+	public boolean removerSinistro(int id) {
+		if(id < 0)
+			return false;
+		
+		for(int i = 0; i < listaSinistros.size(); i++) {
+			if(listaSinistros.get(i).getId() == id) {
+				listaSinistros.remove(i);
+				return true;
+			}
+		}
+		
+		return false;
 	}
 }

@@ -12,8 +12,10 @@ public enum MenuOperacoes {
 	
 	LISTAR("Listar", new SubMenuOperacoes[] {
 			SubMenuOperacoes.LISTAR_CLIENTES,
-			SubMenuOperacoes.LISTAR_SINISTROS,
-			SubMenuOperacoes.LISTAR_VEICULOS,
+			SubMenuOperacoes.LISTAR_SINISTROS_SEGURADORA,
+			SubMenuOperacoes.LISTAR_SINISTROS_CLIENTE,
+			SubMenuOperacoes.LISTAR_VEICULOS_CLIENTE,
+			SubMenuOperacoes.LISTAR_VEICULOS_SEGURADORA,
 			SubMenuOperacoes.VOLTAR
 	}),
 	
