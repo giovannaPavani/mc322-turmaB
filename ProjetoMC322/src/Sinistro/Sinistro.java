@@ -102,6 +102,9 @@ public class Sinistro {
 		ret += "Dados do cliente\n";
 		ret += "----------------\n";
 		ret += this.cliente.toStringSimples()+"\n";
+		// optei por escrever o cliente.toStringSimples() pois o completo estava 
+		// atrapalhando a visualização do sinistro em si
+		
 		return ret;
 	}
 	

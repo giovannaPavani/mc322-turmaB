@@ -1,5 +1,6 @@
 package Main;
-
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class Validacao {
@@ -25,7 +26,7 @@ public class Validacao {
 		return 11 - resto;
 	}
 	
-	public static boolean validarCPF(String cpf) {
+	public static boolean validaCPF(String cpf) {
 		
 		// remove caracteres nao numericos ('.' e '-')
 		String numCpf = cpf.replaceAll("\\D+","");
@@ -103,7 +104,7 @@ public class Validacao {
 		return soma;
 	}
 		
-	public static boolean validarCNPJ(String cnpj) {
+	public static boolean validaCNPJ(String cnpj) {
 		
 		// remove caracteres nao numericos ('.', '-' e '/')
 		String numCnpj = cnpj.replaceAll("\\.", "").replaceAll("-", "").replaceAll("/", "");
@@ -144,7 +145,7 @@ public class Validacao {
 		do { // continuamente é feito esse bloco de comandos até o usuário inserir um CNPJ válido
 			System.out.print("CNPJ: ");
 			cnpj = leitor.nextLine();
-			valido = Validacao.validarCNPJ(cnpj);
+			valido = Validacao.validaCNPJ(cnpj);
 			if(!valido) {
 				System.out.println(" -------------------------------------------");
 				System.out.println("| CNPJ inválido. Tente inserí-lo novamente. |");
@@ -163,7 +164,7 @@ public class Validacao {
 		do { // continuamente é feito esse bloco de comandos até o usuário inserir um CPF válido
 			System.out.print("CPF: ");
 			cpf = leitor.nextLine();
-			valido = Validacao.validarCPF(cpf);
+			valido = Validacao.validaCPF(cpf);
 			if(!valido) {
 				System.out.println(" ------------------------------------------");
 				System.out.println("| CPF inválido. Tente inserí-lo novamente. |");
@@ -196,7 +197,16 @@ public class Validacao {
 		return tipoCliente;
 	}
 
-	public static String getNomeValido(Scanner leitor) {
+	public static String getKeyClienteValida(Scanner leitor, String tipoCliente) {
+		String keyCliente = "";
+		if(tipoCliente.equals("CNPJ"))
+			keyCliente = Validacao.getCnpjValido(leitor); 
+		else if(tipoCliente.equals("CPF"))
+			keyCliente = Validacao.getCpfValido(leitor);
+		return keyCliente;
+	}
+	
+	public static String validaNome(Scanner leitor) {
 		String nome = "";
 		boolean valido = true;
 		do {
@@ -220,4 +230,108 @@ public class Validacao {
 			
 		return nome;
 	}
+	
+	// programa fica em loop ate que o usuário insira uma data no formato correto
+	public static LocalDate getDataValida(Scanner leitor, String tipoData) {
+		// formatador de String do formato "dd/MM/yyyy" para objeto LocalDate
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		LocalDate data= null;
+		
+		do { // continuamente é feito esse bloco de comandos ate o usuario inserir uma data valida
+			System.out.print(tipoData+": ");
+			String dataLeitor = leitor.nextLine();
+			try { // tenta converter String em LocalDate
+				data = LocalDate.parse(dataLeitor, formatter);
+			} catch(Exception e) {
+				System.out.println(" --------------------------------------------------------------------------------");
+				System.out.println("| "+tipoData+" inválida! Tente inserí-la novamente, no formato [dd/mm/yyyy]. |");
+				System.out.println(" --------------------------------------------------------------------------------\n");
+			}
+		} while (data == null);
+		
+		return data;
+	}
+	
+	// programa fica em loop até que o usuário insira um genero valido
+	public static String getGeneroValido(Scanner leitor) {
+		String genero;
+		boolean valido = false;
+		do { // continuamente é feito esse bloco de comandos até o usuário inserir um genero valido ("F", "M" ou "NB")
+			System.out.print("Gênero (F/M/NB): ");
+			genero = leitor.nextLine().toUpperCase(); // caixa alta para padronizacao e facilitar insercao
+			if(genero.equals("F") || genero.equals("M") || genero.equals("NB"))
+				valido = true;
+			if(!valido) {
+				System.out.println(" ---------------------------------------------------------------------------------------------------");
+				System.out.println("| Gênero inválido. Tente inserí-lo novamente, sendo [F] Feminino, [M] Masculino e [NB] Não binário. |");
+				System.out.println(" ---------------------------------------------------------------------------------------------------\n");
+			}
+		} while(!valido);
+		
+		return genero;
+	}
+
+	public static int getQtdValida(Scanner leitor, String tipoQtd) {
+		int qtd = -1;
+		do {
+			System.out.print(tipoQtd+": ");
+			String qtdLeitor = leitor.nextLine();
+			try {
+				qtd = Integer.parseInt(qtdLeitor);
+				if(qtd < 0) // número natural
+					throw new Exception();
+			} catch(Exception e) {
+				System.out.println(" --------------------------------------------------------------------------------");
+				System.out.println("| "+tipoQtd+" inválida! Tente inserí-la novamente, no formato [dd/mm/yyyy]. |");
+				System.out.println(" --------------------------------------------------------------------------------\n");
+			}
+		} while (qtd == -1);
+		
+		return qtd;
+	}
+	
+	// programa fica em loop até que o usuário insira um número entre 1886 e 2023
+	//																    \ (invencao do carro, sim eu pesquisei...)
+	public static int getAnoValido(Scanner leitor) {
+		int anoFabricacao = 0;
+		
+		do { // continuamente é feito esse bloco de comandos até o usuário inserir um ano valido
+			System.out.print("Ano de fabricação: ");
+			try {					
+				String anoFabricacaoLeitor = leitor.nextLine();
+				anoFabricacao = Integer.parseInt(anoFabricacaoLeitor); // tenta converter a String para int
+				if(anoFabricacao < 1886 || anoFabricacao > 2023)
+					throw new Exception(); // gera excecao caso o ano esteja fora do intervalo dado
+			} catch(Exception e) { // ano invalido
+				anoFabricacao = 0; // zera variavel para continuar em loop
+				System.out.println(" ---------------------------------------------------------------");
+				System.out.println("| Ano de fabricação inválido! Tente inserir o número novamente. |");
+				System.out.println(" ---------------------------------------------------------------\n");
+			}
+		}while(anoFabricacao ==0);
+		
+		return anoFabricacao;
+	}
+
+	public static int getIDValido(Scanner leitor) {
+		int id = 0;
+		
+		do { // continuamente é feito esse bloco de comandos até o usuário inserir um id valido
+			System.out.print("ID: ");
+			try {					
+				String idLeitor = leitor.nextLine();
+				id = Integer.parseInt(idLeitor); // tenta converter a String para int
+				if(id <= 0)
+					throw new Exception(); // gera excecao caso seja negativo ou 0
+			} catch(Exception e) { // ano invalido
+				id = 0; // zera variavel para continuar em loop
+				System.out.println(" ------------------------------------------------------------");
+				System.out.println("| ID inválido! Tente inserir o número novamente. |");
+				System.out.println(" ------------------------------------------------------------\n");
+			}
+		}while(id == 0);
+		
+		return id;
+	}
+	
 }

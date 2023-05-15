@@ -34,9 +34,12 @@ public class Main {
 	 */
 	private static void exibirSubMenu(MenuOperacoes op) {
 		limparTela();
+		
 		SubMenuOperacoes[] subMenu = op.getSubmenu();
 		System.out.println(" " +(op.ordinal()+1) +") Menu "+ op.getDescricao()+"\n");
+		
 		for(int i=0; i<subMenu.length; i++) {
+			// i+1 para começar em 1, não em 0
 			System.out.println(" "+(i+1) +" - " + subMenu[i].getDescricao());
 		}
 	}
@@ -46,9 +49,10 @@ public class Main {
 		Scanner scanner = new Scanner(System.in);
 		int opUsuario;
 		MenuOperacoes opUsuarioConst;
+		
 		do {
 			System.out.print("\nDigite o número da operação que deseja realizar: ");
-			opUsuario = scanner.nextInt() - 1;
+			opUsuario = scanner.nextInt() - 1; // -1 pois o usuário está vendo os indices somados a 1 (como dito em exibirMenuPrincipal())
 			// se o numero inserido não for válido
 			if(opUsuario < 0 || opUsuario > MenuOperacoes.values().length-1) {
 				System.out.println(" ---------------------------------------------------------------------------------");
@@ -56,6 +60,7 @@ public class Main {
 				System.out.println(" ---------------------------------------------------------------------------------\n");
 			}	
 		}while(opUsuario < 0 || opUsuario > MenuOperacoes.values().length - 1);
+		
 		opUsuarioConst = MenuOperacoes.values()[opUsuario];
 		return opUsuarioConst;
 	}
@@ -65,9 +70,10 @@ public class Main {
 		Scanner scanner = new Scanner(System.in);
 		int opUsuario;
 		SubMenuOperacoes opUsuarioConst;
+		
 		do {
 			System.out.print("\nDigite o número da operação que deseja realizar: ");
-			opUsuario = scanner.nextInt() - 1;
+			opUsuario = scanner.nextInt() - 1; // -1 pois o usuário está vendo os indices somados a 1 (como dito em exibirMenuPrincipal())
 			// se o numero inserido não for válido
 			if(opUsuario < 0 || opUsuario > op.getSubmenu().length - 1) {
 				System.out.println(" ---------------------------------------------------------------------------------");
@@ -75,6 +81,7 @@ public class Main {
 				System.out.println(" ---------------------------------------------------------------------------------\n");
 			}
 		}while(opUsuario < 0 || opUsuario > op.getSubmenu().length - 1);
+		
 		opUsuarioConst = op.getSubmenu()[opUsuario];
 		return opUsuarioConst;
 	}
@@ -86,7 +93,7 @@ public class Main {
 			case CADASTRAR:
 			case LISTAR:
 			case EXCLUIR:
-				executarSubMenu(op, seguradora); // executa em cadastrar, listar e/ou no excluir
+				executarSubMenu(op, seguradora); // executa em cadastrar, listar e/ou excluir
 				break;
 				
 			case GERAR_SINISTRO:
@@ -155,11 +162,11 @@ public class Main {
 				listarSinistrosCliente(leitor, seguradora);
 				break;
 				
-			case LISTAR_VEICULOS_CLIENTE: // FAZER!!!
+			case LISTAR_VEICULOS_CLIENTE:
 				listarVeiculosCliente(leitor, seguradora);
 				break;
 			
-			case LISTAR_VEICULOS_SEGURADORA: // FAZER!!!
+			case LISTAR_VEICULOS_SEGURADORA:
 				listarVeiculosSeguradora(leitor, seguradora);
 				break;
 				
@@ -170,22 +177,24 @@ public class Main {
 					System.out.println("\nERRO: O cliente informado não estava cadastrado na seguradora. Revise os dados.");
 				break;
 				
-			case EXCLUIR_VEICULO: // FAZER!!!
+			case EXCLUIR_VEICULO:
 				if(excluirVeiculo(leitor, seguradora))
 					System.out.println("\nVeículo excluído da seguradora com sucesso!");
-					
+				else
+					System.out.println("\nERRO: O Veículo informado não estava cadastrado na seguradora ou a placa do veículo não estava cadastrada no cliente informado. Revise os dados.\n");
 				break;
 
-			case EXCLUIR_SINISTRO: // FAZER!!!
+			case EXCLUIR_SINISTRO:
 				if(excluirSinistro(leitor, seguradora))
 					System.out.println("\nSinistro excluído da seguradora com sucesso!");
 				else
-					System.out.println("\nERRO: O sinistro informado não estava cadastrado na seguradora. Revise os dados.");
+					System.out.println("\nERRO: O sinistro informado não estava reigstrado na seguradora. Revise os dados.");
 				break;
 				
 			case VOLTAR:
 				break;
 		}
+		
 		if(opSubmenu != SubMenuOperacoes.VOLTAR)
 			esperarEnter();
 	}
@@ -223,7 +232,7 @@ public class Main {
 		System.out.println("Digite as informações da nova seguradora.\n");
 		System.out.println("(OBS: Escreva o nome sem caracteres especiais (acentos e 'ç').\n");
 		
-		String nome = Validacao.getNomeValido(leitor);
+		String nome = Validacao.validaNome(leitor);
 		System.out.print("Telefone: ");
 		String telefone = leitor.nextLine();
 		System.out.print("Email: ");
@@ -255,66 +264,21 @@ public class Main {
 		
 		System.out.println("Digite as informações do novo cliente.");
 		System.out.println("(OBS: Escreva o nome sem caracteres especiais (acentos e 'ç') e as datas no formato dd/mm/aaaa).\n");
-		String nome = Validacao.getNomeValido(leitor);
+		String nome = Validacao.validaNome(leitor);
 		System.out.print("Endereco: ");
 		String endereco = leitor.nextLine();
-		
 		String tipo = Validacao.getTipoClienteValido(leitor);
 		
-		// formatador de String do formato "dd/MM/yyyy" para objeto LocalDate
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		Cliente cliente = null;
-		
-		// criando cliente físico
 		if(tipo.equals("CPF")) {
+			// criando cliente físico
+			
 			String cpf = Validacao.getCpfValido(leitor);
-			
-			// programa fica em loop ate que o usuário insira uma data no formato correto
-			LocalDate dataLicenca = null;
-			do { // continuamente é feito esse bloco de comandos ate o usuario inserir uma data valida
-				System.out.print("Data da licença: ");
-				String dataLicencaLeitor = leitor.nextLine();
-				try { // tenta converter String em LocalDate
-					dataLicenca = LocalDate.parse(dataLicencaLeitor, formatter);
-				} catch(Exception e) {
-					System.out.println(" --------------------------------------------------------------------------------");
-					System.out.println("| Data da licença inválida! Tente inserí-la novamente, no formato [dd/mm/yyyy]. |");
-					System.out.println(" --------------------------------------------------------------------------------\n");
-				}
-			} while (dataLicenca == null);
-			
-			// mesma lógica da dataLicenca
-			LocalDate dataNascimento = null;
-			do {
-				System.out.print("Data de Nascimento: ");
-				String dataNascimentoLeitor = leitor.nextLine();
-				try {
-					dataNascimento = LocalDate.parse(dataNascimentoLeitor, formatter);
-				} catch(Exception e) {
-					System.out.println(" ----------------------------------------------------------------------------------");
-					System.out.println("| Data de nascimento inválida! Tente inserí-la novamente, no formato [dd/mm/aaaa]. |");
-					System.out.println(" ----------------------------------------------------------------------------------\n");
-				}
-			} while (dataNascimento == null);
-			
+			LocalDate dataLicenca = Validacao.getDataValida(leitor, "Data da licença");
+			LocalDate dataNascimento = Validacao.getDataValida(leitor, "Data de nascimento");
 			System.out.print("Educação: ");
 			String educacao = leitor.nextLine();
-			
-			// programa fica em loop até que o usuário insira um genero valido
-			String genero;
-			boolean valido = false;
-			do { // continuamente é feito esse bloco de comandos até o usuário inserir um genero valido ("F", "M" ou "NB")
-				System.out.print("Gênero (F/M/NB): ");
-				genero = leitor.nextLine().toUpperCase(); // caixa alta para padronizacao e facilitar insercao
-				if(genero.equals("F") || genero.equals("M") || genero.equals("NB"))
-					valido = true;
-				if(!valido) {
-					System.out.println(" ---------------------------------------------------------------------------------------------------");
-					System.out.println("| Gênero inválido. Tente inserí-lo novamente, sendo [F] Feminino, [M] Masculino e [NB] Não binário. |");
-					System.out.println(" ---------------------------------------------------------------------------------------------------\n");
-				}
-			} while(!valido);
-			
+			String genero = Validacao.getGeneroValido(leitor);
 			System.out.print("Classe econômica: ");
 			String classeEconomica = leitor.nextLine();
 			
@@ -324,36 +288,10 @@ public class Main {
 		
 		} else if(tipo.equals("CNPJ")){ 
 			// criando cliente jurídico
+			
 			String cnpj = Validacao.getCnpjValido(leitor);
-			
-			// mesma lógica da dataLicenca
-			LocalDate dataFundacao = null;
-			do {
-				System.out.print("Data de fundação: ");
-				String dataFundacaoLeitor = leitor.nextLine();
-				try {
-					dataFundacao = LocalDate.parse(dataFundacaoLeitor, formatter);
-				} catch(Exception e) {
-					System.out.println(" --------------------------------------------------------------------------------");
-					System.out.println("| Data de fundação inválida! Tente inserí-la novamente, no formato [dd/mm/yyyy]. |");
-					System.out.println(" --------------------------------------------------------------------------------\n");
-				}
-			} while (dataFundacao == null);
-			
-			int qtdeFuncionarios = -1;
-			do {
-				System.out.print("Quantidade de funcionários: ");
-				String qtdeFuncionariosLeitor = leitor.nextLine();
-				try {
-					qtdeFuncionarios = Integer.parseInt(qtdeFuncionariosLeitor);
-					if(qtdeFuncionarios < 0) // número natural
-						throw new Exception();
-				} catch(Exception e) {
-					System.out.println(" --------------------------------------------------------------------------------");
-					System.out.println("| Data de fundação inválida! Tente inserí-la novamente, no formato [dd/mm/yyyy]. |");
-					System.out.println(" --------------------------------------------------------------------------------\n");
-				}
-			} while (qtdeFuncionarios == -1);
+			LocalDate dataFundacao = Validacao.getDataValida(leitor, "Data de fundação");
+			int qtdeFuncionarios = Validacao.getQtdValida(leitor, "Quantidade de funcionários");
 			
 			// cria cliente com lista de veiculos instanciada e vazia
 			cliente = new ClientePJ(nome, endereco, new LinkedList<Veiculo>(),
@@ -381,32 +319,11 @@ public class Main {
 		String marca = leitor.nextLine();
 		System.out.print("Modelo: ");
 		String modelo = leitor.nextLine();
-		
-		// programa fica em loop até que o usuário insira um número entre 1886 e 2023
-		//																    \ (invencao do carro, sim eu pesquisei...)
-		int anoFabricacao = 0;
-		do { // continuamente é feito esse bloco de comandos até o usuário inserir um ano valido
-			System.out.print("Ano de fabricação: ");
-			try {					
-				String anoFabricacaoLeitor = leitor.nextLine();
-				anoFabricacao = Integer.parseInt(anoFabricacaoLeitor); // tenta converter a String para int
-				if(anoFabricacao < 1886 || anoFabricacao > 2023)
-					throw new Exception(); // gera excecao caso o ano esteja fora do intervalo dado
-			} catch(Exception e) { // ano invalido
-				anoFabricacao = 0; // zera variavel para continuar em loop
-				System.out.println(" ---------------------------------------------------------------");
-				System.out.println("| Ano de fabricação inválido! Tente inserir o número novamente. |");
-				System.out.println(" ---------------------------------------------------------------\n");
-			}
-		}while(anoFabricacao ==0);
+		int anoFabricacao = Validacao.getAnoValido(leitor);
 		
 		// pergunta ao usuário o tipo de cliente e seu CPF/CNPJ
 		String tipoCliente = Validacao.getTipoClienteValido(leitor);
-		String keyCliente = "";
-		if(tipoCliente.equals("CNPJ"))
-			keyCliente = Validacao.getCnpjValido(leitor); 
-		else if(tipoCliente.equals("CPF"))
-			keyCliente = Validacao.getCpfValido(leitor);
+		String keyCliente = Validacao.getKeyClienteValida(leitor, tipoCliente);
 		
 		// resgata cliente dentro da seguradora
 		Cliente cliente = seguradora.getClienteByKey(keyCliente);
@@ -514,11 +431,7 @@ public class Main {
 		
 		// pergunta ao usuário o tipo de cliente e seu CPF/CNPJ
 		String tipoCliente = Validacao.getTipoClienteValido(leitor);
-		String keyCliente = "";
-		if(tipoCliente.equals("CNPJ"))
-			keyCliente = Validacao.getCnpjValido(leitor);
-		else if(tipoCliente.equals("CPF"))
-			keyCliente = Validacao.getCpfValido(leitor);
+		String keyCliente = Validacao.getKeyClienteValida(leitor, tipoCliente);
 		
 		// nao ha nenhum sinistro gerado envolvendo o cliente informado ou o cliente nao esta cadastrado na seguradora
 		if (!seguradora.visualizarSinistro(keyCliente)) {
@@ -544,11 +457,7 @@ public class Main {
 		
 		// pergunta ao usuário o tipo de cliente e seu CPF/CNPJ
 		String tipoCliente = Validacao.getTipoClienteValido(leitor);
-		String keyCliente = "";
-		if(tipoCliente.equals("CNPJ"))
-			keyCliente = Validacao.getCnpjValido(leitor);
-		else if(tipoCliente.equals("CPF"))
-			keyCliente = Validacao.getCpfValido(leitor);
+		String keyCliente = Validacao.getKeyClienteValida(leitor, tipoCliente);
 		
 		Cliente cliente = seguradora.getClienteByKey(keyCliente);
 		if(cliente == null) {
@@ -607,11 +516,7 @@ public class Main {
 		
 		// pergunta ao usuário o tipo de cliente e seu CPF/CNPJ
 		String tipoCliente = Validacao.getTipoClienteValido(leitor);
-		String keyCliente = "";
-		if(tipoCliente.equals("CNPJ"))
-			keyCliente = Validacao.getCnpjValido(leitor);
-		else if(tipoCliente.equals("CPF"))
-			keyCliente = Validacao.getCpfValido(leitor);
+		String keyCliente = Validacao.getKeyClienteValida(leitor, tipoCliente);
 		
 		// tenta remover cliente pelo CPF/CNPJ e retorna se deu certo
 		return seguradora.removerCliente(keyCliente);
@@ -626,11 +531,7 @@ public class Main {
 		System.out.println("Digite as informações do veículo a ser excluído.");
 		// pergunta ao usuário o tipo de cliente e seu CPF/CNPJ
 		String tipoCliente = Validacao.getTipoClienteValido(leitor);
-		String keyCliente = "";
-		if(tipoCliente.equals("CNPJ"))
-			keyCliente = Validacao.getCnpjValido(leitor);
-		else if(tipoCliente.equals("CPF"))
-			keyCliente = Validacao.getCpfValido(leitor);
+		String keyCliente = Validacao.getKeyClienteValida(leitor, tipoCliente);
 		
 		Cliente cliente = seguradora.getClienteByKey(keyCliente);
 		if(cliente == null) {
@@ -643,9 +544,6 @@ public class Main {
 		// tenta remover cliente pelo CPF/CNPJ e retorna se deu certo
 		boolean remove = seguradora.removerVeiculo(cliente, placa);
 		
-		if(!remove)
-			System.out.println("\nERRO: O Veículo informado não estava cadastrado na seguradora ou a placa do veículo não estava cadastrada no cliente informado. Revise os dados.\n");
-		
 		return remove;
 	}
 	
@@ -657,21 +555,7 @@ public class Main {
 		
 		System.out.println("Digite o ID do sinistro a ser excluído.");
 		
-		int id = -1;
-		do { // continuamente é feito esse bloco de comandos até o usuário inserir um id valido
-			System.out.print("Ano de fabricação: ");
-			try {					
-				String idLeitor = leitor.nextLine();
-				id = Integer.parseInt(idLeitor); // tenta converter a String para int
-				if(id < 0)
-					throw new Exception(); // gera excecao caso o ano esteja fora do intervalo dado
-			} catch(Exception e) { // ano invalido
-				id = -1; // zera variavel para continuar em loop
-				System.out.println(" ------------------------------------------------------------");
-				System.out.println("| ID do sinistro inválido! Tente inserir o número novamente. |");
-				System.out.println(" ------------------------------------------------------------\n");
-			}
-		}while(id == -1);
+		int id = Validacao.getIDValido(leitor);
 		
 		// tenta remover sinistro pelo CPF/CNPJ e retorna se deu certo
 		return seguradora.removerSinistro(id);
@@ -690,31 +574,13 @@ public class Main {
 		
 		System.out.println("Digite as informações que envolvem o sinistro.");
 		
-		// mesma logica da dataLicenca
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		LocalDate data = null;
-		do {
-			System.out.print("Data do sinistro: ");
-			String dataLicencaLeitor = leitor.nextLine();
-			try {
-				data = LocalDate.parse(dataLicencaLeitor, formatter);
-			} catch(Exception e) {
-				System.out.println(" --------------------------------------------------------------------------------");
-				System.out.println("| Data do sinistro inválido. Tente inserí-la novamente, no formato [dd/mm/yyyy]. |");
-				System.out.println(" --------------------------------------------------------------------------------\n");
-			}
-		} while (data == null);
-		
+		LocalDate data = Validacao.getDataValida(leitor, "Data do sinistro");
 		System.out.print("Endereço do sinistro: ");
 		String endereco = leitor.nextLine();
 		
 		// pergunta ao usuário o tipo de cliente e seu CPF/CNPJ
 		String tipoCliente = Validacao.getTipoClienteValido(leitor);
-		String keyCliente = "";
-		if(tipoCliente.equals("CNPJ"))
-			keyCliente = Validacao.getCnpjValido(leitor);
-		else if(tipoCliente.equals("CPF"))
-			keyCliente = Validacao.getCpfValido(leitor);
+		String keyCliente = Validacao.getKeyClienteValida(leitor, tipoCliente);
 		
 		System.out.print("Placa do veículo: ");
 		String placa = leitor.nextLine();
@@ -735,11 +601,7 @@ public class Main {
 		
 		// pergunta ao usuário o tipo de cliente e seu CPF/CNPJ
 		String tipoCliente = Validacao.getTipoClienteValido(leitor);
-		String clienteFonte = "";
-		if(tipoCliente.equals("CNPJ"))
-			clienteFonte = Validacao.getCnpjValido(leitor);
-		else if(tipoCliente.equals("CPF"))
-			clienteFonte = Validacao.getCpfValido(leitor);
+		String clienteFonte = Validacao.getKeyClienteValida(leitor, tipoCliente);
 		
 		Cliente clienteFonteSeguradora = seguradora.getClienteByKey(clienteFonte);
 		if(clienteFonteSeguradora.getListaVeiculos().isEmpty()) {
@@ -750,11 +612,7 @@ public class Main {
 		System.out.println("\nDigite o CPF/CNPJ do cliente que receberá o seguro:");
 		
 		tipoCliente = Validacao.getTipoClienteValido(leitor);
-		String clienteDestino = "";
-		if(tipoCliente.equals("CNPJ"))
-			clienteDestino = Validacao.getCnpjValido(leitor);
-		else if(tipoCliente.equals("CPF"))
-			clienteDestino = Validacao.getCpfValido(leitor);
+		String clienteDestino = Validacao.getKeyClienteValida(leitor, tipoCliente);
 		
 		// transfere o seguro do clienteFonte para o clienteDestino e retorna se deu certo
 		return seguradora.transferirSeguro(clienteFonte, clienteDestino);
