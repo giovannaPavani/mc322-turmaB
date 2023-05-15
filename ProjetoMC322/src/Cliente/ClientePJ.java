@@ -78,12 +78,7 @@ public class ClientePJ extends Cliente {
 	 *  FUNÇÕES PEDIDAS
 	 * ================= */
 	
-	//TOTEST
 	public double calculaScore() {
-		//System.out.println(qtdeFuncionarios);
-		//System.out.println(CalcSeguro.VALOR_BASE.getFator() + " * " + (1 + qtdeFuncionarios/100.0) + " * " +  this.listaVeiculos.size());
-		//System.out.println(CalcSeguro.VALOR_BASE.getFator() * (1 + qtdeFuncionarios/100.0) * this.listaVeiculos.size());
-		
 		return CalcSeguro.VALOR_BASE.getFator() * (1.0 + qtdeFuncionarios/100.0) * this.listaVeiculos.size();
 	}
 

@@ -195,4 +195,29 @@ public class Validacao {
 		
 		return tipoCliente;
 	}
+
+	public static String getNomeValido(Scanner leitor) {
+		String nome = "";
+		boolean valido = true;
+		do {
+			System.out.print("Nome: ");
+			nome = leitor.nextLine();
+			
+			int tam = nome.length();
+			for (int i=0; i<tam; i++) {
+				char c = nome.charAt(i);
+				if (!(((c >= 'A') && (c <= 'Z')) ||
+				    ((c >= 'a') && (c <= 'z')))) {
+					System.out.println(" -----------------------------------------------------------------------------------------");
+					System.out.println("| Nome inválido. Tente inserir novamente sem acentos e 'ç', apenas letras são permitidas. |");
+					System.out.println(" -----------------------------------------------------------------------------------------\n");
+					valido = false;
+					break;
+				}
+			}
+			
+		} while(!valido);
+			
+		return nome;
+	}
 }

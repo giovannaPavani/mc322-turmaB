@@ -95,23 +95,6 @@ public class Cliente {
 		return this.listaVeiculos.remove(veiculo);
 	}
 	
-	// remove (caso exista) o veiculo passado por parametro do cliente
-	public boolean removerVeiculo(String placa) {
-		if(placa == null) // veiculo nulo
-			return false;
-		
-		Veiculo veiculo = null;
-		for(Veiculo v: listaVeiculos) {
-			if(v.getPlaca().equals(placa))
-				veiculo = v;
-		}
-		
-		if(veiculo == null)
-			return false;
-		
-		return this.listaVeiculos.remove(veiculo);
-	}
-	
 	public Veiculo getVeiculoByPlaca(String placa) {
 		Veiculo ret = null;
 		for(Veiculo veiculo: listaVeiculos)

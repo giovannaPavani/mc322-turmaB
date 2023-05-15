@@ -113,7 +113,6 @@ public class ClientePF extends Cliente {
 	 *  FUNÇÕES PEDIDAS
 	 * ================= */
 	
-	//TOTEST
 	@Override
 	public double calculaScore() {
 		// calcular idade
@@ -128,10 +127,6 @@ public class ClientePF extends Cliente {
 			FATOR_IDADE = CalcSeguro.FATOR_30_60;
 		else 
 			FATOR_IDADE = CalcSeguro.FATOR_60_90;
-
-		//System.out.println(idade);
-		//System.out.println(CalcSeguro.VALOR_BASE.getFator() + " * " + FATOR_IDADE.getFator() + " * " + this.listaVeiculos.size());
-		//System.out.println(CalcSeguro.VALOR_BASE.getFator() * FATOR_IDADE.getFator() * this.listaVeiculos.size());
 				
 		return CalcSeguro.VALOR_BASE.getFator() * FATOR_IDADE.getFator() * this.listaVeiculos.size();
 	}

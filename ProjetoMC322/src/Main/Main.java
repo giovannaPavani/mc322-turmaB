@@ -99,7 +99,7 @@ public class Main {
 				
 			case TRANSFERIR_SEGURO:
 				if(transferirSeguro(leitor, seguradora))
-					System.out.println("Transferência de seguro feita com sucesso!");
+					System.out.println("\nTransferência de seguro feita com sucesso!");
 				else
 					System.out.println("\nERRO: Algo deu errado na tranferêcia de seguro. Revise os dados e certifique-se que ambos os clientes estão cadastrados na seguradora.");
 				esperarEnter();
@@ -173,8 +173,7 @@ public class Main {
 			case EXCLUIR_VEICULO: // FAZER!!!
 				if(excluirVeiculo(leitor, seguradora))
 					System.out.println("\nVeículo excluído da seguradora com sucesso!");
-				else
-					System.out.println("\nERRO: O Veículo informado não estava cadastrado na seguradora. Revise os dados.");
+					
 				break;
 
 			case EXCLUIR_SINISTRO: // FAZER!!!
@@ -222,9 +221,9 @@ public class Main {
 		System.out.println("   Criar seguradora   ");
 		System.out.println("----------------------\n");
 		System.out.println("Digite as informações da nova seguradora.\n");
+		System.out.println("(OBS: Escreva o nome sem caracteres especiais (acentos e 'ç').\n");
 		
-		System.out.print("Nome: ");
-		String nome = leitor.nextLine();
+		String nome = Validacao.getNomeValido(leitor);
 		System.out.print("Telefone: ");
 		String telefone = leitor.nextLine();
 		System.out.print("Email: ");
@@ -255,9 +254,8 @@ public class Main {
 		System.out.println("-------------------------------------------\n");
 		
 		System.out.println("Digite as informações do novo cliente.");
-		System.out.println("(OBS: Escreva datas no formato dd/mm/aaaa)\n");
-		System.out.print("Nome: ");
-		String nome = leitor.nextLine();
+		System.out.println("(OBS: Escreva o nome sem caracteres especiais (acentos e 'ç') e as datas no formato dd/mm/aaaa).\n");
+		String nome = Validacao.getNomeValido(leitor);
 		System.out.print("Endereco: ");
 		String endereco = leitor.nextLine();
 		
@@ -422,7 +420,7 @@ public class Main {
 		
 		// cadastra veiculo criado no objeto do cliente dono, dentro da seguradora
 		// e retorna se deu certo a insercao
-		return cliente.adicionarVeiculo(veiculo);		
+		return seguradora.adicionarVeiculo(keyCliente, veiculo);		
 	}
 
 	// 2 - LISTAR
@@ -436,7 +434,7 @@ public class Main {
 		
 		// nao ha nenhum cliente (fisico ou juridico) cadastrado na seguradora
 		if (seguradora.getListaClientes() == null || seguradora.getListaClientes().isEmpty()) {
-			System.out.println("Nenhum cliente cadastrado na seguradora. Para cadastrar novos cliente, digite a opção 1 no menu.\n");
+			System.out.println("Nenhum cliente cadastrado na seguradora.\n");
 			return;
 		}
 		
@@ -463,7 +461,7 @@ public class Main {
 		
 		// nao ha clientes do tipoCliente cadastrados na seguradora
 		if(lista == null || lista.isEmpty()) {
-			System.out.println("ERRO: Nenhum cliente com ["+tipoCliente+"] gerado na seguradora. Para gerar novos sinistros, digite a opção 5 no menu.\n");
+			System.out.println("ERRO: Nenhum cliente com ["+tipoCliente+"] cadastrado na seguradora.\n");
 			return;
 		}
 		
@@ -560,7 +558,7 @@ public class Main {
 		
 		LinkedList<Veiculo> veiculosCliente = cliente.getListaVeiculos();
 		if (veiculosCliente == null || veiculosCliente.isEmpty()) {
-			System.out.println("Este cliente não tem nenhum veículo cadastrado.");
+			System.out.println("\nEste cliente não tem nenhum veículo cadastrado.");
 			return;
 		}
 		
@@ -636,14 +634,19 @@ public class Main {
 		
 		Cliente cliente = seguradora.getClienteByKey(keyCliente);
 		if(cliente == null) {
-			System.out.print("\nERRO: O cliente inserido não está cadastrado na seguradora.");
+			System.out.print("\nERRO: O cliente inserido não está cadastrado na seguradora.\n");
 			return false;
 		}
 		System.out.print("Placa do veículo: ");
 		String placa = leitor.nextLine();
 		
 		// tenta remover cliente pelo CPF/CNPJ e retorna se deu certo
-		return cliente.removerVeiculo(placa);
+		boolean remove = seguradora.removerVeiculo(cliente, placa);
+		
+		if(!remove)
+			System.out.println("\nERRO: O Veículo informado não estava cadastrado na seguradora ou a placa do veículo não estava cadastrada no cliente informado. Revise os dados.\n");
+		
+		return remove;
 	}
 	
 	private static boolean excluirSinistro(Scanner leitor, Seguradora seguradora) {
@@ -738,7 +741,13 @@ public class Main {
 		else if(tipoCliente.equals("CPF"))
 			clienteFonte = Validacao.getCpfValido(leitor);
 		
-		System.out.println("Digite o CPF/CNPJ do cliente que receberá o seguro:");
+		Cliente clienteFonteSeguradora = seguradora.getClienteByKey(clienteFonte);
+		if(clienteFonteSeguradora.getListaVeiculos().isEmpty()) {
+			System.out.println("\nERRO: O cliente fonte não tem nenhum veículo cadastrado!");
+			return true;
+		}
+		
+		System.out.println("\nDigite o CPF/CNPJ do cliente que receberá o seguro:");
 		
 		tipoCliente = Validacao.getTipoClienteValido(leitor);
 		String clienteDestino = "";
@@ -764,7 +773,7 @@ public class Main {
 		
 		System.out.println("A atual receita da seguradora é "+ receita+"\n");
 	}
-	
+
 	
 	public static void main(String [] args){ 
 		
@@ -776,6 +785,16 @@ public class Main {
 		System.out.println("=================================================\n");
 		
 		System.out.println("Inicie suas operações criando uma seguradora.\n");
+		
+		/*		Caso queira rodar o programa adicionando sua propria seguradora, conforme foi planejado este programa,
+		 * deixe as proximas duas linhas descomentadas e comente o bloco de dados de teste.
+		 *		Caso contário, comente essas linhas e descomente o bloco de dados de teste.
+		 */
+		
+		/*
+		seguradora = criarSeguradora(leitor);
+		esperarEnter(leitor);
+		*/
 		
 		/* ====================
 		 *    DADOS DE TESTE
@@ -811,22 +830,10 @@ public class Main {
 		
 		seguradora.gerarSinistro("MSM-8271", "79.896.457/0001-86", dataS, "RUA ACIDENTE");
 		
-		//*/
-		/* ====================
-		 *  FIM DADOS DE TESTE
-		 * ==================== */
-		
 		esperarEnter();
 		
-		/* Caso queira rodar o programa adicionando sua propria seguradora, conforme foi planejado este programa,
-		 * deixe as proximas duas linhas descomentadas e comente o bloco de dados de teste.
-		 * 
-		 * Caso contário, comente essas linhas e descomente o bloco de dados de teste */
+		//*/
 		
-		/*
-		seguradora = criarSeguradora(leitor);
-		esperarEnter(leitor);
-		*/
 		
 		/* ================
 		 *  MENU PRINCIPAL

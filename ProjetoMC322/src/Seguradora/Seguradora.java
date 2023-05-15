@@ -180,6 +180,23 @@ public class Seguradora {
 		return add;
 	}
 	
+	public boolean removerSinistro(int id) {
+		if(id < 0)
+			return false;
+		
+		for(int i = 0; i < listaSinistros.size(); i++) {
+			if(listaSinistros.get(i).getId() == id) {
+				Sinistro removido = listaSinistros.remove(i);
+				if(removido != null) {
+					this.calcularPrecoSeguroCliente(getKeyCliente(removido.getCliente()));
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+	
 	// retorna se existe algum sinistro envolvendo este cliente
 	public boolean visualizarSinistro(String cliente){
 		// pega o tipo de cliente de acordo com o CPF/CNPJ fornecido
@@ -210,8 +227,59 @@ public class Seguradora {
 		return this.getListaSinistros();
 	}
 	
+	public ArrayList<Veiculo> getVeiculos(){
+		ArrayList<Veiculo> ret = new ArrayList<Veiculo>();
+		
+		for(Cliente cliente: listaClientes) {
+			for(Veiculo veiculo: cliente.getListaVeiculos()) {
+				ret.add(veiculo);
+			}
+		}
+		
+		return ret;
+	}
 	
-	//TOTEST
+	// remove (caso exista) o veiculo passado por parametro do cliente e atualiza seguro
+	public boolean removerVeiculo(Cliente cliente, String placa) {
+		if(placa == null || cliente == null) // veiculo nulo
+			return false;
+		
+		Veiculo veiculo = null;
+		for(Veiculo v: cliente.getListaVeiculos()) {
+			if(v.getPlaca().equals(placa))
+				veiculo = v;
+		}
+		
+		if(veiculo == null)
+			return false;
+		
+		boolean remove = cliente.removerVeiculo(veiculo);
+		String key = getKeyCliente(cliente);
+		
+		if(remove)
+			this.calcularPrecoSeguroCliente(key);
+		
+		return remove;
+	}
+	
+	// remove (caso exista) o veiculo passado por parametro do cliente
+	public boolean adicionarVeiculo(String keyCliente, Veiculo veiculo) {
+		if(keyCliente == null || veiculo == null) // cliente nulo
+			return false;
+		
+		Cliente cliente = getClienteByKey(keyCliente);
+		
+		if(cliente == null)
+			return false;
+		
+		boolean add = cliente.adicionarVeiculo(veiculo);
+		
+		if(add)
+			this.calcularPrecoSeguroCliente(keyCliente);
+		
+		return add;
+	}
+	
 	// Calcula o valor e atualiza no cliente
 	private void calcularPrecoSeguroCliente(String keyCliente) {
 		// encontra cliente na lista da seguradora
@@ -228,18 +296,16 @@ public class Seguradora {
 		cliente.setValorSeguro(score * (1 + qtdSinistros));
 	}
 	
-	//TOTEST
+	// soma o valor do seguro de todos os cliente da seguradora
 	public double calcularReceita() {
 		double soma = 0.0;
 		
-		for(Cliente cliente : listaClientes) {
+		for(Cliente cliente : listaClientes)
 			soma += cliente.getValorSeguro();
-		}
 		
 		return soma;
 	}
 	
-	//TOTEST
 	// ver se retorna bool ou cliente
 	public boolean transferirSeguro(String keyClienteFonte, String keyClienteDestino) {
 		Cliente clienteFonte, clienteDestino;
@@ -269,14 +335,14 @@ public class Seguradora {
 	 * ===================*/
 	
 	// retorna o tipo de cliente de acordo com CPF/CNPJ fornecido
-	private String getTipoClienteByKey(String key) {
+	private static String getTipoClienteByKey(String key) {
 		if(key.length() == 14)
 			return "PJ";
 		else
 			return "PF";
 	}
 	
-	private String getKeyCliente(Cliente cliente) {
+	private static String getKeyCliente(Cliente cliente) {
 		if(cliente instanceof ClientePF) 
 			return ((ClientePF) cliente).getCpf();
 		
@@ -343,30 +409,5 @@ public class Seguradora {
 		
 		return ret;
     }
-	
-	public ArrayList<Veiculo> getVeiculos(){
-		ArrayList<Veiculo> ret = new ArrayList<Veiculo>();
-		
-		for(Cliente cliente: listaClientes) {
-			for(Veiculo veiculo: cliente.getListaVeiculos()) {
-				ret.add(veiculo);
-			}
-		}
-		
-		return ret;
-	}
-	
-	public boolean removerSinistro(int id) {
-		if(id < 0)
-			return false;
-		
-		for(int i = 0; i < listaSinistros.size(); i++) {
-			if(listaSinistros.get(i).getId() == id) {
-				listaSinistros.remove(i);
-				return true;
-			}
-		}
-		
-		return false;
-	}
+
 }
