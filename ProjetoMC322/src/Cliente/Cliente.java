@@ -97,11 +97,13 @@ public class Cliente {
 	
 	public Veiculo getVeiculoByPlaca(String placa) {
 		Veiculo ret = null;
+		
 		for(Veiculo veiculo: listaVeiculos)
 			if (veiculo.getPlaca().equals(placa)) {
 				ret = veiculo;	
 				break;
 			}
+		
 		return ret;
 	}
 	
@@ -111,6 +113,7 @@ public class Cliente {
 		
 		ret += "Nome: " + nome + "\n";
 		ret += "Endereco: " + endereco + "\n";
+		ret += "Valor do seguro: "+ this.valorSeguro +"\n";
 
 		return ret;
 	}

@@ -78,6 +78,7 @@ public class ClientePJ extends Cliente {
 	 *  FUNÇÕES PEDIDAS
 	 * ================= */
 	
+	@Override
 	public double calculaScore() {
 		return CalcSeguro.VALOR_BASE.getFator() * (1.0 + qtdeFuncionarios/100.0) * this.listaVeiculos.size();
 	}

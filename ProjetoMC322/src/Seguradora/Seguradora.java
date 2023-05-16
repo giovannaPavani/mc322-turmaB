@@ -114,8 +114,11 @@ public class Seguradora {
 		if(this.listaClientes.contains(cliente) || cliente == null) // cliente já cadastrado ou nulo
 			return false;
 		
-		if(listaClientes.add(cliente)) // calcula preco seguro se cliente foi adicionado na listaClientes
+		if(listaClientes.add(cliente)) {
+			// calcula preco seguro se cliente foi adicionado na listaClientes
 			this.calcularPrecoSeguroCliente(this.getKeyCliente(cliente));
+			return true;
+		}
 		
 		return false; 
 	}
@@ -188,16 +191,16 @@ public class Seguradora {
 		if(id < 0)
 			return false;
 		
+		// remove sinistro da lista da seguradora e atualiza seguro cliente
 		for(int i = 0; i < listaSinistros.size(); i++) {
-			if(listaSinistros.get(i).getId() == id) {
-				Sinistro removido = listaSinistros.remove(i);
-				if(removido != null) {
+			if(listaSinistros.get(i).getId() == id) { // acha o sinistro com id informado na lista de sinistros da seguradora
+					Sinistro removido = listaSinistros.remove(i); // remove e guarda objeto removido na variavel
 					this.calcularPrecoSeguroCliente(getKeyCliente(removido.getCliente()));
 					return true;
 				}
-			}
 		}
 		
+		// sinistro nao existe
 		return false;
 	}
 	
@@ -259,6 +262,7 @@ public class Seguradora {
 	
 	// 3 - Veiculos
 	
+	// retorna todos os veiculos cadastrados na seguradora
 	public ArrayList<Veiculo> getVeiculos(){
 		ArrayList<Veiculo> ret = new ArrayList<Veiculo>();
 		
@@ -273,7 +277,7 @@ public class Seguradora {
 	
 	// remove (caso exista) o veiculo passado por parametro do cliente e atualiza seguro
 	public boolean removerVeiculo(Cliente cliente, String placa) {
-		if(placa == null || cliente == null) // veiculo nulo
+		if(placa == null || cliente == null) // veiculo ou cliente nulo
 			return false;
 		
 		Veiculo veiculo = null;
@@ -282,12 +286,23 @@ public class Seguradora {
 				veiculo = v;
 		}
 		
-		if(veiculo == null)
+		if(veiculo == null) // veiculo nao cadastrado
 			return false;
 		
 		boolean remove = cliente.removerVeiculo(veiculo);
 		
-		if(remove) {			
+		// se deu certo a remoção
+		if(remove) {
+			// remove sinsitros envolvendo este carro e o cliente
+			ArrayList<Sinistro> listaRemover = new ArrayList<Sinistro>();
+			for(Sinistro s: listaSinistros) {
+				if(s.getVeiculo().equals(veiculo) && s.getCliente().equals(cliente))
+					listaRemover.add(s);
+			}
+			for(Sinistro sinistro : listaRemover)
+				this.listaSinistros.remove(sinistro);
+			
+			// atualiza seguro cliente
 			String key = getKeyCliente(cliente);
 			this.calcularPrecoSeguroCliente(key);
 		}
@@ -361,10 +376,11 @@ public class Seguradora {
 		// se o cliente fonte não tiver nada no seu seguro, a transferência é trivial
 		if(!veiculos.isEmpty()) {
 			for(Veiculo veiculo: veiculos) {
+				// remove todos os veiculos da fonte e add no destino
 				clienteFonte.removerVeiculo(veiculo);
 				clienteDestino.adicionarVeiculo(veiculo);
 			}
-			
+			// atualiza seguros de ambos os clientes
 			this.calcularPrecoSeguroCliente(keyClienteFonte);
 			this.calcularPrecoSeguroCliente(keyClienteDestino);			
 		}

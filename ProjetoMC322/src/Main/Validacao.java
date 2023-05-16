@@ -3,6 +3,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
+// todas as funções estaticas usadas na main que envolvem validacao de dados
 public class Validacao {
 
 	//Faz a soma das multplicações dos 8 dígitos do cpf (a partir do indiceInicio) e determina o digitoVerificador 
@@ -197,6 +198,7 @@ public class Validacao {
 		return tipoCliente;
 	}
 
+	// pede e valida cpf/cnpj de um cliente que o usuario informar de acordo com o tipoCliente passado por parametro
 	public static String getKeyClienteValida(Scanner leitor, String tipoCliente) {
 		String keyCliente = "";
 		if(tipoCliente.equals("CNPJ"))
@@ -206,6 +208,7 @@ public class Validacao {
 		return keyCliente;
 	}
 	
+	// programa fica em loop ate que o usuário insira um nome valido
 	public static String validaNome(Scanner leitor) {
 		String nome = "";
 		boolean valido = true;
@@ -215,8 +218,8 @@ public class Validacao {
 			
 			int tam = nome.length();
 			for (int i=0; i<tam; i++) {
-				char c = nome.charAt(i);
-				if (!(((c >= 'A') && (c <= 'Z')) ||
+				char c = nome.charAt(i); // pega o char na posicao i da String nome
+				if (!(((c >= 'A') && (c <= 'Z')) || // se o char nao for alfabetico
 				    ((c >= 'a') && (c <= 'z')))) {
 					System.out.println(" -----------------------------------------------------------------------------------------");
 					System.out.println("| Nome inválido. Tente inserir novamente sem acentos e 'ç', apenas letras são permitidas. |");
@@ -232,6 +235,7 @@ public class Validacao {
 	}
 	
 	// programa fica em loop ate que o usuário insira uma data no formato correto
+	// o parametro tipoData serve apenas para escrever as mensagens de forma personalizada para o usuario
 	public static LocalDate getDataValida(Scanner leitor, String tipoData) {
 		// formatador de String do formato "dd/MM/yyyy" para objeto LocalDate
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -304,9 +308,9 @@ public class Validacao {
 					throw new Exception(); // gera excecao caso o ano esteja fora do intervalo dado
 			} catch(Exception e) { // ano invalido
 				anoFabricacao = 0; // zera variavel para continuar em loop
-				System.out.println(" ---------------------------------------------------------------");
-				System.out.println("| Ano de fabricação inválido! Tente inserir o número novamente. |");
-				System.out.println(" ---------------------------------------------------------------\n");
+				System.out.println(" -------------------------------------------------------------------------------------------------");
+				System.out.println("| Ano de fabricação inválido! Tente inserir o número novamente dentro do intervalo (1886 - 2023). |");
+				System.out.println(" -------------------------------------------------------------------------------------------------\n");
 			}
 		}while(anoFabricacao ==0);
 		
@@ -325,9 +329,9 @@ public class Validacao {
 					throw new Exception(); // gera excecao caso seja negativo ou 0
 			} catch(Exception e) { // ano invalido
 				id = 0; // zera variavel para continuar em loop
-				System.out.println(" ------------------------------------------------------------");
-				System.out.println("| ID inválido! Tente inserir o número novamente. |");
-				System.out.println(" ------------------------------------------------------------\n");
+				System.out.println(" ---------------------------------------------------------------------");
+				System.out.println("| ID inválido! Tente inserir o número (inteiro e positivo) novamente. |");
+				System.out.println(" ---------------------------------------------------------------------\n");
 			}
 		}while(id == 0);
 		

@@ -2,6 +2,8 @@ package Main;
 
 // define as constantes dos submenus
 public enum SubMenuOperacoes {
+	
+	// constantes das opcoes de todos os submenus
 	CADASTRAR_CLIENTE("Cadastrar cliente"),
 	CADASTRAR_VEICULO("Cadastrar veiculo"),
 	
@@ -17,15 +19,15 @@ public enum SubMenuOperacoes {
 	
 	VOLTAR("Voltar");
 	
-	//atributo
+	// atributo
 	private final String descricao;
 	
-	//Construtor
+	// construtor
 	SubMenuOperacoes(String descricao){
 		this.descricao = descricao;
 	}
 	
-	//getter
+	// getter
 	public String getDescricao() {
 		return descricao;
 	}

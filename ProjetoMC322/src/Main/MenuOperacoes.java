@@ -4,6 +4,7 @@ package Main;
 // (essa classe só serve para acessar as constantes)
 public enum MenuOperacoes {
 	
+	// constantes das opcoes do menu principal
 	CADASTRAR("Cadastrar", new SubMenuOperacoes[] {
 			SubMenuOperacoes.CADASTRAR_CLIENTE,
 			SubMenuOperacoes.CADASTRAR_VEICULO,

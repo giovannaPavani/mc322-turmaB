@@ -120,6 +120,7 @@ public class ClientePF extends Cliente {
 		Period periodo = Period.between(dataNascimento, dataAtual);
 		int idade = periodo.getYears();
 		
+		// pega valor do fator idade de acordo com a idade do cliente
 		CalcSeguro FATOR_IDADE;
 		if(idade <= 30)
 			FATOR_IDADE = CalcSeguro.FATOR_18_30;
@@ -127,7 +128,7 @@ public class ClientePF extends Cliente {
 			FATOR_IDADE = CalcSeguro.FATOR_30_60;
 		else 
 			FATOR_IDADE = CalcSeguro.FATOR_60_90;
-				
+		
 		return CalcSeguro.VALOR_BASE.getFator() * FATOR_IDADE.getFator() * this.listaVeiculos.size();
 	}
 	
