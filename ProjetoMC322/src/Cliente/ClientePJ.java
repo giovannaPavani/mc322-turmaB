@@ -2,10 +2,7 @@ package Cliente;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedList;
-import java.util.List;
 
 import Veiculo.Veiculo;
 
@@ -14,17 +11,18 @@ public class ClientePJ extends Cliente {
 	//Propriedades
 	private final String cnpj;
 	private LocalDate dataFundacao;
-	private int qtdeFuncionarios;
+	private LinkedList<Veiculo> listaFrota;
+
 
 	//Construtor
-	public ClientePJ (String nome , String endereco, LinkedList<Veiculo> listaVeiculos, 
-					  String cnpj, LocalDate dataFundacao, int qtdeFuncionarios) {
+	public ClientePJ (String nome, String endereco, String telefone, String email, 
+					  LinkedList<Veiculo> listaFrota, String cnpj, LocalDate dataFundacao) {
 		// chama o construtor da superclasse Cliente
-		super (nome , endereco , listaVeiculos);
+		super (nome, endereco, telefone, email);
 		
 		this.cnpj = cnpj;
 		this.dataFundacao = dataFundacao;
-		this.qtdeFuncionarios = qtdeFuncionarios;
+		this.listaFrota = listaFrota;
 	}
 
 	//Getters e Setters
@@ -40,12 +38,12 @@ public class ClientePJ extends Cliente {
 		this.dataFundacao = dataFundacao;
 	}
 	
-	public int getQtdeFuncionarios() {
-		return qtdeFuncionarios;
+	public LinkedList<Veiculo> getListaFrota() {
+		return listaFrota;
 	}
 	
-	public void setQtdeFuncionarios(int qtdeFuncionarios) {
-		this.qtdeFuncionarios = qtdeFuncionarios;
+	public void setListaFrota(LinkedList<Veiculo> listaFrota) {
+		this.listaFrota = listaFrota;
 	}
 	
 	@Override
@@ -56,8 +54,17 @@ public class ClientePJ extends Cliente {
 		
 		ret += "CNPJ: " + this.cnpj + "\n";
 		ret += "Data de Fundação: " + dataFundacao.format(formatter) + "\n";
-		ret += "Qtde Funcionários: " + this.qtdeFuncionarios + "\n";
 		ret += super.toString();
+		
+		if(listaFrota != null && !listaFrota.isEmpty()) {
+			ret += "-----------------\n";
+			ret += "Lista de Veículos\n";
+			ret += "-----------------";
+			for(Veiculo veiculo: listaFrota)
+				ret += "\n-\n" + veiculo.toString(); // ou veiculo.getPlaca() p/ ficar menos poluido
+			ret += "\n-";
+		}
+		
 		return ret;
 	}
 	
@@ -78,11 +85,20 @@ public class ClientePJ extends Cliente {
 	 *  FUNÇÕES PEDIDAS
 	 * ================= */
 	
-	@Override
-	public double calculaScore() {
-		return CalcSeguro.VALOR_BASE.getFator() * (1.0 + qtdeFuncionarios/100.0) * this.listaVeiculos.size();
+	// TODO
+	public boolean cadastrarFrota() {
+		return true;
 	}
-
 	
+	// TODO
+	public boolean atualizarFrota() {
+		// add, remover e remover toda a frota
+		return true;
+	}
+	
+	// TODO
+	public boolean getVeiculosPorFrota() {
+		return true;
+	}
 	
 }

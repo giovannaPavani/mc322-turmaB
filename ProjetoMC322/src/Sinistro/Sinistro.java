@@ -4,7 +4,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
 import Cliente.Cliente;
+import Condutor.Condutor;
 import Seguradora.Seguradora;
+import Seguro.Seguro;
 import Veiculo.Veiculo;
 
 public class Sinistro {
@@ -13,18 +15,16 @@ public class Sinistro {
 	private final int id;
 	private LocalDate data;
 	private String endereco;
-	private Seguradora seguradora;
-	private Veiculo veiculo;
-	private Cliente cliente;
+	private Condutor condutor;
+	private Seguro seguro;
 	
 	// Construtor
-	public Sinistro(LocalDate data, String endereco, Seguradora seguradora, Veiculo veiculo, Cliente cliente) {
+	public Sinistro(LocalDate data, String endereco, Condutor condutor, Seguro seguro) {
 		this.id = gerarId();
 		this.data = data;
 		this.endereco = endereco;
-		this.seguradora = seguradora;
-		this.veiculo = veiculo;
-		this.cliente = cliente;
+		this.condutor = condutor;
+		this.seguro = seguro;
 	}
 	
 	// Função geradora de ids aleatórios
@@ -58,28 +58,20 @@ public class Sinistro {
 		this.endereco = endereco;
 	}
 	
-	public Seguradora getSeguradora() {
-		return seguradora;
+	public Seguro getSeguro() {
+		return seguro;
 	}
 
-	public void setSeguradora(Seguradora seguradora) {
-		this.seguradora = seguradora;
+	public void setSeguro(Seguro seguro) {
+		this.seguro = seguro;
+	}
+	
+	public Condutor getCondutor() {
+		return condutor;
 	}
 
-	public Veiculo getVeiculo() {
-		return veiculo;
-	}
-
-	public void setVeiculo(Veiculo veiculo) {
-		this.veiculo = veiculo;
-	}
-
-	public Cliente getCliente() {
-		return cliente;
-	}
-
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
+	public void setCondutor(Condutor condutor) {
+		this.condutor = condutor;
 	}
 	
 	public String toString() {
@@ -91,23 +83,18 @@ public class Sinistro {
 		ret += "Data: "+this.data.format(formatter)+"\n";
 		ret += "Endereço: "+this.endereco+"\n";
 		ret += "-------------------\n";
-		ret += "Dados da Seguradora\n";
+		ret += "Dados da Condutor\n";
 		ret += "-------------------\n";
-		ret += this.seguradora.toStringSimples()+"\n";
+		ret += this.condutor.toString()+"\n";
 		ret += "----------------\n";
-		ret += "Dados do Veículo\n";
+		ret += "Dados do Seguro\n";
 		ret += "----------------\n";
-		ret += this.veiculo.toString()+"\n";
-		ret += "----------------\n";
-		ret += "Dados do cliente\n";
-		ret += "----------------\n";
-		ret += this.cliente.toStringSimples()+"\n";
-		// optei por escrever o cliente.toStringSimples() pois o completo estava 
-		// atrapalhando a visualização do sinistro em si
+		ret += this.seguro.toString()+"\n";
 		
 		return ret;
 	}
 	
+	// TODO
 	// toString mais simples, com menos informacoes do que o oficial
 	public String toStringSimples() {
 		String ret = "";
@@ -116,15 +103,7 @@ public class Sinistro {
 		ret += "ID: "+this.id+"\n";
 		ret += "Data: "+this.data.format(formatter)+"\n";
 		ret += "Endereço: "+this.endereco+"\n";
-		ret += "Seguradora: "+this.seguradora.getNome()+"\n";
-		ret += "----------------\n";
-		ret += "Dados do Veículo\n";
-		ret += "----------------\n";
-		ret += this.veiculo.toString()+"\n";
-		ret += "----------------\n";
-		ret += "Dados do cliente:\n";
-		ret += "----------------\n";
-		ret += this.cliente.toStringSimples();
+
 		return ret;
 	}
 }

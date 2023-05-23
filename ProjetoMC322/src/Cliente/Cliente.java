@@ -1,22 +1,19 @@
 package Cliente;
-import java.util.LinkedList;
 
-import Veiculo.Veiculo;
-
-public class Cliente {
+public abstract class Cliente {
 
 	// Propriedades
 	protected String nome;
 	protected String endereco;
-	protected LinkedList<Veiculo> listaVeiculos;
-	protected double valorSeguro;
+	protected String telefone;
+	protected String email;
 	
 	// Construtor
-	public Cliente(String nome, String endereco, LinkedList<Veiculo> listaVeiculos) {
+	public Cliente(String nome, String endereco, String telefone, String email) {
 		this.nome = nome;
 		this.endereco = endereco;
-		this.listaVeiculos = listaVeiculos;
-		this.valorSeguro = 0.0;
+		this.telefone = telefone;
+		this.email = email;
 	}
 	
 	// Getters e Setters
@@ -36,76 +33,36 @@ public class Cliente {
 		this.endereco = endereco;
 	}
 	
-	public LinkedList<Veiculo> getListaVeiculos() {
-		return listaVeiculos;
+	public String getTelefone() {
+		return telefone;
 	}
 
-	public void setListaVeiculos(LinkedList<Veiculo> listaVeiculos) {
-		this.listaVeiculos = listaVeiculos;
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
 	}
 	
-	public double getValorSeguro() {
-		return valorSeguro;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setValorSeguro(double valorSeguro) {
-		this.valorSeguro = valorSeguro;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
-	
 	// Gera String com todas as informações do cliente
 	public String toString() {
 		String ret = "";
 		
 		ret += "Nome: " + this.nome + "\n";
+		ret += "Telefone: "+ this.telefone +"\n";
 		ret += "Endereco: " + this.endereco + "\n";
-		ret += "Valor do seguro: "+ this.valorSeguro +"\n";
-		if(listaVeiculos != null && !listaVeiculos.isEmpty()) {
-			ret += "-----------------\n";
-			ret += "Lista de Veículos\n";
-			ret += "-----------------";
-			for(Veiculo veiculo: listaVeiculos)
-				ret += "\n-\n" + veiculo.toString(); // ou veiculo.getPlaca() p/ ficar menos poluido
-			ret += "\n-";
-		}
+		ret += "E-mail: "+ this.email +"\n";
 		return ret;
-	}
-	
-	// define score como 0
-	public double calculaScore() {
-		return 0.0;
 	}
 	
 	/* ====================
 	 *  MÉTODOS AUXILIARES
 	 * ==================== */
-	
-	// cadastra (se já nao o estiver) o veiculo passado por parametro no cliente
-	public boolean adicionarVeiculo(Veiculo veiculo) {
-		if(this.listaVeiculos.contains(veiculo) || veiculo == null) // veiculo ja cadastrado ou nulo
-			return false;
-		
-		return this.listaVeiculos.add(veiculo);
-	}
-	
-	// remove (caso exista) o veiculo passado por parametro do cliente
-	public boolean removerVeiculo(Veiculo veiculo) {
-		if(veiculo == null) // veiculo nulo
-			return false;
-		return this.listaVeiculos.remove(veiculo);
-	}
-	
-	public Veiculo getVeiculoByPlaca(String placa) {
-		Veiculo ret = null;
-		
-		for(Veiculo veiculo: listaVeiculos)
-			if (veiculo.getPlaca().equals(placa)) {
-				ret = veiculo;	
-				break;
-			}
-		
-		return ret;
-	}
 	
 	// Gera String mais simples com algumas informações do cliente
 	public String toStringSimples() {
@@ -113,7 +70,6 @@ public class Cliente {
 		
 		ret += "Nome: " + nome + "\n";
 		ret += "Endereco: " + endereco + "\n";
-		ret += "Valor do seguro: "+ this.valorSeguro +"\n";
 
 		return ret;
 	}

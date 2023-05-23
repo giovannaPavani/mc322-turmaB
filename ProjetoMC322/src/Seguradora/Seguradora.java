@@ -3,36 +3,42 @@ package Seguradora;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedList;
-
 import Cliente.Cliente;
 import Cliente.ClientePF;
 import Cliente.ClientePJ;
+import Seguro.Seguro;
 import Sinistro.Sinistro;
 import Veiculo.Veiculo;
 
 public class Seguradora {
 
 	// Propriedades
+	private final String cnpj;
 	private String nome;
 	private String telefone;
-	private String email;
 	private String endereco;
-	private ArrayList<Sinistro> listaSinistros;
+	private String email;
 	private ArrayList<Cliente> listaClientes;
+	private ArrayList<Seguro> listaSeguros;
 	
 	// Construtor
-	public Seguradora(String nome , String telefone , String email , String endereco,
-			ArrayList<Sinistro> listaSinistros, ArrayList<Cliente> listaClientes) 
+	public Seguradora(String cnpj, String nome, String telefone, String endereco, 
+					  String email, ArrayList<Cliente> listaClientes, ArrayList<Seguro> listaSeguros) 
 	{
-		this.nome = nome ;
-		this.telefone = telefone ;
-		this.email = email ;
+		this.cnpj = cnpj;
+		this.nome = nome;
+		this.telefone = telefone;
 		this.endereco = endereco;
-		this.listaSinistros = listaSinistros;
+		this.email = email;
 		this.listaClientes = listaClientes;
+		this.listaSeguros = listaSeguros;
 	}
 	
 	// Getters e setters
+	public String getCnpj() {
+		return cnpj;
+	}
+	
 	public String getNome() {
 		return nome ;
 	}
@@ -64,14 +70,6 @@ public class Seguradora {
 	public void setEndereco(String endereco) {
 		this.endereco = endereco;
 	}
-	
-	public ArrayList<Sinistro> getListaSinistros() {
-		return listaSinistros;
-	}
-
-	public void setListaSinistros(ArrayList<Sinistro> listaSinistros) {
-		this.listaSinistros = listaSinistros;
-	}
 
 	public ArrayList<Cliente> getListaClientes() {
 		return listaClientes;
@@ -79,26 +77,37 @@ public class Seguradora {
 
 	public void setListaClientes(ArrayList<Cliente> listaClientes) {
 		this.listaClientes = listaClientes;
+	}	
+	
+	public ArrayList<Seguro> getListaSeguros() {
+		return listaSeguros;
+	}
+
+	public void setListaSeguros(ArrayList<Seguro> listaSeguros) {
+		this.listaSeguros = listaSeguros;
 	}
 	
 	public String toString() {
 		String ret = "";
 		
+		ret += "CNPJ: " + this.cnpj+"\n";
 		ret += "Nome: " + this.nome+"\n";
 		ret += "Telefone: " + this.telefone+"\n";
 		ret += "Email: " + this.email+"\n";
 		ret += "Endereço: " + this.endereco;
-		// lista todos os sinistros da seguradora
-		if(this.listaSinistros != null && !this.listaSinistros.isEmpty()) {
-			ret += "\nLista de sinistros:";
-			for(Sinistro sinistro: this.listaSinistros)
-				ret += "\n- "+sinistro.toStringSimples();			
-		}
+
 		// lista todos os clientes da seguradora
 		if(this.listaClientes != null && !this.listaClientes.isEmpty()) {
 			ret += "Lista de clientes:";
 			for(Cliente cliente: this.listaClientes)
 				ret += "\n- "+cliente.toStringSimples();
+		}
+		
+		// lista todos os seguros da seguradora
+		if(this.listaSeguros != null && !this.listaSeguros.isEmpty()) {
+			ret += "\nLista de Seguros:";
+			for(Seguro seguro: this.listaSeguros)
+				ret += "\n- "+seguro.toString(); // TODO toStringSimples			
 		}
 		
 		return ret;
@@ -116,7 +125,7 @@ public class Seguradora {
 		
 		if(listaClientes.add(cliente)) {
 			// calcula preco seguro se cliente foi adicionado na listaClientes
-			this.calcularPrecoSeguroCliente(this.getKeyCliente(cliente));
+			this.calcularPrecoSeguroCliente(getKeyCliente(cliente));
 			return true;
 		}
 		
@@ -328,7 +337,25 @@ public class Seguradora {
 		return add;
 	}
 	
-	// 4 - Seguro e receita
+	// 4 - Seguro
+	
+	// TODO
+	public boolean gerarSeguro() {
+		return true;
+	}
+	
+	// TODO
+	public boolean cancelarSeguro() {
+		return true;
+	}
+	
+	// TODO
+	public ArrayList<Seguro> getSegurosPorCliente(){
+		ArrayList<Seguro> ret = new ArrayList<Seguro>();
+		return ret;
+	}
+	
+	// 5 - Receita
 	
 	// calcula o valor e atualiza no cliente
 	private void calcularPrecoSeguroCliente(String keyCliente) {
@@ -435,6 +462,7 @@ public class Seguradora {
 	public String toStringSimples() {
 		String ret = "";
 		
+		ret += "CNPJ: " + this.cnpj+"\n";
 		ret += "Nome: " + this.nome+"\n";
 		ret += "Telefone: " + this.telefone+"\n";
 		ret += "Email: " + this.email+"\n";
