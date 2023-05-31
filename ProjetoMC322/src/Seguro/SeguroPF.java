@@ -1,6 +1,7 @@
 package Seguro;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.LinkedList;
 
 import Cliente.ClientePF;
@@ -13,14 +14,14 @@ public class SeguroPF extends Seguro{
 	ClientePF cliente;
 	
 	public SeguroPF(int id, LocalDate dataInicio, LocalDate dataFim, 
-			Seguradora seguradora,LinkedList<Sinistro> listaSinistros, 
-			LinkedList<Sinistro> listacondutores, double valorMensal,
-			Veiculo veiculo, ClientePF cliente) {
+					Seguradora seguradora,LinkedList<Sinistro> listaSinistros, 
+					LinkedList<Sinistro> listacondutores, Veiculo veiculo, ClientePF cliente) {
 		
-		super(id, dataInicio, dataFim, seguradora, listaSinistros, listacondutores, valorMensal);
+		super(id, dataInicio, dataFim, seguradora, listaSinistros, listacondutores);
 		
 		this.veiculo = veiculo;
 		this.cliente = cliente;
+		calcularValor();
 	}
 	
 	public Veiculo getVeiculo() {
@@ -53,8 +54,29 @@ public class SeguroPF extends Seguro{
 
 	@Override
 	public void calcularValor() {
-		// TODO Auto-generated method stub
+		// calcular idade
+		LocalDate dataAtual = LocalDate.now();
+		Period periodo = Period.between(cliente.getDataNascimento(), dataAtual);
+		int idade = periodo.getYears();
 		
+		// pega valor do fator idade de acordo com a idade do cliente
+		CalcSeguro FATOR_IDADE;
+		if(idade <= 30)
+			FATOR_IDADE = CalcSeguro.FATOR_18_30;
+		else if(idade <= 60)
+			FATOR_IDADE = CalcSeguro.FATOR_30_60;
+		else 
+			FATOR_IDADE = CalcSeguro.FATOR_60_90;
+
+		int qtdVeiculos = cliente.getListaVeiculos().size();
+		int qtdSinistrosCliente = 2; // TODO aparentemente é na seguradora
+		int qtdSinistrosCondutor = 3;
+		
+		double valor = CalcSeguro.VALOR_BASE.getFator() * FATOR_IDADE.getFator() * (1.0 + 1.0/(qtdVeiculos+2)) *
+					   (2.0 + qtdSinistrosCliente/10.0) * (5.0 + qtdSinistrosCondutor/10.0); 
+		
+		// TODO faz set ou deixa protected??
+		this.setValorMensal(valor);	
 	}
 
 	@Override

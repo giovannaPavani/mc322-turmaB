@@ -26,7 +26,7 @@ public class Frota {
 		this.listaVeiculos = listaVeiculos;
 	}
 	
-	// TODO
+	// TOTEST
 	// cadastra (se já nao o estiver) o veiculo passado por parametro no cliente
 	public boolean cadastrarVeiculo(Veiculo veiculo) {
 		if(this.listaVeiculos.contains(veiculo) || veiculo == null) // veiculo ja cadastrado ou nulo
@@ -35,7 +35,7 @@ public class Frota {
 		return this.listaVeiculos.add(veiculo);
 	}
 	
-	// TODO
+	// TOTEST
 	// remove (caso exista) o veiculo passado por parametro do cliente
 	public boolean removerVeiculo(Veiculo veiculo) {
 		if(veiculo == null) // veiculo nulo
@@ -43,6 +43,7 @@ public class Frota {
 		return this.listaVeiculos.remove(veiculo);
 	}
 	
+	// TOTEST
 	public Veiculo getVeiculoByPlaca(String placa) {
 		Veiculo ret = null;
 		
@@ -55,9 +56,19 @@ public class Frota {
 		return ret;
 	}
 	
-	// TODO
+	// TOTEST
 	public String toString() {
 		String ret = "";
+		ret += "Code: " + this.code + "\n";
+		if(listaVeiculos != null && !listaVeiculos.isEmpty()) {
+			ret += "-----------------\n";
+			ret += "Lista de Veículos\n";
+			ret += "-----------------";
+			for(Veiculo veiculo: listaVeiculos)
+				ret += "\n-\n" + veiculo.toString();
+			ret += "\n-";
+		}
+		
 		return ret;
 	}
 		

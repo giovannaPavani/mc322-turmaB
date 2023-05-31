@@ -109,7 +109,7 @@ public class ClientePF extends Cliente {
 	 *  FUNÇÕES PEDIDAS
 	 * ================= */
 	
-	// TODO +/-
+	// TOTEST
 	// cadastra (se já nao o estiver) o veiculo passado por parametro no cliente
 	public boolean cadastrarVeiculo(Veiculo veiculo) {
 		if(this.listaVeiculos.contains(veiculo) || veiculo == null) // veiculo ja cadastrado ou nulo
@@ -118,7 +118,7 @@ public class ClientePF extends Cliente {
 		return this.listaVeiculos.add(veiculo);
 	}
 	
-	// TODO +/-
+	// TOTEST
 	// remove (caso exista) o veiculo passado por parametro do cliente
 	public boolean removerVeiculo(Veiculo veiculo) {
 		if(veiculo == null) // veiculo nulo
@@ -127,15 +127,12 @@ public class ClientePF extends Cliente {
 	}
 	
 	public Veiculo getVeiculoByPlaca(String placa) {
-		Veiculo ret = null;
-		
 		for(Veiculo veiculo: listaVeiculos)
 			if (veiculo.getPlaca().equals(placa)) {
-				ret = veiculo;	
-				break;
+				return veiculo;	
 			}
 		
-		return ret;
+		return null;
 	}
 	
 }

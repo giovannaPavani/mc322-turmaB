@@ -1,6 +1,7 @@
 package Seguro;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.LinkedList;
 import Cliente.ClientePJ;
 import Frota.Frota;
@@ -13,14 +14,15 @@ public class SeguroPJ extends Seguro{
 	ClientePJ cliente;
 	
 	public SeguroPJ(int id, LocalDate dataInicio, LocalDate dataFim, 
-			Seguradora seguradora,LinkedList<Sinistro> listaSinistros, 
-			LinkedList<Sinistro> listacondutores, double valorMensal,
-			Frota frota, ClientePJ cliente) {
+					Seguradora seguradora,LinkedList<Sinistro> listaSinistros, 
+					LinkedList<Sinistro> listacondutores,
+					Frota frota, ClientePJ cliente) {
 		
-		super(id, dataInicio, dataFim, seguradora, listaSinistros, listacondutores, valorMensal);
+		super(id, dataInicio, dataFim, seguradora, listaSinistros, listacondutores);
 		
 		this.frota = frota;
 		this.cliente = cliente;
+		calcularValor();
 	}
 	
 	public Frota getFrota() {
@@ -53,8 +55,21 @@ public class SeguroPJ extends Seguro{
 
 	@Override
 	public void calcularValor() {
-		// TODO Auto-generated method stub
+		// calcular anosPosFundacao
+		LocalDate dataAtual = LocalDate.now();
+		Period periodo = Period.between(cliente.getDataFundacao(), dataAtual);
+		int anosPosFundacao = periodo.getYears();
+				
+		int qtdVeiculos = cliente.getListaFrotas().size();
+		int qtdSinistrosCliente = 2; // TODO aparentemente é na seguradora
+		int qtdSinistrosCondutor = 3;
 		
+		double valor = CalcSeguro.VALOR_BASE.getFator() * (10.0 + cliente.getQtdeFuncionarios()/10.0) * 
+					   (1.0 + 1.0/(qtdVeiculos + 2.0)) * (1.0 + 1.0/(anosPosFundacao + 2.0)) *
+					   (2.0 + qtdSinistrosCliente/10.0) * (5.0 + qtdSinistrosCondutor/10.0);
+		
+		// TODO faz set ou deixa protected??
+		this.setValorMensal(valor);	
 	}
 
 	@Override

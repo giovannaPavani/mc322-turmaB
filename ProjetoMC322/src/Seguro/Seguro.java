@@ -17,14 +17,14 @@ public abstract class Seguro {
 	
 	public Seguro(int id, LocalDate dataInicio, LocalDate dataFim,
 				  Seguradora seguradora, LinkedList<Sinistro> listaSinistros,
-				  LinkedList<Sinistro> listacondutores, double valorMensal) {
+				  LinkedList<Sinistro> listacondutores) {
 		this.id = id;
 		this.dataInicio = dataInicio;
 		this.dataFim = dataFim;
 		this.seguradora = seguradora;
 		this.listaSinistros = listaSinistros;
 		this.listacondutores = listacondutores;
-		this.valorMensal = valorMensal;
+		calcularValor();
 	}
 	
 	public int getId() {

@@ -1,5 +1,9 @@
 package Cliente;
 
+import java.util.LinkedList;
+
+import Veiculo.Veiculo;
+
 public abstract class Cliente {
 
 	// Propriedades
@@ -73,4 +77,8 @@ public abstract class Cliente {
 
 		return ret;
 	}
+	
+	public abstract Veiculo getVeiculoByPlaca(String placa);
+	
+	public abstract LinkedList<Veiculo> getListaVeiculos();
 }
