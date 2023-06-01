@@ -71,5 +71,20 @@ public class Frota {
 		
 		return ret;
 	}
+	
+	// TOTEST
+	public String toStringSimples() {
+		String ret = "";
+		ret += "Code: " + this.code + "\n";
+		if(listaVeiculos != null && !listaVeiculos.isEmpty()) {
+			ret += "-----------------\n";
+			ret += "Lista de Veículos\n";
+			ret += "-----------------";
+			for(Veiculo veiculo: listaVeiculos)
+				ret += "\n-\n" + veiculo.getPlaca();
+			ret += "\n-";
+		}
 		
+		return ret;
+	}
 }

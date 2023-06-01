@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import Cliente.Cliente;
 import Cliente.ClientePF;
 import Cliente.ClientePJ;
+import Condutor.Condutor;
 import Seguro.Seguro;
 import Seguro.SeguroPF;
 import Seguro.SeguroPJ;
@@ -127,7 +128,8 @@ public class Seguradora {
 		
 		if(listaClientes.add(cliente)) {
 			// calcula preco seguro se cliente foi adicionado na listaClientes
-			this.calcularPrecoSeguroCliente(getKeyCliente(cliente));
+			// TODO em q criar seguro??
+			//this.calcularPrecoSeguroCliente(getKeyCliente(cliente));
 			return true;
 		}
 		
@@ -177,7 +179,9 @@ public class Seguradora {
 
 	// 2 - Sinistros
 	
-	/* public boolean gerarSinistro(String placa, String keyCliente, LocalDate data, String endereco) { 
+	 public boolean gerarSinistro(String placa, String keyCliente, LocalDate data, String endereco, Condutor condutor) { 
+		String tipoCliente = getTipoClienteByKey(keyCliente);
+		
 		// resgata cliente com a keyCliente (CPF/CNPJ) fornecida cadastrado na seguradora
 		keyCliente = keyCliente.replaceAll("\\.", "").replaceAll("-", "").replaceAll("/", "");
 		Cliente cliente = getClienteByKey(keyCliente);
@@ -189,16 +193,34 @@ public class Seguradora {
 		if(veiculo == null) // o cliente nao tem esse veiculo
 			return false;
 		
-		Sinistro sinistro = new Sinistro(data, endereco, this, veiculo, cliente);
+		Seguro seguro = null;
+		for(Seguro s: listaSeguros) {
+			if(tipoCliente.equals("PF") && s instanceof SeguroPF) {
+				if(((SeguroPF)s).getCliente().getCpf().equals(keyCliente) &&
+					((SeguroPF)s).getVeiculo().getPlaca().equals(placa)) {
+					seguro = s;
+					break;
+				}
+			}
+			
+			if(tipoCliente.equals("PJ") && s instanceof SeguroPJ) {
+				if(((SeguroPJ)s).getCliente().getCnpj().equals(keyCliente) &&
+					((SeguroPJ)s).getFrota().getVeiculoByPlaca(placa) != null) {
+					seguro = s;
+					break;
+				}
+			}
+		}
 		
-		boolean add = listaSinistros.add(sinistro); // retorna se o sinistro criado foi adicionado na listaSinistros
+		if(seguro == null)
+			return false;
 		
-		if(add)
-			this.calcularPrecoSeguroCliente(keyCliente); // atualiza valor do seguro do cliente
+		// ver se existe o condutor no seguro
+		// se nao, retorna falso
 		
-		return add;
+		return seguro.gerarSinistro(data, endereco, condutor);
 	} 
-	
+	/*
 	public boolean removerSinistro(int id) {
 		if(id < 0)
 			return false;

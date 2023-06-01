@@ -2,6 +2,9 @@ package Seguro;
 
 import java.time.LocalDate;
 import java.util.LinkedList;
+import java.util.Random;
+
+import Condutor.Condutor;
 import Seguradora.Seguradora;
 import Sinistro.Sinistro;
 
@@ -12,19 +15,28 @@ public abstract class Seguro {
 	private LocalDate dataFim;
 	private Seguradora seguradora;
 	private LinkedList<Sinistro> listaSinistros;
-	private LinkedList<Sinistro> listacondutores;
+	private LinkedList<Condutor> listaCondutores;
 	private double valorMensal;
 	
-	public Seguro(int id, LocalDate dataInicio, LocalDate dataFim,
+	public Seguro(LocalDate dataInicio, LocalDate dataFim,
 				  Seguradora seguradora, LinkedList<Sinistro> listaSinistros,
-				  LinkedList<Sinistro> listacondutores) {
-		this.id = id;
+				  LinkedList<Condutor> listacondutores) {
+		this.id = gerarId();
 		this.dataInicio = dataInicio;
 		this.dataFim = dataFim;
 		this.seguradora = seguradora;
 		this.listaSinistros = listaSinistros;
-		this.listacondutores = listacondutores;
+		this.listaCondutores = listacondutores;
 		calcularValor();
+	}
+	
+	private int gerarId() {
+		Random gerador = new Random();
+		int ret = gerador.nextInt();
+		// caso seja negativo, arruma o sinal
+		if(ret < 0)
+			ret = -ret;
+        return ret;
 	}
 	
 	public int getId() {
@@ -63,12 +75,12 @@ public abstract class Seguro {
 		this.listaSinistros = listaSinistros;
 	}
 
-	public LinkedList<Sinistro> getListacondutores() {
-		return listacondutores;
+	public LinkedList<Condutor> getListaCondutores() {
+		return listaCondutores;
 	}
 
-	public void setListacondutores(LinkedList<Sinistro> listacondutores) {
-		this.listacondutores = listacondutores;
+	public void setListaCondutores(LinkedList<Condutor> listaCondutores) {
+		this.listaCondutores = listaCondutores;
 	}
 
 	public double getValorMensal() {
@@ -79,13 +91,70 @@ public abstract class Seguro {
 		this.valorMensal = valorMensal;
 	}
 	
-	public abstract boolean desautorizarCondutor();
+	// Optei por colocar autorizarCondutor e desautorizarCondutor na classe 
+	// principal, pois as implementações nas classes filhas estavam idênticas
+	// TOTEST
+	public boolean autorizarCondutor(Condutor condutor) {
+		if(condutor == null)
+			return false;
+		
+		// retorna falso se o condutor já esta autorizado
+		for(Condutor c: listaCondutores) {
+			if(c.getCpf().equals(condutor.getCpf()))
+				return false;
+		}
+			
+		return listaCondutores.add(condutor);
+	}
 	
-	public abstract boolean autorizarCondutor();
+	// TOTEST
+	public boolean desautorizarCondutor(String cpf) {
+		if(cpf == null || cpf.equals(""))
+			return false;
+		
+		for(Condutor c: listaCondutores) {
+			if(c.getCpf().equals(cpf))
+				return listaCondutores.remove(c);
+		}
+		
+		return false;
+	}
+	
+	public String toString() {
+		String ret = "";
+		ret += "ID: " + id + "\n";
+		ret += "Data início: " + dataInicio + "\n";
+		ret += "Data fim: " + dataFim + "\n";
+		ret += "Valor mensal: " + valorMensal + "\n";
+		
+		ret += "-------------------\n";
+		ret += "Dados da Seguradora\n";
+		ret += "-------------------\n";
+		ret += this.seguradora.toStringSimples() + "\n";
+		
+		if(listaSinistros != null && !listaSinistros.isEmpty()) {
+			ret += "-----------------\n";
+			ret += "Lista de Sinistros\n";
+			ret += "-----------------";
+			for(Sinistro sinistro: listaSinistros)
+				ret += "\n-\n" + sinistro.toStringSimples();
+			ret += "\n-";
+		}
+		
+		if(listaCondutores != null && !listaCondutores.isEmpty()) {
+			ret += "-----------------\n";
+			ret += "Lista de Condutores\n";
+			ret += "-----------------";
+			for(Condutor condutor: listaCondutores)
+				ret += "\n-\n" + condutor.toStringSimples();
+			ret += "\n-";
+		}
+		
+		return ret;
+	}
 	
 	public abstract void calcularValor();
 	
 	public abstract void gerarSinistro();
 	
-	public abstract String toString();
 }

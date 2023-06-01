@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.LinkedList;
 import Cliente.ClientePJ;
+import Condutor.Condutor;
 import Frota.Frota;
 import Seguradora.Seguradora;
 import Sinistro.Sinistro;
@@ -13,12 +14,12 @@ public class SeguroPJ extends Seguro{
 	Frota frota;
 	ClientePJ cliente;
 	
-	public SeguroPJ(int id, LocalDate dataInicio, LocalDate dataFim, 
+	public SeguroPJ(LocalDate dataInicio, LocalDate dataFim, 
 					Seguradora seguradora,LinkedList<Sinistro> listaSinistros, 
-					LinkedList<Sinistro> listacondutores,
+					LinkedList<Condutor> listacondutores,
 					Frota frota, ClientePJ cliente) {
 		
-		super(id, dataInicio, dataFim, seguradora, listaSinistros, listacondutores);
+		super(dataInicio, dataFim, seguradora, listaSinistros, listacondutores);
 		
 		this.frota = frota;
 		this.cliente = cliente;
@@ -39,18 +40,6 @@ public class SeguroPJ extends Seguro{
 
 	public void setCliente(ClientePJ cliente) {
 		this.cliente = cliente;
-	}
-
-	@Override
-	public boolean desautorizarCondutor() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean autorizarCondutor() {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	@Override
@@ -80,8 +69,18 @@ public class SeguroPJ extends Seguro{
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		String ret = super.toString();
+		
+		ret += "-------------------\n";
+		ret += "Dados do Cliente\n";
+		ret += "-------------------\n";
+		ret += this.cliente.toStringSimples() + "\n";
+		ret += "-------------------\n";
+		ret += "Dados da Frota\n";
+		ret += "-------------------\n";
+		ret += this.frota.toStringSimples() + "\n";
+
+		return ret;
 	}
 
 }

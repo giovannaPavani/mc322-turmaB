@@ -5,6 +5,7 @@ import java.time.Period;
 import java.util.LinkedList;
 
 import Cliente.ClientePF;
+import Condutor.Condutor;
 import Seguradora.Seguradora;
 import Sinistro.Sinistro;
 import Veiculo.Veiculo;
@@ -13,11 +14,11 @@ public class SeguroPF extends Seguro{
 	Veiculo veiculo;
 	ClientePF cliente;
 	
-	public SeguroPF(int id, LocalDate dataInicio, LocalDate dataFim, 
+	public SeguroPF(LocalDate dataInicio, LocalDate dataFim, 
 					Seguradora seguradora,LinkedList<Sinistro> listaSinistros, 
-					LinkedList<Sinistro> listacondutores, Veiculo veiculo, ClientePF cliente) {
+					LinkedList<Condutor> listacondutores, Veiculo veiculo, ClientePF cliente) {
 		
-		super(id, dataInicio, dataFim, seguradora, listaSinistros, listacondutores);
+		super(dataInicio, dataFim, seguradora, listaSinistros, listacondutores);
 		
 		this.veiculo = veiculo;
 		this.cliente = cliente;
@@ -38,18 +39,6 @@ public class SeguroPF extends Seguro{
 
 	public void setCliente(ClientePF cliente) {
 		this.cliente = cliente;
-	}
-
-	@Override
-	public boolean desautorizarCondutor() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean autorizarCondutor() {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	@Override
@@ -87,7 +76,17 @@ public class SeguroPF extends Seguro{
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
+		String ret = super.toString();
+		
+		ret += "-------------------\n";
+		ret += "Dados do Cliente\n";
+		ret += "-------------------\n";
+		ret += this.cliente.toStringSimples() + "\n";
+		ret += "-------------------\n";
+		ret += "Dados do Veiculo\n";
+		ret += "-------------------\n";
+		ret += this.veiculo.toString() + "\n";
+		
 		return null;
 	}
 

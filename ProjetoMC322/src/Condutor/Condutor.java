@@ -109,4 +109,17 @@ public class Condutor {
 		
 		return ret;
 	}
+	
+	public String toStringSimples() {
+		String ret = "";
+		// formatador para converter o objeto LocalDate em String do formato "dd/MM/yyyy"
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		
+		ret += "CPF: "+this.cpf+"\n";
+		ret += "Nome: "+this.nome+"\n";
+		ret += "Telefone: "+this.telefone+"\n";
+		ret += "Data de nascimento: "+this.dataNascimento.format(formatter)+"\n";
+		
+		return ret;
+	}
 }
