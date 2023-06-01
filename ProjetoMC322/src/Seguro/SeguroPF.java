@@ -41,6 +41,7 @@ public class SeguroPF extends Seguro{
 		this.cliente = cliente;
 	}
 
+	// TOTEST
 	@Override
 	public void calcularValor() {
 		// calcular idade
@@ -58,8 +59,8 @@ public class SeguroPF extends Seguro{
 			FATOR_IDADE = CalcSeguro.FATOR_60_90;
 
 		int qtdVeiculos = cliente.getListaVeiculos().size();
-		int qtdSinistrosCliente = 2; // TODO aparentemente é na seguradora
-		int qtdSinistrosCondutor = 3;
+		int qtdSinistrosCliente = this.seguradora.getSinistrosPorCliente(this.cliente.getCpf()).size();
+		int qtdSinistrosCondutor = this.seguradora.getSinistrosCondutoresPorCliente(this.cliente.getCpf()).size();
 		
 		double valor = CalcSeguro.VALOR_BASE.getFator() * FATOR_IDADE.getFator() * (1.0 + 1.0/(qtdVeiculos+2)) *
 					   (2.0 + qtdSinistrosCliente/10.0) * (5.0 + qtdSinistrosCondutor/10.0); 
@@ -68,10 +69,37 @@ public class SeguroPF extends Seguro{
 		this.setValorMensal(valor);	
 	}
 
+	// TOTEST
 	@Override
-	public void gerarSinistro() {
-		// TODO Auto-generated method stub
+	public boolean gerarSinistro(LocalDate data, String endereco, String cpfCondutor) {
+		if(data == null || endereco == null || endereco.equals("") || cpfCondutor == null || cpfCondutor.equals("") )
+			return false;
 		
+		Condutor condutor = getCondutor(cpfCondutor);
+		if(condutor == null)
+			return false;
+		
+		Sinistro sinistro = new Sinistro(data, endereco, condutor, this);
+		
+		// add sinistro no condutor e no seguro, e retorna true
+		if(condutor.adicionarSinistro(sinistro))
+			if(this.listaSinistros.add(sinistro))
+				return true;
+		
+		// se algum der errado, retorna falso
+		return false;
+	}
+	
+	private Condutor getCondutor(String cpfCondutor) {
+		if(cpfCondutor == null || cpfCondutor.equals(""))
+			return null;
+		
+		for(Condutor c: listaCondutores) {
+			if(c.getCpf().equals(cpfCondutor))
+				return c;
+		}
+			
+		return null;
 	}
 
 	@Override

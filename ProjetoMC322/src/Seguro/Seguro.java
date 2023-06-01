@@ -13,9 +13,9 @@ public abstract class Seguro {
 	private final int id;
 	private LocalDate dataInicio;
 	private LocalDate dataFim;
-	private Seguradora seguradora;
-	private LinkedList<Sinistro> listaSinistros;
-	private LinkedList<Condutor> listaCondutores;
+	protected Seguradora seguradora; // TODO deixa protected ou private?
+	protected LinkedList<Sinistro> listaSinistros;
+	protected LinkedList<Condutor> listaCondutores;
 	private double valorMensal;
 	
 	public Seguro(LocalDate dataInicio, LocalDate dataFim,
@@ -155,6 +155,6 @@ public abstract class Seguro {
 	
 	public abstract void calcularValor();
 	
-	public abstract void gerarSinistro();
+	public abstract boolean gerarSinistro(LocalDate data, String endereco, String cpfCondutor);
 	
 }

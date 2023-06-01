@@ -179,7 +179,7 @@ public class Seguradora {
 
 	// 2 - Sinistros
 	
-	 public boolean gerarSinistro(String placa, String keyCliente, LocalDate data, String endereco, Condutor condutor) { 
+	 public boolean gerarSinistro(String placa, String keyCliente, LocalDate data, String endereco, String cpfCondutor) { 
 		String tipoCliente = getTipoClienteByKey(keyCliente);
 		
 		// resgata cliente com a keyCliente (CPF/CNPJ) fornecida cadastrado na seguradora
@@ -218,7 +218,7 @@ public class Seguradora {
 		// ver se existe o condutor no seguro
 		// se nao, retorna falso
 		
-		return seguro.gerarSinistro(data, endereco, condutor);
+		return seguro.gerarSinistro(data, endereco, cpfCondutor);
 	} 
 	/*
 	public boolean removerSinistro(int id) {
@@ -395,6 +395,7 @@ public class Seguradora {
 	}
 	
 	// TOTEST
+	// retorna todos os seguros registrados com a key do cliente na seguradora
 	public ArrayList<Seguro> getSegurosPorCliente(String keyCliente){
 		ArrayList<Seguro> ret = new ArrayList<Seguro>();
 		
@@ -411,6 +412,35 @@ public class Seguradora {
 			}
 				
 		}
+		return ret;
+	}
+	
+	// TOTEST
+	// retorna todos os sinistros registrados em seguros do cliente
+	public ArrayList<Sinistro> getSinistrosPorCliente(String keyCliente){
+		ArrayList<Sinistro> ret = new ArrayList<Sinistro>();
+		
+		ArrayList<Seguro> seguros = getSegurosPorCliente(keyCliente);
+		
+		for(Seguro s: seguros)
+			ret.addAll(s.getListaSinistros());
+		
+		return ret;
+	}
+	
+	// TOTEST
+	// retorna todos os sinistros dos condutores registrados em seguros do cliente
+	public ArrayList<Sinistro> getSinistrosCondutoresPorCliente(String keyCliente){
+		ArrayList<Sinistro> ret = new ArrayList<Sinistro>();
+		
+		ArrayList<Seguro> seguros = getSegurosPorCliente(keyCliente);
+		
+		for(Seguro s: seguros) {
+			for(Condutor c: s.getListaCondutores()) {
+				ret.addAll(c.getListaSinistros());
+			}
+		}
+		
 		return ret;
 	}
 	

@@ -42,16 +42,17 @@ public class SeguroPJ extends Seguro{
 		this.cliente = cliente;
 	}
 
+	// TOTEST
 	@Override
 	public void calcularValor() {
-		// calcular anosPosFundacao
+		// calcula anosPosFundacao
 		LocalDate dataAtual = LocalDate.now();
 		Period periodo = Period.between(cliente.getDataFundacao(), dataAtual);
 		int anosPosFundacao = periodo.getYears();
 				
 		int qtdVeiculos = cliente.getListaFrotas().size();
-		int qtdSinistrosCliente = 2; // TODO aparentemente é na seguradora
-		int qtdSinistrosCondutor = 3;
+		int qtdSinistrosCliente = this.seguradora.getSinistrosPorCliente(this.cliente.getCnpj()).size();
+		int qtdSinistrosCondutor = this.seguradora.getSinistrosCondutoresPorCliente(this.cliente.getCnpj()).size();;
 		
 		double valor = CalcSeguro.VALOR_BASE.getFator() * (10.0 + cliente.getQtdeFuncionarios()/10.0) * 
 					   (1.0 + 1.0/(qtdVeiculos + 2.0)) * (1.0 + 1.0/(anosPosFundacao + 2.0)) *
@@ -61,10 +62,25 @@ public class SeguroPJ extends Seguro{
 		this.setValorMensal(valor);	
 	}
 
+	// TODO
 	@Override
-	public void gerarSinistro() {
-		// TODO Auto-generated method stub
+	public boolean gerarSinistro(LocalDate data, String endereco, String cpfCondutor) {
+		if(data == null || endereco == null || endereco.equals("") || cpfCondutor == null || cpfCondutor.equals("") )
+			return false;
 		
+		Condutor condutor = getCondutor(cpfCondutor);
+		if(condutor == null)
+			return false;
+		
+		Sinistro sinistro = new Sinistro(data, endereco, condutor, this);
+		
+		// add sinistro no condutor e no seguro, e retorna true
+		if(condutor.adicionarSinistro(sinistro))
+			if(this.listaSinistros.add(sinistro))
+				return true;
+		
+		// se algum der errado, retorna falso
+		return false;
 	}
 
 	@Override

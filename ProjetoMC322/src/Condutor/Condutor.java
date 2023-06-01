@@ -82,8 +82,11 @@ public class Condutor {
 	}
 
 	// TODO
-	public void adicionarSinistro() {
+	public boolean adicionarSinistro(Sinistro sinistro) {
+		if(sinistro == null)
+			return false;
 		
+		return listaSinistros.add(sinistro);
 	}
 	
 	public String toString() {
