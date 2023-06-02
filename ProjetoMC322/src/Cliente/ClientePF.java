@@ -120,9 +120,12 @@ public class ClientePF extends Cliente {
 	
 	// TOTEST
 	// remove (caso exista) o veiculo passado por parametro do cliente
-	public boolean removerVeiculo(Veiculo veiculo) {
-		if(veiculo == null) // veiculo nulo
+	public boolean removerVeiculo(String placa) {
+		if(placa == null || placa.equals(""))
 			return false;
+		
+		Veiculo veiculo = getVeiculoByPlaca(placa);
+		
 		return this.listaVeiculos.remove(veiculo);
 	}
 	

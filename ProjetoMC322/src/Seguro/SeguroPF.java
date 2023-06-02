@@ -86,22 +86,12 @@ public class SeguroPF extends Seguro{
 			if(this.listaSinistros.add(sinistro))
 				return true;
 		
+		this.calcularValor(); // atualiza valor do seguro
+		
 		// se algum der errado, retorna falso
 		return false;
 	}
 	
-	private Condutor getCondutor(String cpfCondutor) {
-		if(cpfCondutor == null || cpfCondutor.equals(""))
-			return null;
-		
-		for(Condutor c: listaCondutores) {
-			if(c.getCpf().equals(cpfCondutor))
-				return c;
-		}
-			
-		return null;
-	}
-
 	@Override
 	public String toString() {
 		String ret = super.toString();
@@ -115,7 +105,23 @@ public class SeguroPF extends Seguro{
 		ret += "-------------------\n";
 		ret += this.veiculo.toString() + "\n";
 		
-		return null;
+		return ret;
+	}
+	
+	@Override
+	public String toStringSimples() {
+		String ret = super.toStringSimples();
+		
+		ret += "-------------------\n";
+		ret += "Dados do Cliente\n";
+		ret += "-------------------\n";
+		ret += this.cliente.toStringSimples() + "\n";
+		ret += "-------------------\n";
+		ret += "Dados do Veiculo\n";
+		ret += "-------------------\n";
+		ret += this.veiculo.toString() + "\n";
+		
+		return ret;
 	}
 
 }

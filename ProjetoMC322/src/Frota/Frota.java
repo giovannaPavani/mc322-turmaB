@@ -36,10 +36,22 @@ public class Frota {
 	}
 	
 	// TOTEST
-	// remove (caso exista) o veiculo passado por parametro do cliente
+	// remove (caso exista) o veiculo passado por parametro e seus sinistros do cliente
 	public boolean removerVeiculo(Veiculo veiculo) {
 		if(veiculo == null) // veiculo nulo
 			return false;
+		
+		return this.listaVeiculos.remove(veiculo);
+	}
+	
+	// TOTEST
+	// remove (caso exista) o veiculo cuja placa é passada por parametro e seus sinistros do cliente
+	public boolean removerVeiculo(String placa) {
+		if(placa == null || placa.equals("")) // placa nula
+			return false;
+		
+		Veiculo veiculo = getVeiculoByPlaca(placa);
+		
 		return this.listaVeiculos.remove(veiculo);
 	}
 	

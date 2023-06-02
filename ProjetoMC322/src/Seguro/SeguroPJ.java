@@ -62,7 +62,7 @@ public class SeguroPJ extends Seguro{
 		this.setValorMensal(valor);	
 	}
 
-	// TODO
+	// TOTEST
 	@Override
 	public boolean gerarSinistro(LocalDate data, String endereco, String cpfCondutor) {
 		if(data == null || endereco == null || endereco.equals("") || cpfCondutor == null || cpfCondutor.equals("") )
@@ -79,10 +79,62 @@ public class SeguroPJ extends Seguro{
 			if(this.listaSinistros.add(sinistro))
 				return true;
 		
+		this.calcularValor(); // atualiza valor do seguro
+		
 		// se algum der errado, retorna falso
 		return false;
 	}
 
+	// TOTEST
+	// remove sinistros condutores do seguro do veiculo, remove veiculo da frota e atualiza valor
+	public boolean removerVeiculo(String placa) {
+		if(placa == null || placa.equals(""))
+			return false;
+		
+		boolean removeuSinistros = false;
+		
+		// remove sinistros dos condutores
+		for(Sinistro sinistro: listaSinistros) {
+			for(int i=0; i<listaCondutores.size(); i++) {
+				Condutor condutor = listaCondutores.get(i);
+				if(sinistro.getCondutor().equals(condutor)) {
+					if(!condutor.removerSinistro(sinistro))
+						return false;
+					else
+						removeuSinistros = true;
+				}				
+			}
+		}
+		
+		// remove veiculo da frota
+		boolean removeuVeiculo = frota.removerVeiculo(placa);
+		
+		// atualiza valor do seguro
+		calcularValor();
+		
+		return removeuVeiculo || removeuSinistros;
+	}
+	
+	// TOTEST
+	public boolean atualizarListaCondutores(Condutor condutor) {
+		if(condutor == null)
+			return false;
+		
+		boolean atualizou = false;
+		
+		if(getCondutor(condutor.getCpf()) == null)
+			atualizou = listaCondutores.add(condutor);
+		else
+			atualizou = listaCondutores.remove(condutor);
+		
+		if(!atualizou)
+			return false;
+		
+		calcularValor();
+		
+		return true;
+	}
+	
 	@Override
 	public String toString() {
 		String ret = super.toString();
@@ -99,4 +151,19 @@ public class SeguroPJ extends Seguro{
 		return ret;
 	}
 
+	@Override
+	public String toStringSimples() {
+		String ret = super.toStringSimples();
+		
+		ret += "-------------------\n";
+		ret += "Dados do Cliente\n";
+		ret += "-------------------\n";
+		ret += this.cliente.toStringSimples() + "\n";
+		ret += "-------------------\n";
+		ret += "Dados da Frota\n";
+		ret += "-------------------\n";
+		ret += this.frota.toStringSimples() + "\n";
+
+		return ret;
+	}
 }

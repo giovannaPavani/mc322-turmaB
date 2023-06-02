@@ -81,12 +81,20 @@ public class Condutor {
 		this.listaSinistros = listaSinistros;
 	}
 
-	// TODO
+	// TOTEST
 	public boolean adicionarSinistro(Sinistro sinistro) {
 		if(sinistro == null)
 			return false;
 		
 		return listaSinistros.add(sinistro);
+	}
+	
+	// TOTEST
+	public boolean removerSinistro(Sinistro sinistro) {
+		if(sinistro == null)
+			return false;
+		
+		return listaSinistros.remove(sinistro);
 	}
 	
 	public String toString() {

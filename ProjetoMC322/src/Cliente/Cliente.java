@@ -81,4 +81,6 @@ public abstract class Cliente {
 	public abstract Veiculo getVeiculoByPlaca(String placa);
 	
 	public abstract LinkedList<Veiculo> getListaVeiculos();
+	
+	public abstract boolean removerVeiculo(String placa);
 }

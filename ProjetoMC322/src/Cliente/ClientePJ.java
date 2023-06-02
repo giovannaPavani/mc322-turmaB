@@ -113,6 +113,19 @@ public class ClientePJ extends Cliente {
 		return null;
 	}
 	
+	// TOTEST
+	public boolean removerVeiculo(String placa) {
+		for(Frota frota: listaFrotas) {
+			for(Veiculo veiculo: frota.getListaVeiculos()) {
+				if(veiculo.getPlaca().equals(placa))
+					return frota.removerVeiculo(veiculo);
+			}
+		}
+		
+		// veiculo nao cadastrado
+		return false;
+	}
+	
 	/* =================
 	 *  FUNÇÕES PEDIDAS
 	 * ================= */
@@ -160,7 +173,7 @@ public class ClientePJ extends Cliente {
 		return true;
 	}
 	
-	// TODO / TOTEST oi??????
+	// TOTEST
 	// mudei para  LinkedList<Veiculo> ao inves de boolean
 	public LinkedList<Veiculo> getVeiculosPorFrota(String code) {
 		Frota frota = getFrotaByCode(code);

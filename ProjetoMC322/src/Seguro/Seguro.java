@@ -120,6 +120,19 @@ public abstract class Seguro {
 		return false;
 	}
 	
+	// TOTEST
+	public Condutor getCondutor(String cpfCondutor) {
+		if(cpfCondutor == null || cpfCondutor.equals(""))
+			return null;
+		
+		for(Condutor c: listaCondutores) {
+			if(c.getCpf().equals(cpfCondutor))
+				return c;
+		}
+			
+		return null;
+	}
+	
 	public String toString() {
 		String ret = "";
 		ret += "ID: " + id + "\n";
@@ -153,8 +166,16 @@ public abstract class Seguro {
 		return ret;
 	}
 	
+	public String toStringSimples() {
+		String ret = "";
+		
+		ret += "ID: " + id + "\n";
+		ret += "Valor mensal: " + valorMensal + "\n";
+		
+		return ret;
+	}
+	
 	public abstract void calcularValor();
 	
 	public abstract boolean gerarSinistro(LocalDate data, String endereco, String cpfCondutor);
-	
 }

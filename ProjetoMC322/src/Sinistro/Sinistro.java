@@ -94,7 +94,7 @@ public class Sinistro {
 		return ret;
 	}
 	
-	// TODO
+	// TOTEST
 	// toString mais simples, com menos informacoes do que o oficial
 	public String toStringSimples() {
 		String ret = "";
