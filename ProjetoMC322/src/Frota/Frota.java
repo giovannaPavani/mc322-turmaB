@@ -5,8 +5,8 @@ import Veiculo.Veiculo;
 
 public class Frota {
 
-	String code;
-	LinkedList<Veiculo> listaVeiculos;
+	private String code;
+	private LinkedList<Veiculo> listaVeiculos;
 	
 	public Frota(String code, LinkedList<Veiculo> listaVeiculos) {
 		this.code = code;
@@ -16,19 +16,22 @@ public class Frota {
 	public String getCode() {
 		return code;
 	}
+	
 	public void setCode(String code) {
 		this.code = code;
 	}
+	
 	public LinkedList<Veiculo> getListaVeiculos() {
 		return listaVeiculos;
 	}
+	
 	public void setListaVeiculos(LinkedList<Veiculo> listaVeiculos) {
 		this.listaVeiculos = listaVeiculos;
 	}
 	
 	// TOTEST
 	// cadastra (se já nao o estiver) o veiculo passado por parametro no cliente
-	public boolean cadastrarVeiculo(Veiculo veiculo) {
+	public boolean addVeiculo(Veiculo veiculo) {
 		if(this.listaVeiculos.contains(veiculo) || veiculo == null) // veiculo ja cadastrado ou nulo
 			return false;
 		
@@ -37,7 +40,7 @@ public class Frota {
 	
 	// TOTEST
 	// remove (caso exista) o veiculo passado por parametro e seus sinistros do cliente
-	public boolean removerVeiculo(Veiculo veiculo) {
+	public boolean removeVeiculo(Veiculo veiculo) {
 		if(veiculo == null) // veiculo nulo
 			return false;
 		
@@ -51,6 +54,8 @@ public class Frota {
 			return false;
 		
 		Veiculo veiculo = getVeiculoByPlaca(placa);
+		if(veiculo == null)
+			return false;
 		
 		return this.listaVeiculos.remove(veiculo);
 	}

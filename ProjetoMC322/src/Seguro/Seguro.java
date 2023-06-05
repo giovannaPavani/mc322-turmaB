@@ -10,13 +10,13 @@ import Sinistro.Sinistro;
 
 public abstract class Seguro {
 
-	private final int id;
-	private LocalDate dataInicio;
-	private LocalDate dataFim;
-	protected Seguradora seguradora; // TODO deixa protected ou private?
+	protected final int id;
+	protected LocalDate dataInicio;
+	protected LocalDate dataFim;
+	protected Seguradora seguradora;
 	protected LinkedList<Sinistro> listaSinistros;
 	protected LinkedList<Condutor> listaCondutores;
-	private double valorMensal;
+	protected double valorMensal;
 	
 	public Seguro(LocalDate dataInicio, LocalDate dataFim,
 				  Seguradora seguradora, LinkedList<Sinistro> listaSinistros,
@@ -91,46 +91,70 @@ public abstract class Seguro {
 		this.valorMensal = valorMensal;
 	}
 	
-	// Optei por colocar autorizarCondutor e desautorizarCondutor na classe 
+	/* =================
+	 *  FUNÇÕES PEDIDAS
+	 * ================= */
+	
+	// OBS: Optei por colocar autorizarCondutor e desautorizarCondutor na classe 
 	// principal, pois as implementações nas classes filhas estavam idênticas
+	
 	// TOTEST
+	// adiciona condutor, se nao já cadastrado, na listaCondutores
 	public boolean autorizarCondutor(Condutor condutor) {
 		if(condutor == null)
 			return false;
 		
-		// retorna falso se o condutor já esta autorizado
+		// retorna falso se o condutor com mesmo cpf já esta autorizado
 		for(Condutor c: listaCondutores) {
 			if(c.getCpf().equals(condutor.getCpf()))
 				return false;
 		}
 			
-		return listaCondutores.add(condutor);
-	}
-	
-	// TOTEST
-	public boolean desautorizarCondutor(String cpf) {
-		if(cpf == null || cpf.equals(""))
-			return false;
-		
-		for(Condutor c: listaCondutores) {
-			if(c.getCpf().equals(cpf))
-				return listaCondutores.remove(c);
+		if(listaCondutores.add(condutor)) {
+			calcularValor();
+			return true;
 		}
 		
 		return false;
 	}
 	
 	// TOTEST
-	public Condutor getCondutor(String cpfCondutor) {
-		if(cpfCondutor == null || cpfCondutor.equals(""))
-			return null;
+	// remove, se já cadastrado, o condutor cujo cpf é fornecido da listaCondutores
+	public boolean desautorizarCondutor(String cpf) {
+		if(cpf == null || cpf.equals(""))
+			return false;
 		
 		for(Condutor c: listaCondutores) {
-			if(c.getCpf().equals(cpfCondutor))
-				return c;
+			if(c.getCpf().equals(cpf))
+				if(listaCondutores.remove(c)) {
+					calcularValor();
+					return true;
+				}
+					
 		}
-			
-		return null;
+		
+		return false;
+	}
+	
+	// TOTEST
+	public boolean gerarSinistro(LocalDate data, String endereco, String cpfCondutor) {
+		if(data == null || endereco == null || endereco.equals("") || cpfCondutor == null || cpfCondutor.equals("") )
+			return false;
+		
+		Condutor condutor = getCondutor(cpfCondutor);
+		if(condutor == null)
+			return false;
+		
+		Sinistro sinistro = new Sinistro(data, endereco, condutor, this);
+		
+		if(condutor.adicionarSinistro(sinistro)) { // add sinistro no condutor
+			if(listaSinistros.add(sinistro)) { // add sinistro no seguro
+				calcularValor(); // atualiza valor do seguro
+				return true;
+			}
+		}
+		
+		return false; // se algum add der errado, retorna falso
 	}
 	
 	public String toString() {
@@ -166,6 +190,60 @@ public abstract class Seguro {
 		return ret;
 	}
 	
+	public abstract void calcularValor();
+	
+	/* ====================
+	 *  MÉTODOS AUXILIARES 
+	 * ===================*/
+	
+	// 	TOTEST
+	public boolean removerSinistro(int id) {
+		for(Sinistro sinistro: listaSinistros) { 
+			if(sinistro.getId() == id) { // achou o sinistro cujo ID é informado
+				
+				// remove sinistro dos condutores
+				for(Condutor condutor: listaCondutores) {
+					if(condutor.getCpf().equals(sinistro.getCondutor().getCpf())) {
+						if(!condutor.removerSinistro(sinistro))
+							return false; // caso alguma remocao de sinistro de um condutor de errado
+					}
+				}
+				
+				// remove sinistro do seguro
+				if(listaSinistros.remove(sinistro)) {
+					calcularValor(); // atualiza valor do seguro
+					return true;				
+				}
+				
+				return false; // remoção deu errado
+			}
+		}
+		
+		return false; // o sinistro nao está cadastrado no seguro
+	}
+	
+	// TOTEST
+	public Condutor getCondutor(String cpfCondutor) {
+		if(cpfCondutor == null || cpfCondutor.equals(""))
+			return null;
+		
+		for(Condutor c: listaCondutores) {
+			if(c.getCpf().equals(cpfCondutor))
+				return c;
+		}
+			
+		return null;
+	}
+	
+	protected int getQtdSinistrosCondutores() {
+		int qtd = 0;
+		
+		for(Condutor condutor: listaCondutores)
+			qtd += condutor.getListaSinistros().size();
+		
+		return qtd;
+	}
+	
 	public String toStringSimples() {
 		String ret = "";
 		
@@ -174,8 +252,5 @@ public abstract class Seguro {
 		
 		return ret;
 	}
-	
-	public abstract void calcularValor();
-	
-	public abstract boolean gerarSinistro(LocalDate data, String endereco, String cpfCondutor);
+
 }

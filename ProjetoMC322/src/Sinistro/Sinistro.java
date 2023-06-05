@@ -58,20 +58,20 @@ public class Sinistro {
 		this.endereco = endereco;
 	}
 	
-	public Seguro getSeguro() {
-		return seguro;
-	}
-
-	public void setSeguro(Seguro seguro) {
-		this.seguro = seguro;
-	}
-	
 	public Condutor getCondutor() {
 		return condutor;
 	}
 
 	public void setCondutor(Condutor condutor) {
 		this.condutor = condutor;
+	}
+	
+	public Seguro getSeguro() {
+		return seguro;
+	}
+
+	public void setSeguro(Seguro seguro) {
+		this.seguro = seguro;
 	}
 	
 	public String toString() {

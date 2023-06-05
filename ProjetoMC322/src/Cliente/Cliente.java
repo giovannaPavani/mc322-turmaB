@@ -73,7 +73,7 @@ public abstract class Cliente {
 		String ret = "";
 		
 		ret += "Nome: " + nome + "\n";
-		ret += "Endereco: " + endereco + "\n";
+		ret += "Telefone: " + telefone + "\n";
 
 		return ret;
 	}

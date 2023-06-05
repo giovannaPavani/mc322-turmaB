@@ -11,8 +11,8 @@ import Sinistro.Sinistro;
 
 public class SeguroPJ extends Seguro{
 
-	Frota frota;
-	ClientePJ cliente;
+	private Frota frota;
+	private ClientePJ cliente;
 	
 	public SeguroPJ(LocalDate dataInicio, LocalDate dataFim, 
 					Seguradora seguradora,LinkedList<Sinistro> listaSinistros, 
@@ -52,87 +52,40 @@ public class SeguroPJ extends Seguro{
 				
 		int qtdVeiculos = cliente.getListaFrotas().size();
 		int qtdSinistrosCliente = this.seguradora.getSinistrosPorCliente(this.cliente.getCnpj()).size();
-		int qtdSinistrosCondutor = this.seguradora.getSinistrosCondutoresPorCliente(this.cliente.getCnpj()).size();;
+		int qtdSinistrosCondutor =  getQtdSinistrosCondutores(); // TODO DUVIDA! da seguradora ou do seguro?
 		
 		double valor = CalcSeguro.VALOR_BASE.getFator() * (10.0 + cliente.getQtdeFuncionarios()/10.0) * 
-					   (1.0 + 1.0/(qtdVeiculos + 2.0)) * (1.0 + 1.0/(anosPosFundacao + 2.0)) *
+					   (1.0 + 1.0/(qtdVeiculos+2.0)) * (1.0 + 1.0/(anosPosFundacao+2.0)) *
 					   (2.0 + qtdSinistrosCliente/10.0) * (5.0 + qtdSinistrosCondutor/10.0);
 		
-		// TODO faz set ou deixa protected??
-		this.setValorMensal(valor);	
+		this.valorMensal = valor;	
 	}
 
 	// TOTEST
-	@Override
-	public boolean gerarSinistro(LocalDate data, String endereco, String cpfCondutor) {
-		if(data == null || endereco == null || endereco.equals("") || cpfCondutor == null || cpfCondutor.equals("") )
-			return false;
-		
-		Condutor condutor = getCondutor(cpfCondutor);
-		if(condutor == null)
-			return false;
-		
-		Sinistro sinistro = new Sinistro(data, endereco, condutor, this);
-		
-		// add sinistro no condutor e no seguro, e retorna true
-		if(condutor.adicionarSinistro(sinistro))
-			if(this.listaSinistros.add(sinistro))
-				return true;
-		
-		this.calcularValor(); // atualiza valor do seguro
-		
-		// se algum der errado, retorna falso
-		return false;
-	}
-
-	// TOTEST
-	// remove sinistros condutores do seguro do veiculo, remove veiculo da frota e atualiza valor
+	// remove sinistros envolvendo o veiculo dos condutores do seguro, remove veiculo da frota e atualiza valor
 	public boolean removerVeiculo(String placa) {
 		if(placa == null || placa.equals(""))
 			return false;
 		
-		boolean removeuSinistros = false;
-		
 		// remove sinistros dos condutores
 		for(Sinistro sinistro: listaSinistros) {
-			for(int i=0; i<listaCondutores.size(); i++) {
+			for(int i = 0; i < listaCondutores.size(); i++) {
 				Condutor condutor = listaCondutores.get(i);
-				if(sinistro.getCondutor().equals(condutor)) {
+				if(sinistro.getCondutor().getCpf().equals(condutor.getCpf())) {
 					if(!condutor.removerSinistro(sinistro))
 						return false;
-					else
-						removeuSinistros = true;
+					else 
+						listaCondutores.set(i, condutor); // atualiza listaCondutores
 				}				
 			}
 		}
 		
-		// remove veiculo da frota
-		boolean removeuVeiculo = frota.removerVeiculo(placa);
+		if(frota.removerVeiculo(placa)) { // remove veiculo da frota
+			calcularValor(); // atualiza valor do seguro
+			return true;
+		}
 		
-		// atualiza valor do seguro
-		calcularValor();
-		
-		return removeuVeiculo || removeuSinistros;
-	}
-	
-	// TOTEST
-	public boolean atualizarListaCondutores(Condutor condutor) {
-		if(condutor == null)
-			return false;
-		
-		boolean atualizou = false;
-		
-		if(getCondutor(condutor.getCpf()) == null)
-			atualizou = listaCondutores.add(condutor);
-		else
-			atualizou = listaCondutores.remove(condutor);
-		
-		if(!atualizou)
-			return false;
-		
-		calcularValor();
-		
-		return true;
+		return false;
 	}
 	
 	@Override

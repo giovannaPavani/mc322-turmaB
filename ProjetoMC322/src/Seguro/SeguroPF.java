@@ -10,9 +10,10 @@ import Seguradora.Seguradora;
 import Sinistro.Sinistro;
 import Veiculo.Veiculo;
 
-public class SeguroPF extends Seguro{
-	Veiculo veiculo;
-	ClientePF cliente;
+public class SeguroPF extends Seguro {
+	
+	private Veiculo veiculo;
+	private ClientePF cliente;
 	
 	public SeguroPF(LocalDate dataInicio, LocalDate dataFim, 
 					Seguradora seguradora,LinkedList<Sinistro> listaSinistros, 
@@ -22,7 +23,6 @@ public class SeguroPF extends Seguro{
 		
 		this.veiculo = veiculo;
 		this.cliente = cliente;
-		calcularValor();
 	}
 	
 	public Veiculo getVeiculo() {
@@ -51,7 +51,7 @@ public class SeguroPF extends Seguro{
 		
 		// pega valor do fator idade de acordo com a idade do cliente
 		CalcSeguro FATOR_IDADE;
-		if(idade <= 30)
+		if(idade < 30)
 			FATOR_IDADE = CalcSeguro.FATOR_18_30;
 		else if(idade <= 60)
 			FATOR_IDADE = CalcSeguro.FATOR_30_60;
@@ -59,37 +59,13 @@ public class SeguroPF extends Seguro{
 			FATOR_IDADE = CalcSeguro.FATOR_60_90;
 
 		int qtdVeiculos = cliente.getListaVeiculos().size();
-		int qtdSinistrosCliente = this.seguradora.getSinistrosPorCliente(this.cliente.getCpf()).size();
-		int qtdSinistrosCondutor = this.seguradora.getSinistrosCondutoresPorCliente(this.cliente.getCpf()).size();
+		int qtdSinistrosCliente = seguradora.getSinistrosPorCliente(cliente.getCpf()).size();
+		int qtdSinistrosCondutor = getQtdSinistrosCondutores(); // TODO DUVIDA! da seguradora ou do seguro?
 		
-		double valor = CalcSeguro.VALOR_BASE.getFator() * FATOR_IDADE.getFator() * (1.0 + 1.0/(qtdVeiculos+2)) *
+		double valor = CalcSeguro.VALOR_BASE.getFator() * FATOR_IDADE.getFator() * (1.0 + 1.0/(qtdVeiculos+2.0)) *
 					   (2.0 + qtdSinistrosCliente/10.0) * (5.0 + qtdSinistrosCondutor/10.0); 
-		
-		// TODO faz set ou deixa protected??
-		this.setValorMensal(valor);	
-	}
 
-	// TOTEST
-	@Override
-	public boolean gerarSinistro(LocalDate data, String endereco, String cpfCondutor) {
-		if(data == null || endereco == null || endereco.equals("") || cpfCondutor == null || cpfCondutor.equals("") )
-			return false;
-		
-		Condutor condutor = getCondutor(cpfCondutor);
-		if(condutor == null)
-			return false;
-		
-		Sinistro sinistro = new Sinistro(data, endereco, condutor, this);
-		
-		// add sinistro no condutor e no seguro, e retorna true
-		if(condutor.adicionarSinistro(sinistro))
-			if(this.listaSinistros.add(sinistro))
-				return true;
-		
-		this.calcularValor(); // atualiza valor do seguro
-		
-		// se algum der errado, retorna falso
-		return false;
+		this.valorMensal = valor;	
 	}
 	
 	@Override

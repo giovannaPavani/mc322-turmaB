@@ -83,7 +83,7 @@ public class Condutor {
 
 	// TOTEST
 	public boolean adicionarSinistro(Sinistro sinistro) {
-		if(sinistro == null)
+		if(sinistro == null || listaSinistros.contains(sinistro))
 			return false;
 		
 		return listaSinistros.add(sinistro);
@@ -96,6 +96,19 @@ public class Condutor {
 		
 		return listaSinistros.remove(sinistro);
 	}
+	
+	// TOTEST
+		public boolean removerSinistro(int id) {
+			if(id < 0)
+				return false;
+			
+			for(Sinistro sinistro: listaSinistros) {
+				if(sinistro.getId() == id)
+					return listaSinistros.remove(sinistro);
+			}
+			
+			return false; // sinistro nao cadastrado
+		}
 	
 	public String toString() {
 		String ret = "";

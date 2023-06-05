@@ -75,10 +75,10 @@ public class ClientePF extends Cliente {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		
 		ret += "CPF: " + this.cpf + "\n";
-		ret += "Gênero: " + this.genero + "\n";
-		ret += "Educação: " + this.educacao + "\n";
 		ret += "Data de Nascimento: " + this.dataNascimento.format(formatter) + "\n";
 		ret += super.toString();
+		ret += "Gênero: " + this.genero + "\n";
+		ret += "Educação: " + this.educacao + "\n";
 		
 		if(listaVeiculos != null && !listaVeiculos.isEmpty()) {
 			ret += "-----------------\n";
@@ -110,12 +110,12 @@ public class ClientePF extends Cliente {
 	 * ================= */
 	
 	// TOTEST
-	// cadastra (se já nao o estiver) o veiculo passado por parametro no cliente
+	// cadastra (se já nao estiver) o veiculo passado por parametro no cliente
 	public boolean cadastrarVeiculo(Veiculo veiculo) {
 		if(this.listaVeiculos.contains(veiculo) || veiculo == null) // veiculo ja cadastrado ou nulo
 			return false;
 		
-		return this.listaVeiculos.add(veiculo);
+		return listaVeiculos.add(veiculo);
 	}
 	
 	// TOTEST
@@ -126,16 +126,21 @@ public class ClientePF extends Cliente {
 		
 		Veiculo veiculo = getVeiculoByPlaca(placa);
 		
-		return this.listaVeiculos.remove(veiculo);
+		return listaVeiculos.remove(veiculo);
 	}
 	
+	/* ====================
+	 *  MÉTODOS AUXILIARES
+	 * ==================== */
+	
+	// retorna o veiculo do cliente cuja placa é fornecida; se nao existir, retorna null
 	public Veiculo getVeiculoByPlaca(String placa) {
 		for(Veiculo veiculo: listaVeiculos)
 			if (veiculo.getPlaca().equals(placa)) {
 				return veiculo;	
 			}
 		
-		return null;
+		return null; // veiculo nao cadastrado
 	}
 	
 }
