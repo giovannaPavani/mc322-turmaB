@@ -8,6 +8,7 @@ public enum MenuOperacoes {
 	CADASTRAR("Cadastrar", new SubMenuOperacoes[] {
 			SubMenuOperacoes.CADASTRAR_CLIENTE,
 			SubMenuOperacoes.CADASTRAR_VEICULO,
+			SubMenuOperacoes.CADASTRAR_CONDUTOR,
 			SubMenuOperacoes.VOLTAR
 	}),
 	
@@ -15,8 +16,10 @@ public enum MenuOperacoes {
 			SubMenuOperacoes.LISTAR_CLIENTES,
 			SubMenuOperacoes.LISTAR_SINISTROS_SEGURADORA,
 			SubMenuOperacoes.LISTAR_SINISTROS_CLIENTE,
-			SubMenuOperacoes.LISTAR_VEICULOS_CLIENTE,
 			SubMenuOperacoes.LISTAR_VEICULOS_SEGURADORA,
+			SubMenuOperacoes.LISTAR_VEICULOS_CLIENTE,
+			SubMenuOperacoes.LISTAR_SEGUROS_SEGURADORA,
+			SubMenuOperacoes.LISTAR_SEGUROS_CLIENTE,
 			SubMenuOperacoes.VOLTAR
 	}),
 	
@@ -24,11 +27,16 @@ public enum MenuOperacoes {
 			SubMenuOperacoes.EXCLUIR_CLIENTE,
 			SubMenuOperacoes.EXCLUIR_VEICULO,
 			SubMenuOperacoes.EXCLUIR_SINISTRO,
+			SubMenuOperacoes.EXCLUIR_CONDUTOR,
 			SubMenuOperacoes.VOLTAR}),
+	
+	GERAR_SEGURO("Gerar Seguro", new SubMenuOperacoes[] {SubMenuOperacoes.VOLTAR}),
+	
+	CANCELAR_SEGURO("Cancelar Seguro", new SubMenuOperacoes[] {SubMenuOperacoes.VOLTAR}),
 	
 	GERAR_SINISTRO("Gerar Sinistro", new SubMenuOperacoes[] {SubMenuOperacoes.VOLTAR}),
 	
-	TRANSFERIR_SEGURO("Transferir Seguro", new SubMenuOperacoes[] {SubMenuOperacoes.VOLTAR}),
+	//TRANSFERIR_SEGURO("Transferir Seguro", new SubMenuOperacoes[] {SubMenuOperacoes.VOLTAR}),
 	
 	CALCULAR_RECEITA("Calcular Receita", new SubMenuOperacoes[] {SubMenuOperacoes.VOLTAR}),
 	

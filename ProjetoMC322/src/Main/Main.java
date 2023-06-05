@@ -9,6 +9,7 @@ import java.text.NumberFormat;
 import Cliente.Cliente;
 import Cliente.ClientePF;
 import Cliente.ClientePJ;
+import Condutor.Condutor;
 import Seguradora.Seguradora;
 import Sinistro.Sinistro;
 import Veiculo.Veiculo;
@@ -96,6 +97,22 @@ public class Main {
 				executarSubMenu(op, seguradora); // executa em cadastrar, listar e/ou no excluir
 				break;
 				
+			case GERAR_SEGURO:
+				if(gerarSeguro(leitor, seguradora))
+					System.out.println("\nSeguro gerado com sucesso!\n");
+				else
+					System.out.println("\nERRO: Algo deu errado no cadastro do seguro. Revise os dados e certifique-se que o cliente e o veículo envolvidos estão cadastrados na seguradora.\n");
+				esperarEnter();
+				break;
+				
+			case CANCELAR_SEGURO:
+				if(cancelarSeguro(leitor, seguradora))
+					System.out.println("\nSeguro cancelado com sucesso!\n");
+				else
+					System.out.println("\nERRO: Algo deu errado no cancelamento do seguro. Revise os dados.");
+				esperarEnter();
+				break;
+			
 			case GERAR_SINISTRO:
 				if(gerarSinistro(leitor, seguradora))
 					System.out.println("\nSinistro cadastrado com sucesso!\n");
@@ -104,13 +121,13 @@ public class Main {
 				esperarEnter();
 				break;
 				
-			case TRANSFERIR_SEGURO:
+			/*case TRANSFERIR_SEGURO:
 				if(transferirSeguro(leitor, seguradora))
 					System.out.println("\nTransferência de seguro feita com sucesso!\n");
 				else
 					System.out.println("\nERRO: Algo deu errado na tranferêcia de seguro. Revise os dados e certifique-se que ambos os clientes estão cadastrados na seguradora.\n");
 				esperarEnter();
-				break;
+				break;*/
 				
 			case CALCULAR_RECEITA:
 				calcularReceita(seguradora);
@@ -575,7 +592,7 @@ public class Main {
 	private static boolean gerarSinistro(Scanner leitor, Seguradora seguradora) {
 		limparTela();
 		System.out.println("--------------------------------------------");
-		System.out.println("           4 -  Gerar sinistro ");
+		System.out.println("           6 -  Gerar sinistro ");
 		System.out.println("--------------------------------------------\n");
 		
 		System.out.println("Digite as informações que envolvem o sinistro.");
@@ -594,8 +611,59 @@ public class Main {
 		// gera sinistro na seguradora e retorna se deu certo
 		return seguradora.gerarSinistro(placa, keyCliente, data, endereco);
 	}
+	
+	// TOTEST
+	private static boolean gerarSeguro(Scanner leitor, Seguradora seguradora) {
+		limparTela();
+		System.out.println("--------------------------------------------");
+		System.out.println("           4 -  Gerar seguro ");
+		System.out.println("--------------------------------------------\n");
+		
+		System.out.println("Digite as informações do novo seguro.");
+		System.out.println("(OBS: Escreva as datas no formato dd/mm/aaaa).\n");
+		//cnpj codeFrota dataInicio, dataFim, null, null, 
+		// cpf placaVeiculo
+		
+		String tipo = Validacao.getTipoClienteValido(leitor);
 
-	// 5 - TRANSFERIR SEGURO
+		if(tipo.equals("CPF")) {
+			// gerando seguro de cliente físico
+			String cpf = Validacao.getCpfValido(leitor);
+			LocalDate dataFim = Validacao.getDataValida(leitor, "Data fim");
+			System.out.print("Placa do veículo: ");
+			String placa = leitor.nextLine();
+			
+			return seguradora.gerarSeguro(cpf, dataFim, placa, null);
+		
+		} else if(tipo.equals("CNPJ")){ 
+			// gerando seguro de  cliente jurídico
+			
+			String cnpj = Validacao.getCnpjValido(leitor);
+			LocalDate dataFim = Validacao.getDataValida(leitor, "Data fim");
+			System.out.print("Code da frota: ");
+			String code = leitor.nextLine();
+			
+			return seguradora.gerarSeguro(cnpj, dataFim, null, code);
+		}
+		
+		return false;
+	}
+	
+	// TOTEST
+	private static boolean cancelarSeguro(Scanner leitor, Seguradora seguradora){
+		limparTela();
+		System.out.println("--------------------------------------------");
+		System.out.println("           5 -  Cancelar seguro ");
+		System.out.println("--------------------------------------------\n");
+		
+		System.out.println("Digite o ID do seguro que deseja cancelar.");
+		int id = Validacao.getIDValido(leitor);
+		
+		// gera sinistro na seguradora e retorna se deu certo
+		return seguradora.cancelarSeguro(id);
+	}
+
+	/*// 5 - TRANSFERIR SEGURO
 	
 	// tranfere todos os veiculos cadastrados em um cliente para outro, ambos informados
 	// retorna true se der certo a tranferencia ou o clienteFonte não tenha nenhum veiculo
@@ -625,15 +693,15 @@ public class Main {
 		
 		// transfere o seguro do clienteFonte para o clienteDestino e retorna se deu certo
 		return seguradora.transferirSeguro(clienteFonte, clienteDestino);
-	}
+	}*/
 	
-	// 6 - CALCULAR RECEITA
+	// 7 - CALCULAR RECEITA
 	
 	// calcula a receita da seguradora
 	private static void calcularReceita(Seguradora seguradora) {
 		limparTela();
 		System.out.println("--------------------------------------------");
-		System.out.println("      6 -  Cacular receita da seguradora ");
+		System.out.println("      7 -  Cacular receita da seguradora ");
 		System.out.println("--------------------------------------------\n");
 		
 		// formata valor da receita em uma String no formato de moeda brasileira

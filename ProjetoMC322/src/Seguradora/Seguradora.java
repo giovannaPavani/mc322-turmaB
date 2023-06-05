@@ -229,11 +229,23 @@ public class Seguradora {
 		return ret;
 	}
 	
+	// TOTEST
+	// retorna todos os sinistros registrados em seguros da seguradora
+	public ArrayList<Sinistro> getSinistros(){
+		ArrayList<Sinistro> ret = new ArrayList<Sinistro>();
+		
+		 // add todos os sinistros de todos os seguros
+		for(Seguro seguro: listaSeguros)
+			ret.addAll(seguro.getListaSinistros());
+		
+		return ret;
+	}
+	
 	// 3 - Veiculos
 	
 	// TODO - pensar mais sobre
 	// adiciona o veiculo ao cliente, ambos passados por parametro e atualiza o seguro
-	public boolean adicionarVeiculo(String keyCliente, Veiculo veiculo, String code) {
+	public boolean cadastrarVeiculo(String keyCliente, Veiculo veiculo, String code) {
 		if(keyCliente == null || keyCliente.equals("") || veiculo == null) // cliente nulo
 			return false;
 		
@@ -305,47 +317,55 @@ public class Seguradora {
 		return ret;
 	}
 	
+	// TOTEST
+	// retorna todos os veiculos cadastrados em clientes da seguradora
+	public LinkedList<Veiculo> getVeiculosByKeyCliente(String keyCliente){
+		if(keyCliente == null || keyCliente.equals(""))
+			return null;
+		
+		keyCliente = keyCliente.replaceAll("\\.", "").replaceAll("-", "").replaceAll("/", "");
+		Cliente cliente = getClienteByKey(keyCliente);
+
+		return cliente.getListaVeiculos();
+	}
+	
 	// 4 - Seguros
 	
 	// TOTEST
-	// gera seguro de um cliente físico (CPF)
-	public boolean gerarSeguro(String cpf, LocalDate dataInicio, LocalDate dataFim,	LinkedList<Condutor> listaCondutores, LinkedList<Sinistro> listaSinistros, Veiculo veiculo) {
-		if(cpf == null || cpf.equals("") || dataInicio == null ||dataFim == null || veiculo == null)
+	// gera seguro de um cliente com as informações fornecidas
+	public boolean gerarSeguro(String keyCliente, LocalDate dataFim, String placa, String code) {
+		
+		if(keyCliente == null || keyCliente.equals("") || dataFim == null )
 			return false;
 		
 		// tira caracteres nao numeros do cpf
-		cpf = cpf.replaceAll("\\.", "").replaceAll("-", "").replaceAll("/", "");
+		keyCliente = keyCliente.replaceAll("\\.", "").replaceAll("-", "").replaceAll("/", "");
+		// pega cliente cadastrado
+		Cliente cliente = (Cliente)getClienteByKey(keyCliente);
+		if(cliente == null)
+			return false; // cliente nao cadastrado
+		LocalDate dataInicio = LocalDate.now();
 		
-		if(!getTipoClienteByKey(cpf).equals("PF"))
-			return false; // não é um cliente físico
+		if(getTipoClienteByKey(keyCliente).equals("PF")){
+			if(placa == null || placa.equals(""))
+				return false;
+			Veiculo veiculo = cliente.getVeiculoByPlaca(placa);
+			SeguroPF seguro = new SeguroPF(dataInicio, dataFim, this, new LinkedList<Sinistro>(), new LinkedList<Condutor>(), veiculo, (ClientePF)cliente);
+			return listaSeguros.add(seguro);
+			
+		} else if(getTipoClienteByKey(keyCliente).equals("PJ")){
+			if(code == null || code.equals(""))
+				return false;
+			Frota frota = ((ClientePJ)cliente).getFrotaByCode(code);
+			SeguroPJ seguro = new SeguroPJ(dataInicio, dataFim, this, new LinkedList<Sinistro>(), new LinkedList<Condutor>(), frota, (ClientePJ)cliente);
+			return listaSeguros.add(seguro);
+		}
 		
-		ClientePF cliente = (ClientePF)getClienteByKey(cpf);
-		
-		SeguroPF seguro = new SeguroPF(dataInicio, dataFim, this, listaSinistros, listaCondutores, veiculo, cliente);
-		
-		return listaSeguros.add(seguro);
+		return false;
 	}
 	
 	// TOTEST
-	// gera seguro de um cliente jurídico (CNPJ)
-	public boolean gerarSeguro(String cnpj, LocalDate dataInicio, LocalDate dataFim, LinkedList<Condutor> listaCondutores, LinkedList<Sinistro> listaSinistros, Frota frota) {
-		if(cnpj == null || cnpj.equals("") || dataInicio == null ||dataFim == null || frota == null)
-			return false;
-		
-		// tira caracteres nao numeros do cnpj
-		cnpj = cnpj.replaceAll("\\.", "").replaceAll("-", "").replaceAll("/", "");
-		
-		if(!getTipoClienteByKey(cnpj).equals("PJ"))
-			return false; // não é um cliente jurídico
-		
-		ClientePJ cliente = (ClientePJ)getClienteByKey(cnpj);
-		
-		SeguroPJ seguro = new SeguroPJ(dataInicio, dataFim, this, listaSinistros, listaCondutores, frota, cliente);
-		
-		return listaSeguros.add(seguro);
-	}
-	
-	// TOTEST
+	// remove seguro cujo id é fornecido e retorna true; caso contrario, retorna false
 	public boolean cancelarSeguro(int id) {
 		if(id < 0)
 			return false;
@@ -357,6 +377,36 @@ public class Seguradora {
 		
 		return false;
 	}
+	
+	// TOTEST
+	/*public boolean tranferirSeguro(String keyClienteFonte, String keyClienteDestino) {
+		Cliente clienteFonte, clienteDestino;
+		
+		// resgata os clientes das keys passadas por parametro na seguradora
+		// se pelo menos um deles não estiver cadastrado na seguradora, retorna false
+		clienteFonte = getClienteByKey(keyClienteFonte);
+		if(clienteFonte == null)
+			return false;
+		
+		clienteDestino = getClienteByKey(keyClienteDestino);
+		if(clienteDestino == null)
+			return false;
+		
+		LinkedList<Veiculo> veiculos = clienteFonte.getListaVeiculos();
+		// se o cliente fonte não tiver nada no seu seguro, a transferência é trivial
+		if(!veiculos.isEmpty()) {
+			for(Veiculo veiculo: veiculos) {
+				// remove todos os veiculos da fonte e add no destino
+				clienteFonte.removerVeiculo(veiculo.getPlaca());
+				clienteDestino.(veiculo);
+			}
+			// atualiza seguros de ambos os clientes
+			this.calcularPrecoSeguroCliente(keyClienteFonte);
+			this.calcularPrecoSeguroCliente(keyClienteDestino);			
+		}
+		
+		return true;
+	}*/
 	
 	// TOTEST
 	// retorna todos os seguros registrados com a key do cliente na seguradora
@@ -499,14 +549,5 @@ public class Seguradora {
 		
 		return null;
 	}
-	
-	/* inuteis??
-	 * 
-	// retorna o cpf ou cnpj do cliente a depender do seu tipo
-	public static String getKeyCliente(Cliente cliente) {
-		if(cliente instanceof ClientePF) 
-			return ((ClientePF) cliente).getCpf();
-		
-		return ((ClientePJ) cliente).getCnpj();	
-	}*/
+
 }

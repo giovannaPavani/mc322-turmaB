@@ -209,7 +209,7 @@ public class ClientePJ extends Cliente {
 		return veiculos;
 	}
 	
-	private Frota getFrotaByCode(String code) {
+	public Frota getFrotaByCode(String code) {
 		for(Frota frota: listaFrotas) {
 			if(frota.getCode().equals(code))
 				return frota;
