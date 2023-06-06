@@ -127,7 +127,7 @@ public class Condutor {
 			ret += "Lista de Sinistros\n";
 			ret += "-----------------";
 			for(Sinistro sinistro: listaSinistros)
-				ret += "\n-\n" + sinistro.toString();
+				ret += "\n-\n" + sinistro.toStringSimples();
 			ret += "\n-";
 		}
 		
@@ -142,6 +142,8 @@ public class Condutor {
 		ret += "CPF: "+this.cpf+"\n";
 		ret += "Nome: "+this.nome+"\n";
 		ret += "Telefone: "+this.telefone+"\n";
+		ret += "Endereço: "+this.endereco+"\n";
+		ret += "Email: "+this.email+"\n";
 		ret += "Data de nascimento: "+this.dataNascimento.format(formatter)+"\n";
 		
 		return ret;

@@ -1,7 +1,9 @@
 package Seguro;
 
+import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.LinkedList;
+import java.util.Locale;
 import java.util.Random;
 
 import Condutor.Condutor;
@@ -27,7 +29,6 @@ public abstract class Seguro {
 		this.seguradora = seguradora;
 		this.listaSinistros = listaSinistros;
 		this.listaCondutores = listacondutores;
-		calcularValor();
 	}
 	
 	private int gerarId() {
@@ -247,8 +248,9 @@ public abstract class Seguro {
 	public String toStringSimples() {
 		String ret = "";
 		
+		Locale localBrasil = new Locale("pt", "BR");
 		ret += "ID: " + id + "\n";
-		ret += "Valor mensal: " + valorMensal + "\n";
+		ret += "Valor mensal: " + NumberFormat.getCurrencyInstance(localBrasil).format(valorMensal) + "\n";
 		
 		return ret;
 	}

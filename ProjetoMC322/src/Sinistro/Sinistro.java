@@ -82,14 +82,14 @@ public class Sinistro {
 		ret += "ID: "+this.id+"\n";
 		ret += "Data: "+this.data.format(formatter)+"\n";
 		ret += "Endereço: "+this.endereco+"\n";
-		ret += "-------------------\n";
-		ret += "Dados da Condutor\n";
-		ret += "-------------------\n";
-		ret += this.condutor.toString()+"\n";
-		ret += "----------------\n";
-		ret += "Dados do Seguro\n";
-		ret += "----------------\n";
-		ret += this.seguro.toString()+"\n";
+		ret += "---------------------\n";
+		ret += "  Dados da Condutor\n";
+		ret += "---------------------\n";
+		ret += this.condutor.toStringSimples()+"\n";
+		ret += "-----------------------\n";
+		ret += "    Dados do Seguro\n";
+		ret += "-----------------------\n";
+		ret += this.seguro.toStringSimples()+"\n";
 		
 		return ret;
 	}

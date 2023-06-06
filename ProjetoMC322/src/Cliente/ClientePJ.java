@@ -73,8 +73,7 @@ public class ClientePJ extends Cliente {
 			ret += "Lista de Frotas\n";
 			ret += "-----------------";
 			for(Frota frota: listaFrotas)
-				ret += "\n-\n" + frota.toString();
-			ret += "\n-";
+				ret += "\n\n" + frota.toString();
 		}
 		
 		return ret;

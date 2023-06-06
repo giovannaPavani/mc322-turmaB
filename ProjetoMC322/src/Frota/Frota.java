@@ -107,12 +107,9 @@ public class Frota {
 		String ret = "";
 		ret += "Code: " + this.code + "\n";
 		if(listaVeiculos != null && !listaVeiculos.isEmpty()) {
-			ret += "-----------------\n";
-			ret += "Lista de Veículos\n";
-			ret += "-----------------";
+			ret += "Lista de Veículos:\n";
 			for(Veiculo veiculo: listaVeiculos)
-				ret += "\n-\n" + veiculo.getPlaca();
-			ret += "\n-";
+				ret += "\n" + veiculo.getPlaca();
 		}
 		
 		return ret;

@@ -92,13 +92,13 @@ public class SeguroPJ extends Seguro{
 	public String toString() {
 		String ret = super.toString();
 		
-		ret += "-------------------\n";
-		ret += "Dados do Cliente\n";
-		ret += "-------------------\n";
+		ret += "--------------------\n";
+		ret += "  Dados do Cliente\n";
+		ret += "--------------------\n";
 		ret += this.cliente.toStringSimples() + "\n";
-		ret += "-------------------\n";
-		ret += "Dados da Frota\n";
-		ret += "-------------------\n";
+		ret += "--------------------\n";
+		ret += "   Dados da Frota\n";
+		ret += "--------------------\n";
 		ret += this.frota.toStringSimples() + "\n";
 
 		return ret;
@@ -108,13 +108,13 @@ public class SeguroPJ extends Seguro{
 	public String toStringSimples() {
 		String ret = super.toStringSimples();
 		
-		ret += "-------------------\n";
-		ret += "Dados do Cliente\n";
-		ret += "-------------------\n";
+		ret += "--------------------\n";
+		ret += "  Dados do Cliente\n";
+		ret += "--------------------\n";
 		ret += this.cliente.toStringSimples() + "\n";
-		ret += "-------------------\n";
-		ret += "Dados da Frota\n";
-		ret += "-------------------\n";
+		ret += "--------------------\n";
+		ret += "   Dados da Frota\n";
+		ret += "--------------------\n";
 		ret += this.frota.toStringSimples() + "\n";
 
 		return ret;
