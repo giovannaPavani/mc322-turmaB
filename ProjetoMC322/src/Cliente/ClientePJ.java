@@ -107,11 +107,13 @@ public class ClientePJ extends Cliente {
 	
 	// TOTEST 
 	// adiciona ou remove veiculo da frota (ambos fornecidos), ou remove toda a frota
-	public boolean atualizarFrota(Frota frota, Veiculo veiculo) {
-		if(frota == null || listaFrotas == null || listaFrotas.isEmpty())
+	public boolean atualizarFrota(String code, Veiculo veiculo) {
+		if(code == null || code.equals("") || listaFrotas == null || listaFrotas.isEmpty())
 			return false;
 		
-		if(!this.listaFrotas.contains(frota))
+		Frota frota = getFrotaByCode(code);
+		
+		if(frota == null) // !this.listaFrotas.contains(frota)
 			return false;
 		
 		if(veiculo == null) // remove a frota inteira caso nao haja um veiculo especifico

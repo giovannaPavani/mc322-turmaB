@@ -6,6 +6,7 @@ public enum SubMenuOperacoes {
 	// constantes das opcoes de todos os submenus
 	CADASTRAR_CLIENTE("Cadastrar cliente"),
 	CADASTRAR_VEICULO("Cadastrar veiculo"),
+	CADASTRAR_FROTA("Cadastrar frota"),
 	CADASTRAR_CONDUTOR("Cadastrar condutor"),
 	
 	LISTAR_CLIENTES("Listar clientes"),

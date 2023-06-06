@@ -1,6 +1,8 @@
 package Frota;
 
 import java.util.LinkedList;
+import java.util.Random;
+
 import Veiculo.Veiculo;
 
 public class Frota {
@@ -8,9 +10,20 @@ public class Frota {
 	private String code;
 	private LinkedList<Veiculo> listaVeiculos;
 	
-	public Frota(String code, LinkedList<Veiculo> listaVeiculos) {
-		this.code = code;
+	public Frota(LinkedList<Veiculo> listaVeiculos) {
+		this.code = gerarId();
 		this.listaVeiculos = listaVeiculos;
+	}
+	
+	private String gerarId() {
+		Random gerador = new Random();
+		int ret = gerador.nextInt();
+		
+		// caso seja negativo, arruma o sinal
+		if(ret < 0)
+			ret = -ret;
+		
+        return ret+""; // converte para string
 	}
 	
 	public String getCode() {

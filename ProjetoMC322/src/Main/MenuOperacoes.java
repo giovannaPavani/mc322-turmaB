@@ -8,6 +8,7 @@ public enum MenuOperacoes {
 	CADASTRAR("Cadastrar", new SubMenuOperacoes[] {
 			SubMenuOperacoes.CADASTRAR_CLIENTE,
 			SubMenuOperacoes.CADASTRAR_VEICULO,
+			SubMenuOperacoes.CADASTRAR_FROTA,
 			SubMenuOperacoes.CADASTRAR_CONDUTOR,
 			SubMenuOperacoes.VOLTAR
 	}),

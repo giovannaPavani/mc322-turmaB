@@ -129,6 +129,9 @@ public class Seguradora {
 		if(this.listaClientes.contains(cliente) || cliente == null) // cliente já cadastrado ou nulo
 			return false;
 		
+		if(getClienteByKey(getKeyCliente(cliente)) != null) // cpf/cnpj já cadastrado
+			return false;
+		
 		return listaClientes.add(cliente);
 	}
 	
@@ -243,7 +246,7 @@ public class Seguradora {
 	
 	// 3 - Veiculos
 	
-	// TODO - pensar mais sobre
+	// TOTEST
 	// adiciona o veiculo ao cliente, ambos passados por parametro e atualiza o seguro
 	public boolean cadastrarVeiculo(String keyCliente, Veiculo veiculo, String code) {
 		if(keyCliente == null || keyCliente.equals("") || veiculo == null) // cliente nulo
@@ -259,13 +262,29 @@ public class Seguradora {
 		String tipoCliente = getTipoClienteByKey(keyCliente);
 		
 		if(tipoCliente.equals("PF")){
-			
+			return ((ClientePF)cliente).cadastrarVeiculo(veiculo);
 		} else if (tipoCliente.equals("PJ")){
 			if(code == null || code.equals(""))
 				return false;
+			return ((ClientePJ)cliente).atualizarFrota(code, veiculo);
 		}
 		
 		return false;
+	}
+	
+	// TOTEST
+	// adiciona frota ao clientePJ, ambos passados por parametro e atualiza o seguro
+	public boolean cadastrarFrota(String cnpj, Frota frota) {
+		if(cnpj == null || cnpj.equals("") || frota == null) // cliente nulo
+			return false;
+		
+		// busca o cliente do cpf/cpnj passado por parametro
+		cnpj = cnpj.replaceAll("\\.", "").replaceAll("-", "").replaceAll("/", "");
+		ClientePJ cliente = (ClientePJ)getClienteByKey(cnpj);
+		if(cliente == null)
+			return false;
+
+		return cliente.cadastrarFrota(frota);
 	}
 	
 	// TOTEST
@@ -504,7 +523,7 @@ public class Seguradora {
 	}
 	
 	// retorna o cliente cadastrado na seguradora cuja key (CPF/CNPJ) é passada por parâmetro
-	private Cliente getClienteByKey(String key){
+	public Cliente getClienteByKey(String key){
 		// pega o tipo de cliente de acordo com o CPF/CNPJ
 		key = key.replaceAll("\\.", "").replaceAll("-", "").replaceAll("/", "");
 		String tipoCliente = getTipoClienteByKey(key);
@@ -548,6 +567,14 @@ public class Seguradora {
 		}
 		
 		return null;
+	}
+	
+	// retorna o cpf ou cnpj do cliente a depender do seu tipo
+	private static String getKeyCliente(Cliente cliente) {
+		if(cliente instanceof ClientePF) 
+			return ((ClientePF) cliente).getCpf();
+		
+		return ((ClientePJ) cliente).getCnpj();	
 	}
 
 }
