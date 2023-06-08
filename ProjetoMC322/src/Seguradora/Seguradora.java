@@ -261,12 +261,21 @@ public class Seguradora {
 		// tenta adicionar veiculo, se der certo, atualiza o seguro do cliente
 		String tipoCliente = getTipoClienteByKey(keyCliente);
 		
+		boolean add = false;
 		if(tipoCliente.equals("PF")){
-			return ((ClientePF)cliente).cadastrarVeiculo(veiculo);
+			add = ((ClientePF)cliente).cadastrarVeiculo(veiculo);
+		
 		} else if (tipoCliente.equals("PJ")){
 			if(code == null || code.equals(""))
 				return false;
-			return ((ClientePJ)cliente).atualizarFrota(code, veiculo);
+			add = ((ClientePJ)cliente).atualizarFrota(code, veiculo);
+		}
+		
+		if(add) { // se cadastrou novo veiculo, atualiza valor de todos os seguros do cliente
+			for(Seguro seguro: getSegurosPorCliente(keyCliente)) {
+				seguro.calcularValor();
+			}
+			return true;
 		}
 		
 		return false;
@@ -278,13 +287,25 @@ public class Seguradora {
 		if(cnpj == null || cnpj.equals("") || frota == null) // cliente nulo
 			return false;
 		
+		// cliente precisa ser PJ
+		String tipoCliente = getTipoClienteByKey(cnpj);
+		if(!tipoCliente.equals("PJ"))
+			return false;
+		
 		// busca o cliente do cpf/cpnj passado por parametro
 		cnpj = cnpj.replaceAll("\\.", "").replaceAll("-", "").replaceAll("/", "");
 		ClientePJ cliente = (ClientePJ)getClienteByKey(cnpj);
 		if(cliente == null)
 			return false;
 
-		return cliente.cadastrarFrota(frota);
+		if(cliente.cadastrarFrota(frota)) { // se cadastrou nova frota, atualiza valor de todos os seguros do cliente
+			for(Seguro seguro: getSegurosPorCliente(cnpj)) {
+				seguro.calcularValor();
+			}
+			return true;
+		}
+		
+		return false;
 	}
 	
 	// TOTEST

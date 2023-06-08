@@ -78,10 +78,10 @@ public class ClientePF extends Cliente {
 		ret += "Data de Nascimento: " + this.dataNascimento.format(formatter) + "\n";
 		ret += super.toString();
 		ret += "Gênero: " + this.genero + "\n";
-		ret += "Educação: " + this.educacao + "\n";
+		ret += "Educação: " + this.educacao;
 		
 		if(listaVeiculos != null && !listaVeiculos.isEmpty()) {
-			ret += "-----------------\n";
+			ret += "\n-----------------\n";
 			ret += "Lista de Veículos\n";
 			ret += "-----------------";
 			for(Veiculo veiculo: listaVeiculos)

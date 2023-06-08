@@ -109,7 +109,7 @@ public class Frota {
 		if(listaVeiculos != null && !listaVeiculos.isEmpty()) {
 			ret += "Lista de Veículos:\n";
 			for(Veiculo veiculo: listaVeiculos)
-				ret += "\n" + veiculo.getPlaca();
+				ret += " " + veiculo.getPlaca() + "\n";
 		}
 		
 		return ret;

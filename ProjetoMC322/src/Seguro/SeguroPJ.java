@@ -50,9 +50,9 @@ public class SeguroPJ extends Seguro{
 		Period periodo = Period.between(cliente.getDataFundacao(), dataAtual);
 		int anosPosFundacao = periodo.getYears();
 				
-		int qtdVeiculos = cliente.getListaFrotas().size();
+		int qtdVeiculos = cliente.getListaVeiculos().size();
 		int qtdSinistrosCliente = this.seguradora.getSinistrosPorCliente(this.cliente.getCnpj()).size();
-		int qtdSinistrosCondutor =  getQtdSinistrosCondutores(); // TODO DUVIDA! da seguradora ou do seguro?
+		int qtdSinistrosCondutor =  getQtdSinistrosCondutores();
 		
 		double valor = CalcSeguro.VALOR_BASE.getFator() * (10.0 + cliente.getQtdeFuncionarios()/10.0) * 
 					   (1.0 + 1.0/(qtdVeiculos+2.0)) * (1.0 + 1.0/(anosPosFundacao+2.0)) *

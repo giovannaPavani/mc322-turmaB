@@ -66,10 +66,10 @@ public class ClientePJ extends Cliente {
 		ret += "CNPJ: " + this.cnpj + "\n"; 
 		ret += "Data de Fundação: " + dataFundacao.format(formatter) + "\n";
 		ret += super.toString();
-		ret += "Qtde de Funcionarios: " + this.qtdeFuncionarios + "\n";
+		ret += "Qtde de Funcionarios: " + this.qtdeFuncionarios;
 		
 		if(listaFrotas != null && !listaFrotas.isEmpty()) {
-			ret += "-----------------\n";
+			ret += "\n-----------------\n";
 			ret += "Lista de Frotas\n";
 			ret += "-----------------";
 			for(Frota frota: listaFrotas)

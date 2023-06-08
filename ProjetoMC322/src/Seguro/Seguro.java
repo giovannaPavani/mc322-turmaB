@@ -159,11 +159,13 @@ public abstract class Seguro {
 	}
 	
 	public String toString() {
+		Locale localBrasil = new Locale("pt", "BR");
+		
 		String ret = "";
 		ret += "ID: " + id + "\n";
 		ret += "Data início: " + dataInicio + "\n";
 		ret += "Data fim: " + dataFim + "\n";
-		ret += "Valor mensal: " + valorMensal + "\n";
+		ret += "Valor mensal: " + NumberFormat.getCurrencyInstance(localBrasil).format(valorMensal) + "\n";
 		
 		ret += "-------------------\n";
 		ret += "Dados da Seguradora\n";

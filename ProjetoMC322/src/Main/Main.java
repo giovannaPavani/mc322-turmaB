@@ -405,6 +405,7 @@ public class Main {
 		LinkedList<Veiculo> listaVeiculos = new LinkedList<Veiculo>();
 		
 		for(int i=0; i<qtd; i++) {
+			System.out.print("\nInformações do "+i+"º veículo: \n");
 			System.out.print("Placa: ");
 			String placa = leitor.nextLine();
 			System.out.print("Marca: ");
@@ -654,9 +655,9 @@ public class Main {
 		System.out.println("Segue a lista de seguros registrados na seguradora:\n");
 		
 		// printa lista de seguros, separando cada seguro com esses hifens
-		System.out.println("-------------------------------");
+		System.out.println("-------------------------------\n");
 		for(Seguro seguro: segurosSeguradora) {
-			System.out.print(seguro.toString());
+			System.out.print(seguro.toString()+"\n");
 			System.out.println("-------------------------------\n");
 		}
 	}

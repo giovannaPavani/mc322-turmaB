@@ -83,7 +83,7 @@ public class Sinistro {
 		ret += "Data: "+this.data.format(formatter)+"\n";
 		ret += "Endereço: "+this.endereco+"\n";
 		ret += "---------------------\n";
-		ret += "  Dados da Condutor\n";
+		ret += "  Dados do Condutor\n";
 		ret += "---------------------\n";
 		ret += this.condutor.toStringSimples()+"\n";
 		ret += "-----------------------\n";
