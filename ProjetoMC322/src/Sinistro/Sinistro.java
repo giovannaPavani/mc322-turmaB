@@ -79,8 +79,8 @@ public class Sinistro {
 		// formatador para converter o objeto LocalDate em String do formato "dd/MM/yyyy"
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		
-		ret += "ID: "+this.id+"\n";
-		ret += "Data: "+this.data.format(formatter)+"\n";
+		ret += "ID: " + this.id+"\n";
+		ret += "Data: " + this.data.format(formatter)+"\n";
 		ret += "Endereço: "+this.endereco+"\n";
 		ret += "---------------------\n";
 		ret += "  Dados do Condutor\n";

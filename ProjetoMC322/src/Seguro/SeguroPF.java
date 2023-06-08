@@ -76,7 +76,7 @@ public class SeguroPF extends Seguro {
 		ret += "---------------------\n";
 		ret += "  Dados do Cliente\n";
 		ret += "---------------------\n";
-		ret += this.cliente.toStringSimples() + "\n";
+		ret += this.cliente.toStringSimples();
 		ret += "--------------------\n";
 		ret += "  Dados do Veiculo\n";
 		ret += "--------------------\n";
@@ -92,7 +92,7 @@ public class SeguroPF extends Seguro {
 		ret += "--------------------\n";
 		ret += "  Dados do Cliente\n";
 		ret += "--------------------\n";
-		ret += this.cliente.toStringSimples() + "\n";
+		ret += this.cliente.toStringSimples();
 		ret += "--------------------\n";
 		ret +=   "Dados do Veiculo\n";
 		ret += "--------------------\n";

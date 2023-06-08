@@ -2,6 +2,7 @@ package Seguro;
 
 import java.text.NumberFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Random;
@@ -131,7 +132,6 @@ public abstract class Seguro {
 					calcularValor();
 					return true;
 				}
-					
 		}
 		
 		return false;
@@ -160,34 +160,35 @@ public abstract class Seguro {
 	
 	public String toString() {
 		Locale localBrasil = new Locale("pt", "BR");
-		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
 		String ret = "";
 		ret += "ID: " + id + "\n";
-		ret += "Data início: " + dataInicio + "\n";
-		ret += "Data fim: " + dataFim + "\n";
+		ret += "Data início: " + dataInicio.format(formatter) + "\n";
+		ret += "Data fim: " + dataFim.format(formatter) + "\n";
 		ret += "Valor mensal: " + NumberFormat.getCurrencyInstance(localBrasil).format(valorMensal) + "\n";
 		
-		ret += "-------------------\n";
-		ret += "Dados da Seguradora\n";
-		ret += "-------------------\n";
+		ret += "-----------------------\n";
+		ret += "  Dados da Seguradora\n";
+		ret += "-----------------------\n";
 		ret += this.seguradora.toStringSimples() + "\n";
 		
 		if(listaSinistros != null && !listaSinistros.isEmpty()) {
-			ret += "-----------------\n";
-			ret += "Lista de Sinistros\n";
-			ret += "-----------------";
+			ret += "----------------------\n";
+			ret += "  Lista de Sinistros\n";
+			ret += "----------------------";
 			for(Sinistro sinistro: listaSinistros)
 				ret += "\n-\n" + sinistro.toStringSimples();
 			ret += "\n-";
 		}
 		
 		if(listaCondutores != null && !listaCondutores.isEmpty()) {
-			ret += "-----------------\n";
-			ret += "Lista de Condutores\n";
-			ret += "-----------------";
+			ret += "-----------------------\n";
+			ret += "  Lista de Condutores\n";
+			ret += "-----------------------\n";
 			for(Condutor condutor: listaCondutores)
-				ret += "\n-\n" + condutor.toStringSimples();
-			ret += "\n-";
+				ret += "-\n" + condutor.toStringSimples();
+			ret += "-\n";
 		}
 		
 		return ret;

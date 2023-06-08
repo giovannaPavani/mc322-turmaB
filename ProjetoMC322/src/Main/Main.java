@@ -480,7 +480,7 @@ public class Main {
 		
 		// nao ha nenhum cliente (fisico ou juridico) cadastrado na seguradora
 		if (seguradora.getListaClientes() == null || seguradora.getListaClientes().isEmpty()) {
-			System.out.println("Nenhum cliente cadastrado na seguradora.\n");
+			System.out.println("ERRO: Nenhum cliente cadastrado na seguradora.\n");
 			return;
 		}
 		
@@ -556,7 +556,7 @@ public class Main {
 		limparTela();
 		System.out.println("--------------------------------------------");
 		System.out.println("    2.3 - Listar sinistros de um cliente");
-		System.out.println("--------------------------------------------");
+		System.out.println("--------------------------------------------\n");
 		
 		// pergunta ao usuário o tipo de cliente e seu CPF/CNPJ
 		String tipoCliente = Validacao.getTipoClienteValido(leitor);
@@ -566,7 +566,7 @@ public class Main {
 		
 		// nao ha nenhum sinistro gerado envolvendo o cliente informado ou o cliente nao esta cadastrado na seguradora
 		if (sinistrosCliente == null || sinistrosCliente.isEmpty()) {
-			System.out.println("\nERRO: Este cliente não tem nenhum sinistro registrado na seguradora, ou não está cadastrado na seguradora.");
+			System.out.println("ERRO: Este cliente não tem nenhum sinistro registrado na seguradora, ou não está cadastrado na seguradora.\n");
 			return;
 		}
 		
@@ -585,11 +585,11 @@ public class Main {
 		limparTela();
 		System.out.println("-------------------------------------------");
 		System.out.println("    2.4 - Listar veículos de um cliente");
-		System.out.println("-------------------------------------------");
+		System.out.println("-------------------------------------------\n");
 		
 		ArrayList<Veiculo> veiculosSeguradora = seguradora.getVeiculos();
 		if (veiculosSeguradora == null || veiculosSeguradora.isEmpty()) {
-			System.out.println("A seguradora não tem nenhum veículo cadastrado.");
+			System.out.println("ERRO: A seguradora não tem nenhum veículo cadastrado.\n");
 			return;
 		}
 		
@@ -608,7 +608,7 @@ public class Main {
 		limparTela();
 		System.out.println("-------------------------------------------");
 		System.out.println("    2.5 - Listar veículos de um cliente");
-		System.out.println("-------------------------------------------");
+		System.out.println("-------------------------------------------\n");
 		
 		// pergunta ao usuário o tipo de cliente e seu CPF/CNPJ
 		String tipoCliente = Validacao.getTipoClienteValido(leitor);
@@ -616,7 +616,7 @@ public class Main {
 		
 		Cliente cliente = seguradora.getClienteByKey(keyCliente);
 		if(cliente == null) {
-			System.out.println("\nERRO: Este cliente não está registrado na seguradora.");
+			System.out.println("ERRO: Este cliente não está registrado na seguradora.\n");
 			return;
 		}
 		
@@ -667,7 +667,7 @@ public class Main {
 		limparTela();
 		System.out.println("--------------------------------------------");
 		System.out.println("    2.7 - Listar seguros de um cliente");
-		System.out.println("--------------------------------------------");
+		System.out.println("--------------------------------------------\n");
 		
 		// pergunta ao usuário o tipo de cliente e seu CPF/CNPJ
 		String tipoCliente = Validacao.getTipoClienteValido(leitor);
@@ -677,7 +677,7 @@ public class Main {
 		
 		// nao ha nenhum seguro gerado envolvendo o cliente informado ou o cliente nao esta cadastrado na seguradora
 		if (segurosCliente == null || segurosCliente.isEmpty()) {
-			System.out.println("\nERRO: Este cliente não tem nenhum seguro registrado na seguradora, ou não está cadastrado na seguradora.");
+			System.out.println("ERRO: Este cliente não tem nenhum seguro registrado na seguradora, ou não está cadastrado na seguradora.");
 			return;
 		}
 		
@@ -924,8 +924,8 @@ public class Main {
 		ClientePF clientePF = new ClientePF("MARIA", "AV 2, 89", "19999802332", "maria@hotmail.com",
 				                            "90197003087", "F", "GRADUANDA", dataN, new LinkedList<Veiculo>());
 		
-		ClientePJ clientePJ = new ClientePJ("PADARIA SM", "AV 3, 140", "1932770967", "padaria.sm@hotmail.com", "79896457000186",
-				 							dataF, new LinkedList<Frota>(), 4);
+		ClientePJ clientePJ = new ClientePJ("PADARIA SM", "AV 3, 140", "1932770967", "padaria.sm@hotmail.com", 
+											"79896457000186", dataF, new LinkedList<Frota>(), 4);
 		// cadastra clientes
 		seguradora.cadastrarCliente(clientePF);
 		seguradora.cadastrarCliente(clientePJ);
@@ -971,7 +971,7 @@ public class Main {
 		//*/
 		
 		esperarEnter();
-		
+
 		/* ================
 		 *  MENU PRINCIPAL
 		 * ================ */
