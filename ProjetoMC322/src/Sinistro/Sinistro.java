@@ -89,7 +89,7 @@ public class Sinistro {
 		ret += "-----------------------\n";
 		ret += "    Dados do Seguro\n";
 		ret += "-----------------------\n";
-		ret += this.seguro.toStringSimples()+"\n";
+		ret += this.seguro.toStringSimples();
 		
 		return ret;
 	}

@@ -125,7 +125,11 @@ public class ClientePJ extends Cliente {
 				if(v == null) // veiculo nao cadastrado -> add
 					return f.addVeiculo(veiculo);
 				// veiculo cadastrado -> remove
-				return f.addVeiculo(veiculo);				
+				if(f.removeVeiculo(veiculo)) {
+					// se ao remover o carro, a frota ficar vazia, remove a frota
+					if(f.getListaVeiculos().isEmpty())
+						listaFrotas.remove(f);
+				}			
 			}
 		}
 		
@@ -151,7 +155,11 @@ public class ClientePJ extends Cliente {
 				if(veiculo == null) // veiculo nao cadastrado -> add
 					return f.addVeiculo(veiculo);
 				// veiculo cadastrado -> remove
-				return f.addVeiculo(veiculo);				
+				if(f.removeVeiculo(veiculo)) {
+					// se ao remover o carro, a frota ficar vazia, remove a frota
+					if(f.getListaVeiculos().isEmpty())
+						listaFrotas.remove(f);
+				}
 			}
 		}
 		
@@ -191,8 +199,16 @@ public class ClientePJ extends Cliente {
 	public boolean removerVeiculo(String placa) {
 		for(Frota frota: listaFrotas) {
 			for(Veiculo veiculo: frota.getListaVeiculos()) {
-				if(veiculo.getPlaca().equals(placa))
-					return frota.removeVeiculo(veiculo);
+				if(veiculo.getPlaca().equals(placa)) {
+					// veiculo cadastrado -> remove
+					if(frota.removeVeiculo(veiculo)) {
+						// se ao remover o carro, a frota ficar vazia, remove a frota
+						if(frota.getListaVeiculos().isEmpty())
+							listaFrotas.remove(frota);
+						
+						return true;
+					}					
+				}
 			}
 		}
 		

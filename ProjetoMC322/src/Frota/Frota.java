@@ -15,6 +15,11 @@ public class Frota {
 		this.listaVeiculos = listaVeiculos;
 	}
 	
+	private Frota(String code, LinkedList<Veiculo> listaVeiculos) {
+		this.code = code;
+		this.listaVeiculos = listaVeiculos;
+	}
+	
 	private String gerarId() {
 		Random gerador = new Random();
 		int ret = gerador.nextInt();
@@ -75,15 +80,19 @@ public class Frota {
 	
 	// TOTEST
 	public Veiculo getVeiculoByPlaca(String placa) {
-		Veiculo ret = null;
-		
 		for(Veiculo veiculo: listaVeiculos)
-			if (veiculo.getPlaca().equals(placa)) {
-				ret = veiculo;	
-				break;
-			}
+			if(veiculo.getPlaca().equals(placa))
+				return veiculo;	
 		
-		return ret;
+		return null;
+	}
+	
+	public Frota clone() {
+		LinkedList<Veiculo> lista = new LinkedList<Veiculo>();
+		for(Veiculo v: listaVeiculos)
+			lista.add(v);
+		
+		return new Frota(this.code, lista);
 	}
 	
 	// TOTEST

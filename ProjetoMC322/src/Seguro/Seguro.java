@@ -188,7 +188,7 @@ public abstract class Seguro {
 			ret += "-----------------------\n";
 			for(Condutor condutor: listaCondutores)
 				ret += "-\n" + condutor.toStringSimples();
-			ret += "-\n";
+			ret += "\n-\n";
 		}
 		
 		return ret;

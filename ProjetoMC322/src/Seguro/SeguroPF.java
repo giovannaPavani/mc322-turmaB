@@ -80,7 +80,7 @@ public class SeguroPF extends Seguro {
 		ret += "--------------------\n";
 		ret += "  Dados do Veiculo\n";
 		ret += "--------------------\n";
-		ret += this.veiculo.toString() + "\n";
+		ret += this.veiculo.toString() + "\n\n";
 		
 		return ret;
 	}
@@ -96,7 +96,7 @@ public class SeguroPF extends Seguro {
 		ret += "--------------------\n";
 		ret +=   "Dados do Veiculo\n";
 		ret += "--------------------\n";
-		ret += this.veiculo.toString() + "\n";
+		ret += this.veiculo.toString() + "\n\n";
 		
 		return ret;
 	}

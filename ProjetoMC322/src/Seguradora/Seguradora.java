@@ -97,12 +97,12 @@ public class Seguradora {
 		ret += "CNPJ: " + this.cnpj+"\n";
 		ret += "Nome: " + this.nome+"\n";
 		ret += "Telefone: " + this.telefone+"\n";
-		ret += "Endereço: " + this.endereco;
-		ret += "Email: " + this.email+"\n";
+		ret += "Endereço: " + this.endereco+"\n";
+		ret += "Email: " + this.email;
 
 		// lista todos os clientes da seguradora
 		if(this.listaClientes != null && !this.listaClientes.isEmpty()) {
-			ret += "Lista de clientes:";
+			ret += "\nLista de clientes:";
 			for(Cliente cliente: this.listaClientes)
 				ret += "\n- "+cliente.toStringSimples();
 		}
@@ -337,10 +337,24 @@ public class Seguradora {
 				}
 				else if (tipoCliente.equals("PJ") && seguro instanceof SeguroPJ) { 
 					// CNPJ - remove sinistros envolvendo o veiculo dos condutores do seguro
-					if(((SeguroPJ)seguro).getCliente().getCnpj().equals(keyCliente))
-						return ((SeguroPJ)seguro).removerVeiculo(placa);
+					if(((SeguroPJ)seguro).getCliente().getCnpj().equals(keyCliente)) {
+						if(((SeguroPJ)seguro).removerVeiculo(placa)) {
+							if(((SeguroPJ)seguro).getFrota().getListaVeiculos().isEmpty()) { // se a frota do seguro não tem mais carros, este é cancelado
+								listaSeguros.remove(seguro);
+								break;
+							}
+						}
+					}
+					
 				}
-			}	
+			}
+			
+			if(tipoCliente.equals("PJ")) { // se removeu veiculo de algum clientePJ
+				for(Seguro seguro: listaSeguros) 
+					if (seguro instanceof SeguroPJ)
+						seguro.calcularValor();
+				return true;
+			}
 		}
 
 		return false; // alguma remoção deu errado
@@ -396,7 +410,7 @@ public class Seguradora {
 		} else if(getTipoClienteByKey(keyCliente).equals("PJ")){
 			if(code == null || code.equals(""))
 				return false;
-			Frota frota = ((ClientePJ)cliente).getFrotaByCode(code);
+			Frota frota = ((ClientePJ)cliente).getFrotaByCode(code).clone();
 			SeguroPJ seguro = new SeguroPJ(dataInicio, dataFim, this, new LinkedList<Sinistro>(), new LinkedList<Condutor>(), frota, (ClientePJ)cliente);
 			return listaSeguros.add(seguro);
 		}

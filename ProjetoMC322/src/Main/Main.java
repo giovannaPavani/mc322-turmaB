@@ -267,13 +267,15 @@ public class Main {
 	// 1 - CADASTRAR
 	
 	// cria uma seguradora conforme os dados que o usuário inserir e a retorna
-	private static Seguradora criarSeguradora(Scanner leitor) {
+	private static Seguradora criarSeguradora() {
 		limparTela();
 		System.out.println("----------------------");
 		System.out.println("   Criar seguradora   ");
 		System.out.println("----------------------\n");
 		System.out.println("Digite as informações da nova seguradora.\n");
 		System.out.println("(OBS: Escreva o nome sem caracteres especiais (acentos e 'ç').\n");
+		
+		Scanner leitor = new Scanner(System.in);
 		
 		String cnpj = Validacao.getCnpjValido(leitor);
 		String nome = Validacao.validaNome(leitor);
@@ -544,7 +546,7 @@ public class Main {
 		System.out.println("Segue a lista de sinistros registrados na seguradora:\n");
 		
 		// printa lista de sinistros, separando cada sinistro com esses hifens
-		System.out.println("-------------------------------");
+		System.out.println("-------------------------------\n");
 		for(Sinistro sinistro: sinistrosSeguradora) {
 			System.out.print(sinistro.toString());
 			System.out.println("-------------------------------\n");
@@ -657,7 +659,7 @@ public class Main {
 		// printa lista de seguros, separando cada seguro com esses hifens
 		System.out.println("-------------------------------\n");
 		for(Seguro seguro: segurosSeguradora) {
-			System.out.print(seguro.toString()+"\n");
+			System.out.print(seguro.toString());
 			System.out.println("-------------------------------\n");
 		}
 	}
@@ -900,8 +902,10 @@ public class Main {
 		 * deixe a proxima linha descomentada e comente o bloco de dados de teste.
 		 *		Caso contário, comente essa linha e descomente o bloco de dados de teste.
 		 */
-		
-		// seguradora = criarSeguradora(leitor);
+		/*
+		esperarEnter();
+		seguradora = criarSeguradora();
+		*/
 		
 		/* ====================
 		 *    DADOS DE TESTE
@@ -948,6 +952,7 @@ public class Main {
 		seguradora.cadastrarVeiculo(clientePJ.getCnpj(), veiculo3, frota1.getCode());
 		
 		LinkedList<Veiculo> listaVeiculos2 = new LinkedList<Veiculo>();
+		listaVeiculos2.add(veiculo1);
 		listaVeiculos2.add(veiculo4);
 		Frota frota2 = new Frota(listaVeiculos2);
 		seguradora.cadastrarFrota(clientePJ.getCnpj(), frota2);
@@ -968,6 +973,7 @@ public class Main {
 		seguradora.gerarSinistro("NCX-3134", "90197003087", data1, "RUA CAOS", condutor1.getCpf());
 		seguradora.gerarSinistro("ABC-9878", "79.896.457/0001-86", data2, "RUA ACIDENTE",  condutor2.getCpf());
 		
+		seguradora.removerVeiculo("79896457000186", "ABC-9878");
 		//*/
 		
 		esperarEnter();

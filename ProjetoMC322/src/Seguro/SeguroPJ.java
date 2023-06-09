@@ -67,6 +67,7 @@ public class SeguroPJ extends Seguro{
 		if(placa == null || placa.equals(""))
 			return false;
 		
+		LinkedList<Sinistro> sinistrosRemover = new LinkedList<Sinistro>();
 		// remove sinistros dos condutores
 		for(Sinistro sinistro: listaSinistros) {
 			for(int i = 0; i < listaCondutores.size(); i++) {
@@ -74,11 +75,15 @@ public class SeguroPJ extends Seguro{
 				if(sinistro.getCondutor().getCpf().equals(condutor.getCpf())) {
 					if(!condutor.removerSinistro(sinistro))
 						return false;
-					else 
+					else {
+						sinistrosRemover.add(sinistro);
 						listaCondutores.set(i, condutor); // atualiza listaCondutores
+					}
 				}				
 			}
 		}
+		
+		listaSinistros.removeAll(sinistrosRemover); // remove sinistros que envolvem o veiculo removido
 		
 		if(frota.removerVeiculo(placa)) { // remove veiculo da frota
 			calcularValor(); // atualiza valor do seguro

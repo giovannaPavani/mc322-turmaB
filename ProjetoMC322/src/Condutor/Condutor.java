@@ -144,7 +144,7 @@ public class Condutor {
 		ret += "Telefone: "+this.telefone+"\n";
 		ret += "Endereço: "+this.endereco+"\n";
 		ret += "Email: "+this.email+"\n";
-		ret += "Data de nascimento: "+this.dataNascimento.format(formatter)+"\n";
+		ret += "Data de nascimento: "+this.dataNascimento.format(formatter);
 		
 		return ret;
 	}
