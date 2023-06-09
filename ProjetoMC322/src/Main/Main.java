@@ -973,7 +973,6 @@ public class Main {
 		seguradora.gerarSinistro("NCX-3134", "90197003087", data1, "RUA CAOS", condutor1.getCpf());
 		seguradora.gerarSinistro("ABC-9878", "79.896.457/0001-86", data2, "RUA ACIDENTE",  condutor2.getCpf());
 		
-		seguradora.removerVeiculo("79896457000186", "ABC-9878");
 		//*/
 		
 		esperarEnter();

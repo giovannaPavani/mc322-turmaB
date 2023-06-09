@@ -277,7 +277,7 @@ public class Seguradora {
 			}
 			return true;
 		}
-		
+
 		return false;
 	}
 	
@@ -431,36 +431,6 @@ public class Seguradora {
 		
 		return false;
 	}
-	
-	// TOTEST
-	/*public boolean tranferirSeguro(String keyClienteFonte, String keyClienteDestino) {
-		Cliente clienteFonte, clienteDestino;
-		
-		// resgata os clientes das keys passadas por parametro na seguradora
-		// se pelo menos um deles não estiver cadastrado na seguradora, retorna false
-		clienteFonte = getClienteByKey(keyClienteFonte);
-		if(clienteFonte == null)
-			return false;
-		
-		clienteDestino = getClienteByKey(keyClienteDestino);
-		if(clienteDestino == null)
-			return false;
-		
-		LinkedList<Veiculo> veiculos = clienteFonte.getListaVeiculos();
-		// se o cliente fonte não tiver nada no seu seguro, a transferência é trivial
-		if(!veiculos.isEmpty()) {
-			for(Veiculo veiculo: veiculos) {
-				// remove todos os veiculos da fonte e add no destino
-				clienteFonte.removerVeiculo(veiculo.getPlaca());
-				clienteDestino.(veiculo);
-			}
-			// atualiza seguros de ambos os clientes
-			this.calcularPrecoSeguroCliente(keyClienteFonte);
-			this.calcularPrecoSeguroCliente(keyClienteDestino);			
-		}
-		
-		return true;
-	}*/
 	
 	// TOTEST
 	// retorna todos os seguros registrados com a key do cliente na seguradora

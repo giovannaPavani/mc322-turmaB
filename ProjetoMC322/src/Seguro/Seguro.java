@@ -126,12 +126,26 @@ public abstract class Seguro {
 		if(cpf == null || cpf.equals(""))
 			return false;
 		
+		boolean removeu = false;
+		
 		for(Condutor c: listaCondutores) {
 			if(c.getCpf().equals(cpf))
 				if(listaCondutores.remove(c)) {
-					calcularValor();
-					return true;
+					removeu = true;
+					break;
 				}
+		}
+		
+		if(removeu) { // se o condutor é removido, remove sinistros envolvendo ele e atualiza valor seguro
+			LinkedList<Sinistro> sinistrosRemover = new LinkedList<Sinistro>();
+			for(Sinistro sinistro: listaSinistros) {
+				if(sinistro.getCondutor().getCpf().equals(cpf))
+					sinistrosRemover.add(sinistro);
+			}
+			
+			listaSinistros.removeAll(sinistrosRemover);
+			calcularValor();
+			return true;
 		}
 		
 		return false;
