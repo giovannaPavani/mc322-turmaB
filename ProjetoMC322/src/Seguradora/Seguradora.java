@@ -123,7 +123,6 @@ public class Seguradora {
 	
 	// 1 - Clientes
 	
-	// TOTEST
 	// add cliente na listaClientes
 	public boolean cadastrarCliente(Cliente cliente) {
 		if(this.listaClientes.contains(cliente) || cliente == null) // cliente já cadastrado ou nulo
@@ -135,7 +134,6 @@ public class Seguradora {
 		return listaClientes.add(cliente);
 	}
 	
-	// TOTEST
 	// remove cliente da seguradora pelo seu CPF/CNPJ
 	public boolean removerCliente(String keyCliente) {
 		// remove caracteres nao numericos ('.', '-' e '/') do CPF/CNPJ
@@ -178,7 +176,6 @@ public class Seguradora {
 
 	// 2 - Sinistros
 	
-	// TOTEST
 	public boolean gerarSinistro(String placa, String keyCliente, LocalDate data, String endereco, String cpfCondutor) { 
 		// resgata cliente com a keyCliente (CPF/CNPJ) fornecida cadastrado na seguradora
 		keyCliente = keyCliente.replaceAll("\\.", "").replaceAll("-", "").replaceAll("/", "");
@@ -200,7 +197,6 @@ public class Seguradora {
 		return seguro.gerarSinistro(data, endereco, cpfCondutor);
 	} 
 	
-	// TOTEST
 	public boolean removerSinistro(int id) {
 		if(id < 0)
 			return false; // ID invalido
@@ -214,7 +210,6 @@ public class Seguradora {
 		return false;
 	} 
 	
-	// TOTEST
 	// retorna todos os sinistros registrados em seguros de um cliente de acordo com CPF/CNPJ fornecido
 	public ArrayList<Sinistro> getSinistrosPorCliente(String keyCliente){
 		if(keyCliente == null || keyCliente.equals(""))
@@ -232,7 +227,6 @@ public class Seguradora {
 		return ret;
 	}
 	
-	// TOTEST
 	// retorna todos os sinistros registrados em seguros da seguradora
 	public ArrayList<Sinistro> getSinistros(){
 		ArrayList<Sinistro> ret = new ArrayList<Sinistro>();
@@ -246,7 +240,6 @@ public class Seguradora {
 	
 	// 3 - Veiculos
 	
-	// TOTEST
 	// adiciona o veiculo ao cliente, ambos passados por parametro e atualiza o seguro
 	public boolean cadastrarVeiculo(String keyCliente, Veiculo veiculo, String code) {
 		if(keyCliente == null || keyCliente.equals("") || veiculo == null) // cliente nulo
@@ -281,7 +274,6 @@ public class Seguradora {
 		return false;
 	}
 	
-	// TOTEST
 	// adiciona frota ao clientePJ, ambos passados por parametro e atualiza o seguro
 	public boolean cadastrarFrota(String cnpj, Frota frota) {
 		if(cnpj == null || cnpj.equals("") || frota == null) // cliente nulo
@@ -308,7 +300,6 @@ public class Seguradora {
 		return false;
 	}
 	
-	// TOTEST
 	// remove (caso exista) o veiculo passado por parametro do cliente
 	public boolean removerVeiculo(String keyCliente, String placa) {
 		if(placa == null || placa.equals("") || keyCliente == null || keyCliente.equals("")) // veiculo ou cliente nulos
@@ -360,7 +351,6 @@ public class Seguradora {
 		return false; // alguma remoção deu errado
 	}
 	
-	// TOTEST
 	// retorna todos os veiculos cadastrados em clientes da seguradora
 	public ArrayList<Veiculo> getVeiculos(){
 		ArrayList<Veiculo> ret = new ArrayList<Veiculo>();
@@ -371,7 +361,6 @@ public class Seguradora {
 		return ret;
 	}
 	
-	// TOTEST
 	// retorna todos os veiculos cadastrados em clientes da seguradora
 	public LinkedList<Veiculo> getVeiculosByKeyCliente(String keyCliente){
 		if(keyCliente == null || keyCliente.equals(""))
@@ -385,7 +374,6 @@ public class Seguradora {
 	
 	// 4 - Seguros
 	
-	// TOTEST
 	// gera seguro de um cliente com as informações fornecidas
 	public boolean gerarSeguro(String keyCliente, LocalDate dataFim, String placa, String code) {
 		
@@ -418,7 +406,6 @@ public class Seguradora {
 		return false;
 	}
 	
-	// TOTEST
 	// remove seguro cujo id é fornecido e retorna true; caso contrario, retorna false
 	public boolean cancelarSeguro(int id) {
 		if(id < 0)
@@ -432,7 +419,6 @@ public class Seguradora {
 		return false;
 	}
 	
-	// TOTEST
 	// retorna todos os seguros registrados com a key do cliente na seguradora
 	public ArrayList<Seguro> getSegurosPorCliente(String keyCliente){
 		ArrayList<Seguro> ret = new ArrayList<Seguro>();
@@ -458,7 +444,6 @@ public class Seguradora {
 		return ret;
 	}
 	
-	// TOTEST
 	// no seguro fornecido, adiciona o condutor fornecido, caso ele ainda nao esteja cadastrado
 	public boolean autorizarCondutor(int idSeguro, Condutor condutor) {
 		if(idSeguro < 0 || condutor == null)
@@ -472,7 +457,6 @@ public class Seguradora {
 		return false; // seguro nao cadastrado
 	}
 	
-	// TOTEST
 	// no seguro fornecido, adiciona o condutor fornecido, caso ele ainda nao esteja cadastrado
 	public boolean desautorizarCondutor(int idSeguro, String cpfCondutor) {
 		if(idSeguro < 0 || cpfCondutor == null || cpfCondutor.equals(""))
@@ -490,7 +474,6 @@ public class Seguradora {
 
 	// 5 - Receita
 	
-	// TOTEST
 	// soma o valor do seguro de todos os seguros da seguradora
 	public double calcularReceita() {
 		double soma = 0.0;
@@ -499,6 +482,12 @@ public class Seguradora {
 			soma += seguro.getValorMensal();
 		
 		return soma;
+	}
+	
+	// TODO
+	public void lerDados() {
+		// fazer leitura de dados
+		// clientepf, clientepj e seguros
 	}
 	
 	/* ====================

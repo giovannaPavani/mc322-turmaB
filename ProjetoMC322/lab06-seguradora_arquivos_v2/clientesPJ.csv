@@ -1,0 +1,6 @@
+CNPJ_CLIENTE,NOME_CLIENTE,TELEFONE,ENDERECO,EMAIL_CLIENTE,DATA_FUND,CODE_FROTA
+22.384.443/0001-66,Empresa A,(11) 1234-5678,Rua das Flores,empresa.a@example.com,1990-01-01,001
+72.361.534/0001-54,Empresa B,(11) 9876-5432,Avenida Principal,empresa.b@example.com,1985-03-15,002
+42.346.808/0001-75,Empresa C,(11) 5555-5555,Rua dos Pinheiros,empresa.c@example.com,1998-07-20,003
+90.033.624/0001-06,Empresa D,(11) 2222-2222,Rua das Palmeiras,empresa.d@example.com,1977-12-03,004
+45.971.851/0001-10,Empresa E,(11) 3333-3333,Avenida Central,empresa.e@example.com,2005-05-25,005

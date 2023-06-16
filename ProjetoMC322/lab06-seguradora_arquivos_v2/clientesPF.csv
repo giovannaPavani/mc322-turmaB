@@ -1,0 +1,11 @@
+CPF_CLIENTE,NOME_CLIENTE,TELEFONE_CLIENTE,ENDERECO_CLIENTE,EMAIL_CLIENTE,SEXO,ENSINO,DATA_NASCIMENTO,PLACA_VEICULO_CLIENTE1
+21488869839,João da Silva,(11) 1234-5678,Rua das Flores,joao.silva@example.com,Masculino,Superior,1980-05-10,ABC-1234
+88369266819,Maria Santos,(11) 9876-5432,Avenida Principal,maria.santos@example.com,Feminino,Médio,1975-12-15,DEF-9999
+72235812392,Carlos Oliveira,(11) 5555-5555,Rua dos Pinheiros,carlos.oliveira@example.com,Masculino,Superior,1990-02-20,CDE-1111
+43486164260,Ana Pereira,(11) 2222-2222,Rua das Palmeiras,ana.pereira@example.com,Feminino,Médio,1969-08-03,CDE-2222
+84337138331,Fernando Mendes,(11) 3333-3333,Avenida Central,fernando.mendes@example.com,Masculino,Fundamental,1982-11-25,XYZ-1000
+67890123456,Luciana Castro,(11) 4444-4444,Rua das Oliveiras,luciana.castro@example.com,Feminino,Superior,1995-07-18,BEC-1000
+08248584682,Ricardo Santos,(11) 6666-6666,Avenida dos Sonhos,ricardo.santos@example.com,Masculino,Superior,1988-09-02,ABC-4567
+82596648520,Patrícia Lima,(11) 7777-7777,Rua das Acácias,patricia.lima@example.com,Feminino,Médio,1977-04-20,AZY-2020
+38184948190,Lucas Oliveira,(11) 8888-8888,Avenida das Rosas,lucas.oliveira@example.com,Masculino,Fundamental,1992-12-01,AZY-2030
+86083421543,Isabela Fernandes,(11) 9999-9999,Rua dos Lírios,isabela.fernandes@example.com,Feminino,Superior,1984-03-27,BEC-1000

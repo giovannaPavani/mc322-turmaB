@@ -1,6 +1,5 @@
 package Main;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -13,8 +12,6 @@ import Condutor.Condutor;
 import Frota.Frota;
 import Seguradora.Seguradora;
 import Seguro.Seguro;
-import Seguro.SeguroPF;
-import Seguro.SeguroPJ;
 import Sinistro.Sinistro;
 import Veiculo.Veiculo;
 
@@ -892,11 +889,11 @@ public class Main {
 		// Apenas uma seguradora é criada e será nela que todas as operações serão feitas
 	    Seguradora seguradora;
 	    
-	    System.out.println("=================================================");
-		System.out.println("        Sistema de Seguradora de Veıculos");
-		System.out.println("=================================================\n");
+	    //System.out.println("=================================================");
+		//System.out.println("        Sistema de Seguradora de Veıculos");
+		//System.out.println("=================================================\n");
 		
-		System.out.println("Inicie suas operações criando uma seguradora.\n");
+		//System.out.println("Inicie suas operações criando uma seguradora.\n");
 		
 		/*		Caso queira rodar o programa adicionando sua propria seguradora, conforme foi planejado este programa,
 		 * deixe a proxima linha descomentada e comente o bloco de dados de teste.
@@ -910,9 +907,7 @@ public class Main {
 		/* ====================
 		 *    DADOS DE TESTE
 		 * ==================== */
-		///*
-		seguradora = new Seguradora("22542453000182", "Azul", "1932770378", "Av 1, 89", "azul@g.com",
-				                    new ArrayList<Cliente>(), new ArrayList<Seguro>());
+		/*
 		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		
@@ -973,10 +968,20 @@ public class Main {
 		seguradora.gerarSinistro("NCX-3134", "90197003087", data1, "RUA CAOS", condutor1.getCpf());
 		seguradora.gerarSinistro("ABC-9878", "79.896.457/0001-86", data2, "RUA ACIDENTE",  condutor2.getCpf());
 		
-		//*/
-		
 		esperarEnter();
+		*/
+		
+	    
+	    
+		// COMEÇA AQUI !!!!!!!!!!!! // 
 
+		// cria seguradora apenas com cnpj, nome, telefone, endereço e email (são arbitrários)
+	    seguradora = new Seguradora("22542453000182", "Azul", "1932770378", "Av 1, 89", "azul@g.com",
+		                    		new ArrayList<Cliente>(), new ArrayList<Seguro>());
+	    
+	    // setta informações relevantes da seguradora registradas nos arquivos
+	    seguradora.lerDados();
+	
 		/* ================
 		 *  MENU PRINCIPAL
 		 * ================ */
@@ -991,5 +996,4 @@ public class Main {
 		
 		System.out.println("\nPrograma encerado!");
 	}
-	
 }
