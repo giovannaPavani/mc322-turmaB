@@ -1,4 +1,5 @@
 package Arquivo;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -6,33 +7,36 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.time.format.DateTimeFormatter;
 import java.util.IllegalFormatConversionException;
+import java.util.LinkedList;
 
+import Condutor.Condutor;
 import Frota.Frota;
 import Veiculo.Veiculo;
+
 import java.util.ArrayList;
 
-public class ArquivoVeiculo implements I_Arquivo{
+public class ArquivoFrota implements I_Arquivo{
 
 	@Override
 	public boolean gravarArquivo(ArrayList<Object> lista) {
-		File file = new File("../lab06-seguradora_arquivos_v2/veiculos.csv\"");
+		File file = new File("../lab06-seguradora_arquivos_v2/frotas.csv\"");
         BufferedWriter bufferedWriter = null;
 
         try {
             bufferedWriter = new BufferedWriter(new FileWriter(file));
            
             // escreve o cabeçalho
-            bufferedWriter.write("PLACA,MARCA,MODELO,ANO_FAB\n");
+            bufferedWriter.write("ID_FROTA,PLACA_VEICULO1,PLACA_VEICULO2,PLACA_VEICULO3\n");
             
             // escreve os dados de um ClientePF por linha, separados por virgula
             for(Object object: lista) {
             	String linha = ""; 
-            	linha += ((Veiculo)object).getPlaca()+",";
-            	linha += ((Veiculo)object).getModelo()+",";
-            	linha += ((Veiculo)object).getMarca()+",";
-            	linha += ((Veiculo)object).getAnoFabricacao()+"\n";
+            	linha += ((Frota)object).getCode()+",";
+            	// supondo que sempre há exatamente 3 carros na frota, como no arquivo frotas.csv dado
+            	linha += ((Frota)object).getListaVeiculos().get(0).getPlaca()+",";
+            	linha += ((Frota)object).getListaVeiculos().get(1).getPlaca()+",";
+            	linha += ((Frota)object).getListaVeiculos().get(2).getPlaca()+"\n";
             	bufferedWriter.write(linha);
             }
 
@@ -46,7 +50,7 @@ public class ArquivoVeiculo implements I_Arquivo{
                     return true;
                 }
             } catch (Exception ex) {
-                System.out.println("Erro ao fechar o BufferedWriter ao salvar dados Veiculo");
+                System.out.println("Erro ao fechar o BufferedWriter ao salvar dados Frota");
             }
         }
         return false;
@@ -55,12 +59,11 @@ public class ArquivoVeiculo implements I_Arquivo{
 	@Override
 	public ArrayList<Object> lerArquivo() {
 		
-		String arquivoCSV = "../lab06-seguradora_arquivos_v2/veiculos.csv";
+		String arquivoCSV = "../lab06-seguradora_arquivos_v2/frotas.csv";
 	    BufferedReader br = null;
 	    String linha = "";
 	    String divisor = ",";
-	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-	    ArrayList<Object> listaVeiculos = new ArrayList<Object>();
+	    ArrayList<Object> listaFrotas = new ArrayList<Object>();
 	    
 	    try {
 
@@ -71,18 +74,20 @@ public class ArquivoVeiculo implements I_Arquivo{
 
 	            String[] dados = linha.split(divisor);
 	            
-	            String placa = dados[0];
-	            String marca = dados[1];
-	            String modelo = dados[2];
-	            int anoFab = Integer.parseInt(dados[3]);
+	            String id = dados[0];
+	            String placaVeiculo1 = dados[1];
+	            String placaVeiculo2 = dados[2];
+	            String placaVeiculo3 = dados[3];
+	            // ARRUMAR - deveria pegar os veiculo das placas lidas armazenado no arquivo de veiculos
+	            // add na lista de veiculos e aí sim instanciar e add na lista de frotas
 	            
-	            Veiculo veiculo = new Veiculo(placa, marca, modelo, anoFab);
-	            listaVeiculos.add(veiculo);
+	            Frota frota = new Frota(id, new LinkedList<Veiculo>());
+	            listaFrotas.add(frota);
 	        }
 
 	    } catch (FileNotFoundException e) {
-	    	System.err.println("Arquivo para leitura de Veiculo não encontrado.\n"
-	    					 + "Verifique se ele está localizado em <ProjetoMC322\\lab06-seguradora_arquivos_v2\\veiculos.csv> para utilizar o programa.");
+	    	System.err.println("Arquivo para leitura de Frota não encontrado.\n"
+	    					 + "Verifique se ele está localizado em <ProjetoMC322\\lab06-seguradora_arquivos_v2\\frotas.csv> para utilizar o programa.");
 	        e.printStackTrace();
 	    } catch (IOException e) {
 	        e.printStackTrace();
@@ -94,15 +99,15 @@ public class ArquivoVeiculo implements I_Arquivo{
 	            try {
 	                br.close();
 	            } catch (IOException e) {
-	            	System.err.println("Ocorreu um erro ao fechar o arquivo de Veiculo.\n"
-	            					 + "Verifique se ele está localizado em <ProjetoMC322\\lab06-seguradora_arquivos_v2\\veiculos.csv> para utilizar o programa.");
+	            	System.err.println("Ocorreu um erro ao fechar o arquivo de Frota.\n"
+	            					 + "Verifique se ele está localizado em <ProjetoMC322\\lab06-seguradora_arquivos_v2\\frotas.csv> para utilizar o programa.");
 	                e.printStackTrace();
 	            }
 	        }
 	    }
 		   
-	    // retorna lista de objetos do tipo de objeto lido (no caso, Veiculo)
-	    return listaVeiculos;
+	    // retorna lista de objetos do tipo de objeto lido (no caso, Frota)
+	    return listaFrotas;
 	}
 
 }

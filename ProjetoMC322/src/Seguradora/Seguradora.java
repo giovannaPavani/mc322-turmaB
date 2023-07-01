@@ -3,6 +3,9 @@ package Seguradora;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedList;
+
+import Arquivo.ArquivoClientePF;
+import Arquivo.ArquivoClientePJ;
 import Cliente.Cliente;
 import Cliente.ClientePF;
 import Cliente.ClientePJ;
@@ -488,6 +491,28 @@ public class Seguradora {
 	public void lerDados() {
 		// fazer leitura de dados
 		// clientepf, clientepj e seguros
+		ArquivoClientePF arqClientePF = new ArquivoClientePF();
+		ArquivoClientePJ arqClientePJ = new ArquivoClientePJ();
+		//this.listaClientes = arqClientePF.lerArquivo(); // cast ArrayList<Object> para ArrayList<Cliente>
+		//this.listaClientes.addAll(arqClientePJ.lerArquivo()); // cast ArrayList<Object> para ArrayList<Cliente>
+		
+		// ...
+		
+		// e assim por diante com todos os arquivos, para settar cada inforaçao em seu devido lugar
+	}
+	
+	// TODO
+	public void gravarDados() {
+		// grava dados de tudo q está contido na seguradora
+		// clientepf, clientepj e seguros
+		ArquivoClientePF arqClientePF = new ArquivoClientePF();
+		ArquivoClientePJ arqClientePJ = new ArquivoClientePJ();
+		//arqClientePF.gravarArquivo(this.getListaClientesPF); // cast ArrayList<Cliente> para  ArrayList<Object>
+		//arqClientePF.gravarArquivo(this.getListaClientesPF); // cast ArrayList<Cliente> para  ArrayList<Object>
+		
+		// ...
+		
+		// e assim por diante com todos os dados registrados na seguradora
 	}
 	
 	/* ====================

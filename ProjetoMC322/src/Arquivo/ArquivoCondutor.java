@@ -13,35 +13,33 @@ import java.util.IllegalFormatConversionException;
 import java.util.LinkedList;
 
 import Cliente.ClientePF;
-import Veiculo.Veiculo;
+import Condutor.Condutor;
+import Sinistro.Sinistro;
 
 import java.util.ArrayList;
 
-public class ArquivoClientePF implements I_Arquivo{
+public class ArquivoCondutor implements I_Arquivo{
 
 	@Override
 	public boolean gravarArquivo(ArrayList<Object> lista) {
-		File file = new File("../lab06-seguradora_arquivos_v2/clientesPF.csv\"");
+		File file = new File("../lab06-seguradora_arquivos_v2/condutores.csv\"");
         BufferedWriter bufferedWriter = null;
 
         try {
             bufferedWriter = new BufferedWriter(new FileWriter(file));
            
             // escreve o cabeçalho
-            bufferedWriter.write("CPF_CLIENTE,NOME_CLIENTE,TELEFONE_CLIENTE,ENDERECO_CLIENTE,EMAIL_CLIENTE,SEXO,ENSINO,DATA_NASCIMENTO,PLACA_VEICULO_CLIENTE1\n");
+            bufferedWriter.write("CPF_CONDUTOR,NOME_CONDUTOR,TELEFONE,ENDERECO,EMAIL,DATA_NASCIMENTO\n");
             
             // escreve os dados de um ClientePF por linha, separados por virgula
             for(Object object: lista) {
             	String linha = ""; 
-            	linha += ((ClientePF)object).getCpf()+",";
-            	linha += ((ClientePF)object).getNome()+",";
-            	linha += ((ClientePF)object).getTelefone()+",";
-            	linha += ((ClientePF)object).getEndereco()+",";
-            	linha += ((ClientePF)object).getEmail()+",";
-            	linha += ((ClientePF)object).getGenero()+",";
-            	linha += ((ClientePF)object).getEducacao()+",";
-            	linha += ((ClientePF)object).getDataNascimento()+",";
-            	linha += ((ClientePF)object).getListaVeiculos().get(0).getPlaca()+"\n";
+            	linha += ((Condutor)object).getCpf()+",";
+            	linha += ((Condutor)object).getNome()+",";
+            	linha += ((Condutor)object).getTelefone()+",";
+            	linha += ((Condutor)object).getEndereco()+",";
+            	linha += ((Condutor)object).getEmail()+",";
+            	linha += ((Condutor)object).getDataNascimento()+"\n";
             	bufferedWriter.write(linha);
             }
 
@@ -55,7 +53,7 @@ public class ArquivoClientePF implements I_Arquivo{
                     return true;
                 }
             } catch (Exception ex) {
-                System.out.println("Erro ao fechar o BufferedWriter ao salvar dados ClientePF");
+                System.out.println("Erro ao fechar o BufferedWriter ao salvar dados Condutor");
             }
         }
         return false;
@@ -63,12 +61,13 @@ public class ArquivoClientePF implements I_Arquivo{
 
 	@Override
 	public ArrayList<Object> lerArquivo() {
-		String arquivoCSV = "../lab06-seguradora_arquivos_v2/clientesPF.csv";
+		
+		String arquivoCSV = "../lab06-seguradora_arquivos_v2/condutores.csv";
 	    BufferedReader br = null;
 	    String linha = "";
 	    String divisor = ",";
 	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-	    ArrayList<Object> listaClientesPF = new ArrayList<Object>();
+	    ArrayList<Object> listaCondutores = new ArrayList<Object>();
 	    
 	    try {
 
@@ -84,19 +83,15 @@ public class ArquivoClientePF implements I_Arquivo{
 	            String telefone = dados[2];
 	            String endereco = dados[3];
 	            String email = dados[4];
-	            String sexo = dados[5];
-	            String ensino = dados[6];
-	            LocalDate dataNascimento = LocalDate.parse(dados[7], formatter);
-	            String placaVeiculo = dados[8]; // ARRUMAR - deveria pegar o veiculo da placa lida armazenado no arquivo de veiculos
+	            LocalDate dataNascimento = LocalDate.parse(dados[5], formatter);
 	            
-	            ClientePF cliente = new ClientePF(nome, endereco, telefone, email, cpf, sexo, ensino,
-	            								  dataNascimento, new LinkedList<Veiculo>());
-	            listaClientesPF.add(cliente);
+	            Condutor condutor = new Condutor(cpf, nome, telefone, endereco, email, dataNascimento, new LinkedList<Sinistro>());
+	            listaCondutores.add(condutor);
 	        }
 
 	    } catch (FileNotFoundException e) {
-	    	System.err.println("Arquivo para leitura de ClientePF não encontrado.\n"
-	    					 + "Verifique se ele está localizado em <ProjetoMC322\\lab06-seguradora_arquivos_v2\\clientesPF.csv> para utilizar o programa.");
+	    	System.err.println("Arquivo para leitura de Condutor não encontrado.\n"
+	    					 + "Verifique se ele está localizado em <ProjetoMC322\\lab06-seguradora_arquivos_v2\\condutores.csv> para utilizar o programa.");
 	        e.printStackTrace();
 	    } catch (IOException e) {
 	        e.printStackTrace();
@@ -108,15 +103,15 @@ public class ArquivoClientePF implements I_Arquivo{
 	            try {
 	                br.close();
 	            } catch (IOException e) {
-	            	System.err.println("Ocorreu um erro ao fechar o arquivo de ClientePF.\n"
-	            					 + "Verifique se ele está localizado em <ProjetoMC322\\lab06-seguradora_arquivos_v2\\clientesPF.csv> para utilizar o programa.");
+	            	System.err.println("Ocorreu um erro ao fechar o arquivo de Condutor.\n"
+	            					 + "Verifique se ele está localizado em <ProjetoMC322\\lab06-seguradora_arquivos_v2\\condutores.csv> para utilizar o programa.");
 	                e.printStackTrace();
 	            }
 	        }
 	    }
 		   
-	    // retorna lista de objetos do tipo de objeto lido (no caso, ClientePF)
-	    return listaClientesPF;
+	    // retorna lista de objetos do tipo de objeto lido (no caso, Condutor)
+	    return listaCondutores;
 	}
 
 }

@@ -889,91 +889,13 @@ public class Main {
 		// Apenas uma seguradora é criada e será nela que todas as operações serão feitas
 	    Seguradora seguradora;
 	    
-	    //System.out.println("=================================================");
-		//System.out.println("        Sistema de Seguradora de Veıculos");
-		//System.out.println("=================================================\n");
+	    System.out.println("=================================================");
+		System.out.println("        Sistema de Seguradora de Veıculos");
+		System.out.println("=================================================\n");
 		
-		//System.out.println("Inicie suas operações criando uma seguradora.\n");
-		
-		/*		Caso queira rodar o programa adicionando sua propria seguradora, conforme foi planejado este programa,
-		 * deixe a proxima linha descomentada e comente o bloco de dados de teste.
-		 *		Caso contário, comente essa linha e descomente o bloco de dados de teste.
-		 */
-		/*
-		esperarEnter();
-		seguradora = criarSeguradora();
-		*/
-		
-		/* ====================
-		 *    DADOS DE TESTE
-		 * ==================== */
-		/*
-		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		
-		LocalDate dataN = LocalDate.parse("09/08/2004", formatter);
-		LocalDate dataN1 = LocalDate.parse("27/10/1990", formatter);
-		LocalDate dataN2 = LocalDate.parse("01/01/1987", formatter);
-		LocalDate dataF = LocalDate.parse("21/07/2010", formatter);
-		LocalDate data1 = LocalDate.parse("01/03/2023", formatter);
-		LocalDate data2 = LocalDate.parse("14/04/2023", formatter);
-		LocalDate dataFim = LocalDate.parse("21/07/2023", formatter);
-			
-		// cria clientes
-		ClientePF clientePF = new ClientePF("MARIA", "AV 2, 89", "19999802332", "maria@hotmail.com",
-				                            "90197003087", "F", "GRADUANDA", dataN, new LinkedList<Veiculo>());
-		
-		ClientePJ clientePJ = new ClientePJ("PADARIA SM", "AV 3, 140", "1932770967", "padaria.sm@hotmail.com", 
-											"79896457000186", dataF, new LinkedList<Frota>(), 4);
-		// cadastra clientes
-		seguradora.cadastrarCliente(clientePF);
-		seguradora.cadastrarCliente(clientePJ);
-		
-		// cria veiculos
-		Veiculo veiculo1 = new Veiculo("NCX-3134", "NISSAN", "KICKS", 2020);
-		Veiculo veiculo2 = new Veiculo("MSM-8271", "HONDA", "FIT", 2019);
-		Veiculo veiculo3 = new Veiculo("HZM-7159", "HONDA", "H-RV", 2022);
-		Veiculo veiculo4 = new Veiculo("ABC-9878", "RENAULT", "KWID", 2018);
-		
-		// cadastra veiculos PF
-		seguradora.cadastrarVeiculo(clientePF.getCpf(), veiculo1, null);
-		
-		// cadastra veiculos PJ
-		LinkedList<Veiculo> listaVeiculos1 = new LinkedList<Veiculo>();
-		listaVeiculos1.add(veiculo2);
-		Frota frota1 = new Frota(listaVeiculos1);
-		seguradora.cadastrarFrota(clientePJ.getCnpj(), frota1);
-		
-		seguradora.cadastrarVeiculo(clientePJ.getCnpj(), veiculo3, frota1.getCode());
-		
-		LinkedList<Veiculo> listaVeiculos2 = new LinkedList<Veiculo>();
-		listaVeiculos2.add(veiculo1);
-		listaVeiculos2.add(veiculo4);
-		Frota frota2 = new Frota(listaVeiculos2);
-		seguradora.cadastrarFrota(clientePJ.getCnpj(), frota2);
-		
-		// gerar seguros
-		seguradora.gerarSeguro(clientePF.getCpf(), dataFim, veiculo1.getPlaca(), null);
-		seguradora.gerarSeguro(clientePJ.getCnpj(), dataFim, null, frota2.getCode());
-		
-		// cadastrar condutores
-		int idSeguroPF = seguradora.getListaSeguros().get(0).getId();
-		Condutor condutor1 = new Condutor("14468039027", "LUIZA", "1198760256", "AV DOS ESPORTES, 87", "luiza@gmail.com", dataN1, new LinkedList<Sinistro>());
-		seguradora.autorizarCondutor(idSeguroPF, condutor1);
-		int idSeguroPJ = seguradora.getListaSeguros().get(1).getId();
-		Condutor condutor2 = new Condutor("50062049070", "JOÃO", "1193678549", "RUA DOS LIMOES, 6", "joao@gmail.com", dataN2, new LinkedList<Sinistro>());
-		seguradora.autorizarCondutor(idSeguroPJ, condutor2);
-		
-		// gerar sinistros
-		seguradora.gerarSinistro("NCX-3134", "90197003087", data1, "RUA CAOS", condutor1.getCpf());
-		seguradora.gerarSinistro("ABC-9878", "79.896.457/0001-86", data2, "RUA ACIDENTE",  condutor2.getCpf());
+		System.out.println("Inicie suas operações carregando os arquivos\n");
 		
 		esperarEnter();
-		*/
-		
-	    
-	    
-		// COMEÇA AQUI !!!!!!!!!!!! // 
 
 		// cria seguradora apenas com cnpj, nome, telefone, endereço e email (são arbitrários)
 	    seguradora = new Seguradora("22542453000182", "Azul", "1932770378", "Av 1, 89", "azul@g.com",
@@ -993,6 +915,9 @@ public class Main {
 			op = lerOpcaoMenuPrincipal();
 			executarOpcaoMenuExterno(op, seguradora);
 		}while(op != MenuOperacoes.SAIR);
+		
+		// grava todas as alterações feitas durante a execução nos arquivos .csv
+		seguradora.gravarDados();
 		
 		System.out.println("\nPrograma encerado!");
 	}

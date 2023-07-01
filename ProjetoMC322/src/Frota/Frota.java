@@ -15,7 +15,7 @@ public class Frota {
 		this.listaVeiculos = listaVeiculos;
 	}
 	
-	private Frota(String code, LinkedList<Veiculo> listaVeiculos) {
+	public Frota(String code, LinkedList<Veiculo> listaVeiculos) {
 		this.code = code;
 		this.listaVeiculos = listaVeiculos;
 	}
